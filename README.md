@@ -1,2 +1,2 @@
 # projet-unity
-Simulation mutli-agents basée sur Unity
+Simulation multi-agents basée sur Unity
