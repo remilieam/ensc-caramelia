@@ -1,42 +1,40 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[System.Serializable]
+public class AxleInfo
+{
+	public WheelCollider leftWheel;
+	public WheelCollider rightWheel;
+	public bool motor;
+	public bool steering;
+}
 
 public class CarController : MonoBehaviour
 {
+	public List<AxleInfo> axleInfos;
+	public float maxMotorTorque;
+	public float maxSteeringAngle;
 
-    private Rigidbody rb;
-    public float speed;
+	void FixedUpdate()
+	{
+		float motor = maxMotorTorque * Input.GetAxis("Vertical");
+		float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
 
-    // Use this for initialization
-    void Start()
-    {
-        GetComponent<Rigidbody>();
-    }
+		foreach (AxleInfo axleInfo in axleInfos)
+		{
+			if (axleInfo.steering)
+			{
+				axleInfo.leftWheel.steerAngle = steering;
+				axleInfo.rightWheel.steerAngle = steering;
+			}
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
-    void FixedUpdate()
-    {
-        rb = GetComponent<Rigidbody>();
-        // Vector3 movement = new Vector3(0.5f, 0.0f, 2);
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-
-        rb.AddForce(movement * speed);
-        
-    }
-
-
-
+			if (axleInfo.motor)
+			{
+				axleInfo.leftWheel.motorTorque = motor;
+				axleInfo.rightWheel.motorTorque = motor;
+			}
+		}
+	}
 }
-
-
-
-
