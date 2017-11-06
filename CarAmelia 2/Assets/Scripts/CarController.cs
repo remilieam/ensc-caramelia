@@ -2,15 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class AxleInfo
-{
-    public WheelCollider leftWheel;
-    public WheelCollider rightWheel;
-    public bool motor;
-    public bool steering;
-}
-
 public class CarController : MonoBehaviour
 {
     // Le chemin
@@ -18,19 +9,24 @@ public class CarController : MonoBehaviour
     private List<Transform> nodes;
     private int currectNode = 0;
 
-    public float maxSteerAngle = 45f;
+    public WheelCollider wheelFL;
+    public WheelCollider wheelFR;
+    public WheelCollider wheelRL;
+    public WheelCollider wheelRR;
     public float maxMotorTorque = 80f;
+    public float maxBrakeTorque = 150f;
+    public float maxSteerAngle = 45f;
     public float currentSpeed;
     public float maxSpeed = 100f;
-//    public Vector3 centerOfMass;
-
-    public List<AxleInfo> axleInfos;
-    //public float maxMotorTorque;
-    //public float maxSteeringAngle;
-
+    public Vector3 centerOfMass;
+    public bool isBraking = false;
+    public Texture2D textureNormal;
+    public Texture2D textureBraking;
+    public Renderer carRenderer;
+    
     void Start()
     {
-       // GetComponent<Rigidbody>().centerOfMass = centerOfMass;
+        GetComponent<Rigidbody>().centerOfMass = centerOfMass;
 
         // On recrée notre liste de noeuds
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
@@ -49,62 +45,41 @@ public class CarController : MonoBehaviour
         ApplySteer();
         Drive();
         CheckWaypointDistance();
+        Braking();
     }
 
     void ApplySteer()
     {
-        //float motor = maxMotorTorque * Input.GetAxis("Vertical");
-        //float newSteer = maxSteerAngle * Input.GetAxis("Horizontal");
-
-
         Vector3 relativeVector = transform.InverseTransformPoint(nodes[currectNode].position);
         //// Calcul que je n'ai pas compris
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
-
-        foreach (AxleInfo axleInfo in axleInfos)
-        {
-            if (axleInfo.steering)
-            {
-                axleInfo.leftWheel.steerAngle = newSteer;
-                axleInfo.rightWheel.steerAngle = newSteer;
-            }
-
-            //if (axleInfo.motor)
-            //{
-            //    axleInfo.leftWheel.motorTorque = motor;
-            //    axleInfo.rightWheel.motorTorque = motor;
-            //}
-        }
+        wheelFL.steerAngle = newSteer;
+        wheelFR.steerAngle = newSteer;
     }
 
     private void Drive()
     {
         // Vitesse
-        currentSpeed = 2 * Mathf.PI * axleInfos[0].leftWheel.radius * axleInfos[0].leftWheel.rpm * 60 / 1000;
+        currentSpeed = 2 * Mathf.PI * wheelFL.radius * wheelFL.rpm * 60 / 1000;
 
-        foreach (AxleInfo axleInfo in axleInfos)
-        {
-            if (axleInfo.motor)
-            {
-                if (currentSpeed < maxSpeed)
-                {
-                    axleInfo.leftWheel.motorTorque = maxMotorTorque;
-                    axleInfo.rightWheel.motorTorque = maxMotorTorque;
-                }
-                else
-                {
-                    axleInfo.leftWheel.motorTorque = 0;
-                    axleInfo.rightWheel.motorTorque = 0;
-                }
-            }
+        if (currentSpeed < maxSpeed && !isBraking) {
+            wheelFL.motorTorque = maxMotorTorque;
+            wheelFR.motorTorque = maxMotorTorque;
+        } else {
+            wheelFL.motorTorque = 0;
+            wheelFR.motorTorque = 0;
         }
-
     }
     // Permet d'actualiser le noeud
     private void CheckWaypointDistance()
     {
-        if (Vector3.Distance(transform.position, nodes[currectNode].position) < 0.5f)
+        if (Vector3.Distance(transform.position, nodes[currectNode].position) < 5)
         {
+            isBraking = true;            
+        }
+        else
+        {
+            isBraking = false;
             if (currectNode == nodes.Count - 1)
             {
                 currectNode = 0;
@@ -113,6 +88,22 @@ public class CarController : MonoBehaviour
             {
                 currectNode++;
             }
+        }
+    }
+
+    private void Braking()
+    {
+        if (isBraking)
+        {
+            carRenderer.material.mainTexture = textureBraking;
+            wheelRL.brakeTorque = maxBrakeTorque;
+            wheelRR.brakeTorque = maxBrakeTorque;
+        }
+        else
+        {
+            carRenderer.material.mainTexture = textureNormal;
+            wheelRL.brakeTorque = 0;
+            wheelRR.brakeTorque = 0;
         }
     }
 }
