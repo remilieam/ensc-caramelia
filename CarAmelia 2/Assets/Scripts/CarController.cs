@@ -23,7 +23,9 @@ public class CarController : MonoBehaviour
     public Texture2D textureNormal;
     public Texture2D textureBraking;
     public Renderer carRenderer;
-    
+
+    public float test;
+
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
@@ -73,13 +75,13 @@ public class CarController : MonoBehaviour
     // Permet d'actualiser le noeud
     private void CheckWaypointDistance()
     {
-        if (Vector3.Distance(transform.position, nodes[currectNode].position) < 5)
+        if (Vector3.Distance(transform.position, nodes[currectNode].position) < test)
         {
-            isBraking = true;            
-        }
-        else
-        {
-            isBraking = false;
+            //isBraking = true;            
+        //}
+        //else
+        //{
+        //    isBraking = false;
             if (currectNode == nodes.Count - 1)
             {
                 currectNode = 0;
