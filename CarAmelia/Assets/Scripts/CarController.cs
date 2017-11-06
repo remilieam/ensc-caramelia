@@ -22,6 +22,7 @@ public class CarController : MonoBehaviour
     public float maxMotorTorque = 80f;
     public float currentSpeed;
     public float maxSpeed = 100f;
+    public Vector3 centerOfMass;
 
 	public List<AxleInfo> axleInfos;
     //public float maxMotorTorque;
@@ -29,6 +30,8 @@ public class CarController : MonoBehaviour
 
     void Start()
     {
+        GetComponent<Rigidbody>().centerOfMass = centerOfMass;
+
         // On recrée notre liste de noeuds
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
@@ -51,11 +54,11 @@ public class CarController : MonoBehaviour
     void ApplySteer()
     {
         //float motor = maxMotorTorque * Input.GetAxis("Vertical");
-        //float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
+        //float newSteer = maxSteerAngle * Input.GetAxis("Horizontal");
 
 
         Vector3 relativeVector = transform.InverseTransformPoint(nodes[currectNode].position);
-        // Calcul que je n'ai pas compris
+        //// Calcul que je n'ai pas compris
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
 
         foreach (AxleInfo axleInfo in axleInfos)
