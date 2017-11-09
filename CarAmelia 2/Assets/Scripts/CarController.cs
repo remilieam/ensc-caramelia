@@ -77,7 +77,7 @@ public class CarController : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, nodes[currectNode].position) < test)
         {
-            //isBraking = true;            
+        //    isBraking = true;            
         //}
         //else
         //{
