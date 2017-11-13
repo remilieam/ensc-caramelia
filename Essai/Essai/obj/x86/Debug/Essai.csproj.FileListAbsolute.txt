@@ -1,0 +1,4 @@
+H:\IA\Essai\Essai\bin\Debug\Essai.exe
+H:\IA\Essai\Essai\bin\Debug\Essai.pdb
+H:\IA\Essai\Essai\obj\x86\Debug\Essai.exe
+H:\IA\Essai\Essai\obj\x86\Debug\Essai.pdb
