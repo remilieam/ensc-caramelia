@@ -25,6 +25,7 @@ public class CarController : MonoBehaviour
     public Renderer carRenderer;
 
     public float test;
+    public float test2;
 
     void Start()
     {
@@ -77,19 +78,23 @@ public class CarController : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, nodes[currectNode].position) < test)
         {
-        //    isBraking = true;            
-        //}
-        //else
-        //{
-        //    isBraking = false;
-            if (currectNode == nodes.Count - 1)
+            isBraking = true;
+            if (Vector3.Distance(transform.position, nodes[currectNode].position) < test2)
             {
-                currectNode = 0;
+                if (currectNode == nodes.Count - 1)
+                {
+                    currectNode = 0;
+                }
+                else
+                {
+                    currectNode++;
+                }
             }
-            else
-            {
-                currectNode++;
-            }
+        }
+        else
+        {
+            isBraking = false;
+
         }
     }
 
