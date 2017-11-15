@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System;
 
-public class CarController : MonoBehaviour
+public abstract class CarController : MonoBehaviour
 {
-    // Le chemin
+    // La map dans Unity
     public Transform path;
-    private List<Transform> nodes;
-    private int currectNode = 0;
-
+    protected List<Transform> nodes;
+    protected int[,] nodesTable;
+    
+    // Tous les attributs pour faire rouler la voiture
     public WheelCollider wheelFL;
     public WheelCollider wheelFR;
     public WheelCollider wheelRL;
@@ -23,11 +26,28 @@ public class CarController : MonoBehaviour
     public Texture2D textureNormal;
     public Texture2D textureBraking;
     public Renderer carRenderer;
+    // Valeurs pour tester les distances
+    public float distance_frein = 10;
+    public float distance_chgt = 0.5f;
 
-    public float test;
-    public float test2;
+    // Chiffre aléatoire
+    protected System.Random alea;
 
-    void Start()
+    // Prochaine position objectif pour la voiture
+    protected Position nextPosition;
+    // Position de l'objectif à atteindre (sur un long chemin)
+    protected Position target;
+    // Correspond à la position d'un noeud dans la map-tableau de la voiture
+    protected Position position;
+    // Correspond aux noeuds qu'a parcourus la voiture
+    protected List<Position> crossedNodes;
+
+    // Le chemin que la voiture doit parcourir pour atteindre un position objective
+    protected List<Node> nodesToCross;
+    protected Graph graph;
+    protected int i = 1;
+    
+    protected void StartCar()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
 
@@ -41,26 +61,48 @@ public class CarController : MonoBehaviour
                 nodes.Add(pathTransforms[i]);
             }
         }
+
+        // Initialisation de la map
+        nodesTable = new int[118, 118];
+        string filePath = @"Assets\Scripts\Files\carte_2.csv";
+        StreamReader sr = new StreamReader(filePath);
+        int row = 0;
+        while (!sr.EndOfStream)
+        {
+            string[] line = sr.ReadLine().Split(';');
+            for (int i = 0; i < 110; i++)
+            {
+                nodesTable[row, i] = Convert.ToInt32(line[i]);
+            }
+            row++;
+        }
+
+        // Initialisation
+        alea = new System.Random();
+        nodesToCross = new List<Node>();
+        graph = new Graph();
     }
 
-    void FixedUpdate()
+    public void FixedUpdate()
     {
         ApplySteer();
         Drive();
-        CheckWaypointDistance();
+        CheckWaypoint();
         Braking();
     }
 
-    void ApplySteer()
+
+    protected void ApplySteer()
     {
-        Vector3 relativeVector = transform.InverseTransformPoint(nodes[currectNode].position);
-        //// Calcul que je n'ai pas compris
+        Vector3 relativeVector = transform.InverseTransformPoint(nodes[nextPosition.Row].position);
+        // Calcul que je n'ai pas compris
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         wheelFL.steerAngle = newSteer;
         wheelFR.steerAngle = newSteer;
     }
 
-    private void Drive()
+
+    protected void Drive()
     {
         // Vitesse
         currentSpeed = 2 * Mathf.PI * wheelFL.radius * wheelFL.rpm * 60 / 1000;
@@ -73,32 +115,8 @@ public class CarController : MonoBehaviour
             wheelFR.motorTorque = 0;
         }
     }
-    // Permet d'actualiser le noeud
-    private void CheckWaypointDistance()
-    {
-        if (Vector3.Distance(transform.position, nodes[currectNode].position) < test)
-        {
-            isBraking = true;
-            if (Vector3.Distance(transform.position, nodes[currectNode].position) < test2)
-            {
-                if (currectNode == nodes.Count - 1)
-                {
-                    currectNode = 0;
-                }
-                else
-                {
-                    currectNode++;
-                }
-            }
-        }
-        else
-        {
-            isBraking = false;
 
-        }
-    }
-
-    private void Braking()
+    protected void Braking()
     {
         if (isBraking)
         {
@@ -112,5 +130,32 @@ public class CarController : MonoBehaviour
             wheelRL.brakeTorque = 0;
             wheelRR.brakeTorque = 0;
         }
+    }
+
+    protected abstract void CheckWaypoint();
+
+    // Méthode qui définit le successeur aléatoire de la position de la voiture
+    protected Position SuccessorAlea(Position currentPosition)
+    {
+        List<Position> successors = new List<Position>();
+
+        for (int i = 0; i < nodesTable.GetLength(1); i++)
+        {
+            if (nodesTable[currentPosition.Row, i] == 1)
+            {
+                successors.Add(new Position(i));
+            }
+        }
+
+        Position position = successors[alea.Next(successors.Count)];
+
+        return position;
+    }
+
+    // Calcul du chemin pour atteindre un objectif
+    protected void PathCalculation(Position final)
+    {
+        Node node = new Node(position, final, nodesTable);
+        nodesToCross = graph.FindPath(node);
     }
 }
