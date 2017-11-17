@@ -613,7 +613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf84840e0ed7ba4884133395dc8fbe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: {fileID: 482802, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
+  path: {fileID: 4767236524481270, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
   wheelFL: {fileID: 14615520}
   wheelFR: {fileID: 14623788}
   wheelRL: {fileID: 14687192}
@@ -630,6 +630,7 @@ MonoBehaviour:
   carRenderer: {fileID: 2326954}
   distance_frein: 10
   distance_chgt: 0.5
+  test_vit: 10
   exit: {fileID: 467508, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
 --- !u!114 &11465992
 MonoBehaviour:

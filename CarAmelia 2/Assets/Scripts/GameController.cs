@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
     public GameObject IntCarRed;
     public int nbBlue, nbOrange, nbYellow, nbGreen, nbRed;
     public Transform path;
-    public float wait;
+    public float wait = 0;
 
     private List<Transform> nodes;
     private System.Random alea;
@@ -40,9 +40,10 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < nbCars; i++)
         {
-            Vector3 spawnPosition = new Vector3(-8.3f, 0, -122.7f);
-            Quaternion spawnRotation = new Quaternion(0, nodes[111].transform.rotation.y, 0, 0);
-            Instantiate(car, spawnPosition, spawnRotation);
+            Vector3 spawnPosition = new Vector3(nodes[111].position.x, 0, nodes[111].position.z);
+            Quaternion rotation = Quaternion.identity;
+            rotation.eulerAngles = new Vector3(0, nodes[111].transform.eulerAngles.y, 0);
+            Instantiate(car, spawnPosition, rotation);
             yield return new WaitForSeconds(wait);
         }
     }
@@ -64,8 +65,9 @@ public class GameController : MonoBehaviour
         {
             node = nodes[alea.Next(pathTransforms.Length)];
             Vector3 spawnPosition = new Vector3(node.transform.position.x, 0, node.transform.position.z);
-            Quaternion spawnRotation = Quaternion.identity;
-            Instantiate(car, spawnPosition, spawnRotation);
+            Quaternion rotation = Quaternion.identity;
+            rotation.eulerAngles = new Vector3(0, node.transform.eulerAngles.y, 0);
+            Instantiate(car, spawnPosition, rotation);
             yield return new WaitForSeconds(wait);
         }
     }
