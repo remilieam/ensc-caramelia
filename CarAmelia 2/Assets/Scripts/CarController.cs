@@ -10,7 +10,7 @@ public abstract class CarController : MonoBehaviour
     public Transform path;
     protected List<Transform> nodes;
     protected int[,] nodesTable;
-    
+
     // Tous les attributs pour faire rouler la voiture
     public WheelCollider wheelFL;
     public WheelCollider wheelFR;
@@ -29,6 +29,7 @@ public abstract class CarController : MonoBehaviour
     // Valeurs pour tester les distances
     public float distance_frein = 10;
     public float distance_chgt = 0.5f;
+    public float test_vit = 10;
 
     // Chiffre aléatoire
     protected System.Random alea;
@@ -39,14 +40,12 @@ public abstract class CarController : MonoBehaviour
     protected Position target;
     // Correspond à la position d'un noeud dans la map-tableau de la voiture
     protected Position position;
-    // Correspond aux noeuds qu'a parcourus la voiture
-    protected List<Position> crossedNodes;
 
     // Le chemin que la voiture doit parcourir pour atteindre un position objective
     protected List<Node> nodesToCross;
     protected Graph graph;
     protected int i = 1;
-    
+
     protected void StartCar()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
@@ -107,10 +106,13 @@ public abstract class CarController : MonoBehaviour
         // Vitesse
         currentSpeed = 2 * Mathf.PI * wheelFL.radius * wheelFL.rpm * 60 / 1000;
 
-        if (currentSpeed < maxSpeed && !isBraking) {
+        if (currentSpeed < maxSpeed && !isBraking)
+        {
             wheelFL.motorTorque = maxMotorTorque;
             wheelFR.motorTorque = maxMotorTorque;
-        } else {
+        }
+        else
+        {
             wheelFL.motorTorque = 0;
             wheelFR.motorTorque = 0;
         }
@@ -118,7 +120,7 @@ public abstract class CarController : MonoBehaviour
 
     protected void Braking()
     {
-        if (isBraking)
+        if (isBraking && currentSpeed > test_vit)
         {
             carRenderer.material.mainTexture = textureBraking;
             wheelRL.brakeTorque = maxBrakeTorque;

@@ -25,7 +25,6 @@ public class Node
         parent = null;
         children = new List<Node>();
         this.name = position;
-        int[,] table = new int[110, 110];
     }
 
     /// <summary>

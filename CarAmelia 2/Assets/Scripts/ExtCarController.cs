@@ -11,6 +11,8 @@ public class ExtCarController : CarController {
     // Permet de définir si la voiture a un noeud objectif ou si elle roule aléatoirement dans la carte
     bool aleaMode;
 
+    public Transform exit;
+
     // nodesToCross; : limité à 6 noeuds car la voiture a une petite mémoire
         
     public void Start() 
@@ -39,6 +41,12 @@ public class ExtCarController : CarController {
             isBraking = true;
             if (Vector3.Distance(transform.position, nodes[nextPosition.Row].position) < distance_chgt)
             {
+                // Si la voiture a atteint son objectif (même par hasard), elle a gagné ! (Et donc est détruite, c'est très logique.)
+                if (nodes[nextPosition.Row] == exit)
+                {
+                    Destroy(gameObject);
+                }
+
                 position = nextPosition;
                 crossedNodes.Add(position);
 

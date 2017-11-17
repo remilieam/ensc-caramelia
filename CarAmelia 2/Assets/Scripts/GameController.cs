@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour
     public Transform path;
     public float wait;
 
-    private new List<Transform> nodes;
+    private List<Transform> nodes;
     private System.Random alea;
     private Transform[] pathTransforms;
 
@@ -33,8 +33,7 @@ public class GameController : MonoBehaviour
 
         alea = new System.Random();
 
-        StartCoroutine(AddExtCars());
-        StartCoroutine(AddIntCars());
+        StartCoroutine(AddCars());
     }
 
     IEnumerator AddExtCar(GameObject car, int nbCars)
@@ -42,7 +41,7 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < nbCars; i++)
         {
             Vector3 spawnPosition = new Vector3(-8.3f, 0, -122.7f);
-            Quaternion spawnRotation = Quaternion.identity;
+            Quaternion spawnRotation = new Quaternion(0, nodes[111].transform.rotation.y, 0, 0);
             Instantiate(car, spawnPosition, spawnRotation);
             yield return new WaitForSeconds(wait);
         }
@@ -71,11 +70,12 @@ public class GameController : MonoBehaviour
         }
     }
 
-    IEnumerator AddIntCars()
+    IEnumerator AddCars()
     {
         StartCoroutine(AddIntCar(IntCarGreen, nbGreen));
         yield return new WaitForSeconds(2 * wait);
         StartCoroutine(AddIntCar(IntCarRed, nbRed));
         yield return new WaitForSeconds(2 * wait);
+        StartCoroutine(AddExtCars());
     }
 }
