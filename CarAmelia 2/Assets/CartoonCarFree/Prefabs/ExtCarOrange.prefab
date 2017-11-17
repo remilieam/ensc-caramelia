@@ -619,7 +619,7 @@ MonoBehaviour:
   wheelRL: {fileID: 14687192}
   wheelRR: {fileID: 14619550}
   maxMotorTorque: 80
-  maxBrakeTorque: 50
+  maxBrakeTorque: 20
   maxSteerAngle: 45
   currentSpeed: 0
   maxSpeed: 50
