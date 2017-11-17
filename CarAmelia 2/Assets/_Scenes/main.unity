@@ -142,12 +142,12 @@ MonoBehaviour:
     type: 2}
   IntCarRed: {fileID: 152968, guid: a775a12336c4af34c938c378329d0d03, type: 2}
   nbBlue: 1
-  nbOrange: 0
-  nbYellow: 0
-  nbGreen: 0
-  nbRed: 0
-  path: {fileID: 482802, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
-  wait: 1
+  nbOrange: 1
+  nbYellow: 1
+  nbGreen: 1
+  nbRed: 1
+  path: {fileID: 4767236524481270, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
+  wait: 3
 --- !u!4 &389905157
 Transform:
   m_ObjectHideFlags: 0
