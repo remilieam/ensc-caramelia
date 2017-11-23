@@ -46,6 +46,12 @@ public abstract class CarController : MonoBehaviour
     protected Graph graph;
     protected int i = 1;
 
+    [Header("Sensors")]
+    public float sensorLength = 10f;
+    public Vector3 frontSensorPosition = new Vector3(0f, 0.2f, 0f);
+    public float frontSideSensorPosition = 0.4f;
+    public float frontSensorAngle = 30f;
+
     protected void StartCar()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
@@ -60,6 +66,7 @@ public abstract class CarController : MonoBehaviour
                 nodes.Add(pathTransforms[i]);
             }
         }
+
 
         // Initialisation de la map
         nodesTable = new int[118, 118];
@@ -84,6 +91,7 @@ public abstract class CarController : MonoBehaviour
 
     public void FixedUpdate()
     {
+        Sensors();
         ApplySteer();
         Drive();
         CheckWaypoint();
@@ -160,4 +168,45 @@ public abstract class CarController : MonoBehaviour
         Node node = new Node(position, final, nodesTable);
         nodesToCross = graph.FindPath(node);
     }
+
+    private void Sensors()
+    {
+        RaycastHit hit;
+        Vector3 sensorStartPos = transform.position + frontSensorPosition;
+
+        //front center sensor
+        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
+        {
+            Debug.DrawLine(sensorStartPos, hit.point);
+        }
+
+        //front right sensor
+        sensorStartPos.x += frontSideSensorPosition;
+        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
+        {
+            Debug.DrawLine(sensorStartPos, hit.point);
+        }
+
+        //front right angle sensor
+        if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
+        {
+            Debug.DrawLine(sensorStartPos, hit.point);
+        }
+
+        //front left sensor
+        sensorStartPos.x -= 2 * frontSideSensorPosition;
+        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
+        {
+            Debug.DrawLine(sensorStartPos, hit.point);
+        }
+
+        //front left angle sensor
+        if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
+        {
+            Debug.DrawLine(sensorStartPos, hit.point);
+   
+        }
+    }
+
+    public abstract void Stop(GameObject hitCar);
 }

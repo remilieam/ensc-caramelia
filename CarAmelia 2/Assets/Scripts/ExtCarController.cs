@@ -69,5 +69,21 @@ public class ExtCarController : CarController {
             isBraking = false;
 
         }
+    }
+
+    public override void Stop (GameObject hitCar)
+    {
+        if(aleaMode)
+        {
+            if(hitCar.tag == "IntCar")
+            {
+                isBraking = true;
+                
+            }
+            else if (hitCar.tag == "ExtCar")
+            {
+                isBraking = true;
+            }
+        }
     }        
 }

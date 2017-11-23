@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 114431149178298174}
   m_Layer: 0
   m_Name: IntCarGreen
-  m_TagString: Untagged
+  m_TagString: IntCar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -654,6 +654,10 @@ MonoBehaviour:
   distance_frein: 10
   distance_chgt: 0.5
   test_vit: 0.5
+  sensorLength: 10
+  frontSensorPosition: {x: 0, y: 0.2, z: 0}
+  frontSideSensorPosition: 0.4
+  frontSensorAngle: 30
 --- !u!114 &114463319613804736
 MonoBehaviour:
   m_ObjectHideFlags: 1
