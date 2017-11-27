@@ -15,6 +15,8 @@ public class ExtCarController : CarController {
 	public int generosity;
 	public Canvas canvas;
 
+	LineRenderer lineRenderer;
+
     // Permet de définir si la voiture a un noeud objectif ou si elle roule aléatoirement dans la carte
     bool aleaMode;
 
@@ -49,6 +51,16 @@ public class ExtCarController : CarController {
 		// Définition du texte et de l'action quand on clique sur le bouton
 		textCanvas.text = "Générosité : " + generosity.ToString() + "\nConfiance : "+trust.ToString();
 		buttonCanvas.onClick.AddListener (TaskOnClick);
+
+		lineRenderer = this.gameObject.AddComponent<LineRenderer>();
+	}
+
+	public void Update()
+	{
+		if (!aleaMode) {
+			lineRenderer.SetPosition (0, this.transform.position);
+			lineRenderer.SetPosition (1, nodes [target.Row].position);
+		}
 	}
 
 	void TaskOnClick()

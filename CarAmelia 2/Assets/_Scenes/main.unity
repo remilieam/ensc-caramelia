@@ -146,8 +146,8 @@ MonoBehaviour:
   nbBlue: 2
   nbOrange: 2
   nbYellow: 2
-  nbGreen: 2
-  nbRed: 2
+  nbGreen: 0
+  nbRed: 0
   path: {fileID: 4767236524481270, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
   wait: 3
 --- !u!4 &389905157

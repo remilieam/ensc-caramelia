@@ -52,8 +52,6 @@ public abstract class CarController : MonoBehaviour
     public float frontSideSensorPosition = 0.4f;
     public float frontSensorAngle = 30f;
 
-	LineRenderer lineRenderer;
-
     protected void StartCar()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
@@ -89,8 +87,6 @@ public abstract class CarController : MonoBehaviour
         alea = new System.Random();
         nodesToCross = new List<Node>();
         graph = new Graph();
-
-		lineRenderer = this.gameObject.AddComponent<LineRenderer>();
     }
 
     public void FixedUpdate()
@@ -102,13 +98,6 @@ public abstract class CarController : MonoBehaviour
         Braking();
 
     }
-
-	public void Update()
-	{
-		lineRenderer.SetPosition(0, this.transform.position);
-		lineRenderer.SetPosition(1,nodes[target.Row].position); 
-	}
-
 
     protected void ApplySteer()
     {
