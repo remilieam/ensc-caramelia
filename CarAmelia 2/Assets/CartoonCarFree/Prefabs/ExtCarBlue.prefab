@@ -741,7 +741,7 @@ MonoBehaviour:
   isBraking: 0
   textureNormal: {fileID: 2800000, guid: 1d19735586099d44790daead2b48ba82, type: 3}
   textureBraking: {fileID: 2800000, guid: 26757e79271446a418376bf30f227fc9, type: 3}
-  carRenderer: {fileID: 2326954, guid: f6791fd071fa6f64ca7e45e7a2ac8bfb, type: 2}
+  carRenderer: {fileID: 23950185651325874}
   distance_frein: 10
   distance_chgt: 0.5
   test_vit: 10

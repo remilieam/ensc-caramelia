@@ -25,7 +25,7 @@ public class Position
 
     public override string ToString()
     {
-        return "Ligne : " + (this.Row + 1);
+        return "Ligne : " + this.Row;
     }
 }
 

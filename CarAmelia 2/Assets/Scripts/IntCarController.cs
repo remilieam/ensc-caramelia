@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 
 public class IntCarController : CarController
 {
@@ -10,23 +11,44 @@ public class IntCarController : CarController
 	// Index 0 : bleu, 1 : orange, 2 : jaune
 	public List<Position> exitsKnown = new List<Position>();
 
+    LineRenderer lineRenderer;
+    public Canvas caneva;
+    Text textCanvas;
+
     public void Start()
     {
         StartCar();
 
+        textCanvas = caneva.GetComponentsInChildren<Text>()[0];
         float positionX = this.transform.position.x;
         float positionZ = this.transform.position.z;
 
         // Voiture démarre à une position aléatoire sur la map
         position = new Position(findNode(positionX, positionZ));
         // Position aléatoire de sa destination
-        target = new Position(alea.Next(nodesTable.GetLength(1)));
+        Position targetTemp = new Position(alea.Next(nodesTable.GetLength(1)));
+        while(targetTemp == position)
+        {
+            targetTemp = new Position(alea.Next(nodesTable.GetLength(1)));
+        }
+        target = targetTemp;
+        
+
+        
+
         // On définit la future position de manière aléatoire
         PathCalculation(target);
+
+
+        textCanvas.text = target.ToString() + "      " + nodesToCross.Count.ToString();
+
         // On définit la prochaine cible
         nextPosition = nodesToCross[indexNode].name;
 
-		if (alea.Next (0, 2) == 1) {
+        lineRenderer = this.gameObject.AddComponent<LineRenderer>();
+
+
+        if (alea.Next (0, 2) == 1) {
 			exitsKnown.Add (new Position (113));
 		}
 		if (alea.Next (0, 2) == 1) {
@@ -35,6 +57,22 @@ public class IntCarController : CarController
 		if (alea.Next (0, 2) == 1) {
 			exitsKnown.Add (new Position (117));
 		}
+
+        
+
+
+    }
+
+    public void OnMouseDown()
+    {
+        caneva.enabled = false;
+    }
+
+    public void Update()
+    {
+        lineRenderer.SetPosition(0, this.transform.position);
+        lineRenderer.SetPosition(1, nodes[target.Row].position);
+
     }
 
     private int findNode(float x, float z)

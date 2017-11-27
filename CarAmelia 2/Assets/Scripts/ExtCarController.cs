@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
 
-public class ExtCarController : CarController {
+public class ExtCarController : CarController
+{
 
     // Correspond aux noeuds qu'a parcourus la voiture
     private List<Position> crossedNodes;
-	// Correspond à son degré de confiance (1 pas confiant dans les infos qu'il reçoit
-	// et 5 confiance aveugle) et de générosité (1 pas généreux dans le partage
-	// d'informations avec une voiture de même couleur et 5 très généreux)
-	public int trust;
-	public int generosity;
-	public Canvas canvas;
+    // Correspond à son degré de confiance (1 pas confiant dans les infos qu'il reçoit
+    // et 5 confiance aveugle) et de générosité (1 pas généreux dans le partage
+    // d'informations avec une voiture de même couleur et 5 très généreux)
+    public int trust;
+    public int generosity;
+    public Canvas canvas;
 
-	LineRenderer lineRenderer;
+    LineRenderer lineRenderer;
 
     // Permet de définir si la voiture a un noeud objectif ou si elle roule aléatoirement dans la carte
     bool aleaMode;
@@ -23,168 +24,188 @@ public class ExtCarController : CarController {
     public Transform exit;
 
     // nodesToCross; : limité à 6 noeuds car la voiture a une petite mémoire
-        
+
     public void Start()
-	{
-		StartCar ();
+    {
+        StartCar();
 
-		// Voiture démarre à l'entrée de la map et de manière aléatoire
-		position = new Position (111);
-		aleaMode = true;
+        // Voiture démarre à l'entrée de la map et de manière aléatoire
+        position = new Position(111);
+        aleaMode = true;
 
-		// On définit la future position
-		nextPosition = new Position (SuccessorAlea (position).Row);
-        
-		// On ajoute cette première position aux positions que la voiture a parcourues
-		crossedNodes = new List<Position> ();
-		crossedNodes.Add (position);
+        // On définit la future position
+        nextPosition = new Position(SuccessorAlea(position).Row);
 
-		// Confiance & générosité
-		trust = alea.Next(1,6);
-		generosity = alea.Next (1, 6);
+        // On ajoute cette première position aux positions que la voiture a parcourues
+        crossedNodes = new List<Position>();
+        crossedNodes.Add(position);
 
-		// On n'affiche pas le canvas
-		canvas.enabled = false;
-		// Récupération du texte et du bouton du canvas
-		Text textCanvas = canvas.GetComponentsInChildren<Text> ()[0];
-		Button buttonCanvas = canvas.GetComponentsInChildren<Button> ()[0];
-		// Définition du texte et de l'action quand on clique sur le bouton
-		textCanvas.text = "Générosité : " + generosity.ToString() + "\nConfiance : "+trust.ToString();
-		buttonCanvas.onClick.AddListener (TaskOnClick);
+        // Confiance & générosité
+        trust = alea.Next(1, 6);
+        generosity = alea.Next(1, 6);
 
-		lineRenderer = this.gameObject.AddComponent<LineRenderer>();
-	}
+        // On n'affiche pas le canvas
+        canvas.enabled = false;
+        // Récupération du texte et du bouton du canvas
+        Text textCanvas = canvas.GetComponentsInChildren<Text>()[0];
+        Button buttonCanvas = canvas.GetComponentsInChildren<Button>()[0];
+        // Définition du texte et de l'action quand on clique sur le bouton
+        textCanvas.text = "Générosité : " + generosity.ToString() + "\nConfiance : " + trust.ToString();
+        buttonCanvas.onClick.AddListener(TaskOnClick);
 
-	public void Update()
-	{
-		if (!aleaMode) {
-			lineRenderer.SetPosition (0, this.transform.position);
-			lineRenderer.SetPosition (1, nodes [target.Row].position);
-		}
-	}
+        lineRenderer = this.gameObject.AddComponent<LineRenderer>();
+    }
 
-	void TaskOnClick()
-	{
-		// Si on clique sur le bouton du canvas celui-ci devient invisible
-		canvas.enabled = false;
-	}
-	void OnMouseDown()
-	{
-		// Si on clique sur la voiture le canvas devient visible
-		canvas.enabled = true;
-	}
+    public void Update()
+    {
+        if (!aleaMode)
+        {
+            lineRenderer.SetPosition(0, this.transform.position);
+            lineRenderer.SetPosition(1, nodes[target.Row].position);
+        }
+    }
+
+    void TaskOnClick()
+    {
+        // Si on clique sur le bouton du canvas celui-ci devient invisible
+        canvas.enabled = false;
+    }
+    void OnMouseDown()
+    {
+        // Si on clique sur la voiture le canvas devient visible
+        canvas.enabled = true;
+    }
 
     // Permet d'actualiser le noeud
     protected override void CheckWaypoint()
     {
         // On fait freiner la voiture avant l'arrivée sur le point
-		if (Vector3.Distance (transform.position, nodes [nextPosition.Row].position) < distance_frein) {
-			isBraking = true;
-			if (Vector3.Distance (transform.position, nodes [nextPosition.Row].position) < distance_chgt) {
-				// Si la voiture a atteint son objectif (même par hasard), elle a gagné ! (Et donc est détruite, c'est très logique.)
-				if (nodes [nextPosition.Row] == exit) {
-					Destroy (gameObject);
-				}
+        if (Vector3.Distance(transform.position, nodes[nextPosition.Row].position) < distance_frein)
+        {
+            isBraking = true;
+            if (Vector3.Distance(transform.position, nodes[nextPosition.Row].position) < distance_chgt)
+            {
+                // Si la voiture a atteint son objectif (même par hasard), elle a gagné ! (Et donc est détruite, c'est très logique.)
+                if (nodes[nextPosition.Row] == exit)
+                {
+                    Destroy(gameObject);
+                }
 
-				position = nextPosition;
-				crossedNodes.Add (position);
+                position = nextPosition;
+                crossedNodes.Add(position);
 
-				if (aleaMode) {                    
-					nextPosition = SuccessorAlea (position);
-				} else {
-					if (indexNode < nodesToCross.Count) {
-						nextPosition = nodesToCross [indexNode].name;
-						indexNode++;
-					}
-				}                
-			}
-		} else {
-			isBraking = false;
+                if (aleaMode)
+                {
+                    nextPosition = SuccessorAlea(position);
+                }
+                else
+                {
+                    if (indexNode < nodesToCross.Count)
+                    {
+                        nextPosition = nodesToCross[indexNode].name;
+                        indexNode++;
+                    }
+                    else
+                    {
+                        indexNode = 1;
+                        aleaMode = true;
+                        nextPosition = SuccessorAlea(position);
+                    }
+                }
+            }
+        }
+        else
+        {
+            isBraking = false;
 
-		}
+        }
     }
 
-	private void ReceivingInformation(CarController car)
-	{
-		if (car is ExtCarController) {
-			ExtCarController extCar = (ExtCarController)car;
-			int prob = extCar.alea.Next (1, 5);
-			if (prob >= extCar.generosity && !extCar.aleaMode)
-			{
-				// Je reçois de l'info que si la voiture extérieure que je crois
-				// a assez généreuse et n'est pas en mode aléatoire
-				this.target = car.target;
-			}
-		}
-		if (car is IntCarController)
-		{
-			IntCarController intCar = (IntCarController)car;
-			if (intCar.sincerity)
-			{
-				foreach (Position exitKnown in intCar.exitsKnown)
-				{
-					if (nodes [exitKnown.Row] == exit)
-					{
-						Position exitPosition = new Position(0);
-						for (int i = 0; i < nodes.Count; i++) {
-							if (nodes [i] == exit) {
-								exitPosition = new Position (i);
-							}
-						}
-						target = exitPosition;
-					}
-				}
-			}
-		}
-	}
-
-	public override void Stop (GameObject hitCar)
+    private void ReceivingInformation(CarController car)
     {
-		ExtCarController extCarHit =hitCar.gameObject.GetComponent<ExtCarController> ();
-		IntCarController intCarHit =hitCar.gameObject.GetComponent<IntCarController> ();
-
-		// Pas de target
-		if (aleaMode)
-		{
-			if (hitCar.tag == "IntCar")
-			{
-				isBraking = true;
-				intCarHit.isBraking = true;
-			}
-			else if (hitCar.tag == "ExtCar" && extCarHit.exit == this.exit) {
-				isBraking = true;
-				extCarHit.isBraking = true;
-				ReceivingInformation (extCarHit);
-			}
-		}
-
-		// A une target
-		else
-		{
-			int prob = alea.Next (1, 5);
-			if (prob >= trust) 
-			{
-				// Réception d'infos ==> pas confiance
-				if (hitCar.tag == "IntCar")
-				{
-					isBraking = true;
-				}
-				else if (hitCar.tag == "ExtCar" && extCarHit.exit == this.exit)
-				{
-					isBraking = true;
-					extCarHit.isBraking = true;
-					ReceivingInformation (extCarHit);
-				}
-			}
-			else
-			{
-				// Pas de réception d'infos ==> confiance
-			}
-		}
+        if (car is ExtCarController)
+        {
+            ExtCarController extCar = (ExtCarController)car;
+            int prob = extCar.alea.Next(1, 5);
+            if (prob >= extCar.generosity && !extCar.aleaMode)
+            {
+                // Je reçois de l'info que si la voiture extérieure que je crois
+                // a assez généreuse et n'est pas en mode aléatoire
+                this.target = car.target;
+                aleaMode = false;
+            }
+        }
+        if (car is IntCarController)
+        {
+            IntCarController intCar = (IntCarController)car;
+            if (intCar.sincerity)
+            {
+                foreach (Position exitKnown in intCar.exitsKnown)
+                {
+                    if (nodes[exitKnown.Row] == exit)
+                    {
+                        Position exitPosition = new Position(0);
+                        for (int i = 0; i < nodes.Count; i++)
+                        {
+                            if (nodes[i] == exit)
+                            {
+                                exitPosition = new Position(i);
+                            }
+                        }
+                        target = exitPosition;
+                        aleaMode = false;
+                    }
+                }
+            }
+        }
     }
 
+    public override void Stop(GameObject hitCar)
+    {
+        ExtCarController extCarHit = hitCar.gameObject.GetComponent<ExtCarController>();
+        IntCarController intCarHit = hitCar.gameObject.GetComponent<IntCarController>();
 
+        // Pas de target
+        if (aleaMode)
+        {
+            if (hitCar.tag == "IntCar")
+            {
+                isBraking = true;
+                intCarHit.isBraking = true;
+                ReceivingInformation(intCarHit);
+            }
+            else if (hitCar.tag == "ExtCar" && extCarHit.exit == this.exit)
+            {
+                isBraking = true;
+                extCarHit.isBraking = true;
+                ReceivingInformation(extCarHit);
+            }
+        }
 
-
-
+        // A une target
+        else
+        {
+            int prob = alea.Next(1, 5);
+            if (prob >= trust)
+            {
+                // Réception d'infos ==> pas confiance
+                if (hitCar.tag == "IntCar")
+                {
+                    isBraking = true;
+                    intCarHit.isBraking = true;
+                    ReceivingInformation(intCarHit);
+                }
+                else if (hitCar.tag == "ExtCar" && extCarHit.exit == this.exit)
+                {
+                    isBraking = true;
+                    extCarHit.isBraking = true;
+                    ReceivingInformation(extCarHit);
+                }
+            }
+            else
+            {
+                // Pas de réception d'infos ==> confiance
+            }
+        }
+    }
 }

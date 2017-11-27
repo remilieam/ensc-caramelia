@@ -76,7 +76,7 @@ public abstract class CarController : MonoBehaviour
         while (!sr.EndOfStream)
         {
             string[] line = sr.ReadLine().Split(';');
-            for (int i = 0; i < 110; i++)
+            for (int i = 0; i < 118; i++)
             {
                 nodesTable[row, i] = Convert.ToInt32(line[i]);
             }
