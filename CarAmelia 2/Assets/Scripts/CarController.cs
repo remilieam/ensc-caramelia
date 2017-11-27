@@ -37,7 +37,7 @@ public abstract class CarController : MonoBehaviour
     // Prochaine position objectif pour la voiture
     protected Position nextPosition;
     // Position de l'objectif à atteindre (sur un long chemin)
-    protected Position target;
+    public Position target;
     // Correspond à la position d'un noeud dans la map-tableau de la voiture
     protected Position position;
 

@@ -5,6 +5,11 @@ using System;
 
 public class IntCarController : CarController
 {
+	public bool sincerity;
+	// Tableau des sorties connues (1 connaît, 0 connaît pas)
+	// Index 0 : bleu, 1 : orange, 2 : jaune
+	public List<Position> exitsKnown = List<Position>();
+
     public void Start()
     {
         StartCar();
@@ -20,6 +25,16 @@ public class IntCarController : CarController
         PathCalculation(target);
         // On définit la prochaine cible
         nextPosition = nodesToCross[i].name;
+
+		if (alea.Next (0, 2) == 1) {
+			exitsKnown.Add (new Position (113));
+		}
+		if (alea.Next (0, 2) == 1) {
+			exitsKnown.Add (new Position (115));
+		}
+		if (alea.Next (0, 2) == 1) {
+			exitsKnown.Add (new Position (117));
+		}
     }
 
     private int findNode(float x, float z)
@@ -73,5 +88,10 @@ public class IntCarController : CarController
             isBraking = false;
 
         }
-    }
+
+	}
+
+	public override void Stop (GameObject hitCar)
+	{
+	}
 }
