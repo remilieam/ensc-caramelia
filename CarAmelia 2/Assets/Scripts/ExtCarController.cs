@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 
 public class ExtCarController : CarController {
 
@@ -12,6 +13,7 @@ public class ExtCarController : CarController {
 	// d'informations avec une voiture de même couleur et 5 très généreux)
 	public int trust;
 	public int generosity;
+	public Canvas canvas;
 
     // Permet de définir si la voiture a un noeud objectif ou si elle roule aléatoirement dans la carte
     bool aleaMode;
@@ -38,6 +40,26 @@ public class ExtCarController : CarController {
 		// Confiance & générosité
 		trust = alea.Next(1,6);
 		generosity = alea.Next (1, 6);
+
+		// On n'affiche pas le canvas
+		canvas.enabled = false;
+		// Récupération du texte et du bouton du canvas
+		Text textCanvas = canvas.GetComponentsInChildren<Text> ()[0];
+		Button buttonCanvas = canvas.GetComponentsInChildren<Button> ()[0];
+		// Définition du texte et de l'action quand on clique sur le bouton
+		textCanvas.text = "Générosité : " + generosity.ToString() + "\nConfiance : "+trust.ToString();
+		buttonCanvas.onClick.AddListener (TaskOnClick);
+	}
+
+	void TaskOnClick()
+	{
+		// Si on clique sur le bouton du canvas celui-ci devient invisible
+		canvas.enabled = false;
+	}
+	void OnMouseDown()
+	{
+		// Si on clique sur la voiture le canvas devient visible
+		canvas.enabled = true;
 	}
 
     // Permet d'actualiser le noeud

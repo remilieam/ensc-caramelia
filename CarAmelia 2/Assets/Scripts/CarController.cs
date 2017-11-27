@@ -52,7 +52,6 @@ public abstract class CarController : MonoBehaviour
     public float frontSideSensorPosition = 0.4f;
     public float frontSensorAngle = 30f;
 
-
 	LineRenderer lineRenderer;
 
     protected void StartCar()
@@ -92,7 +91,6 @@ public abstract class CarController : MonoBehaviour
         graph = new Graph();
 
 		lineRenderer = this.gameObject.AddComponent<LineRenderer>();
-
     }
 
     public void FixedUpdate()
