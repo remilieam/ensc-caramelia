@@ -141,13 +141,13 @@ MonoBehaviour:
   IntCarGreen: {fileID: 1609174577511230, guid: a105896e2f8021244b53f63f4a21dbb5,
     type: 2}
   IntCarRed: {fileID: 152968, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-  nbBlue: 0
-  nbOrange: 0
-  nbYellow: 0
-  nbGreen: 0
-  nbRed: 0
+  nbBlue: 2
+  nbOrange: 2
+  nbYellow: 2
+  nbGreen: 2
+  nbRed: 2
   path: {fileID: 4767236524481270, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
-  wait: 0
+  wait: 3
 --- !u!4 &389905157
 Transform:
   m_ObjectHideFlags: 0
@@ -420,7 +420,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1790991648}
   m_LocalRotation: {x: 0.38268346, y: 0, z: 0, w: 0.9238795}
-  m_LocalPosition: {x: -8.3, y: 93.9, z: -197}
+  m_LocalPosition: {x: -8.3, y: 230, z: -250}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

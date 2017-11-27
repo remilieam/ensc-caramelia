@@ -44,13 +44,16 @@ public abstract class CarController : MonoBehaviour
     // Le chemin que la voiture doit parcourir pour atteindre un position objective
     protected List<Node> nodesToCross;
     protected Graph graph;
-    protected int i = 1;
+    protected int indexNode = 1;
 
     [Header("Sensors")]
     public float sensorLength = 10f;
     public Vector3 frontSensorPosition = new Vector3(0f, 0.2f, 0f);
     public float frontSideSensorPosition = 0.4f;
     public float frontSensorAngle = 30f;
+
+
+	LineRenderer lineRenderer;
 
     protected void StartCar()
     {
@@ -87,6 +90,9 @@ public abstract class CarController : MonoBehaviour
         alea = new System.Random();
         nodesToCross = new List<Node>();
         graph = new Graph();
+
+		lineRenderer = this.gameObject.AddComponent<LineRenderer>();
+
     }
 
     public void FixedUpdate()
@@ -96,7 +102,14 @@ public abstract class CarController : MonoBehaviour
         Drive();
         CheckWaypoint();
         Braking();
+
     }
+
+	public void Update()
+	{
+		lineRenderer.SetPosition(0, this.transform.position);
+		lineRenderer.SetPosition(1,nodes[target.Row].position); 
+	}
 
 
     protected void ApplySteer()
@@ -204,9 +217,10 @@ public abstract class CarController : MonoBehaviour
         if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-   
+			Stop (hit.transform.gameObject);
         }
     }
 
-    public abstract void Stop(GameObject hitCar);
+	public abstract void Stop(GameObject hitCar);
+
 }

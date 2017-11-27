@@ -58,9 +58,9 @@ public class ExtCarController : CarController {
 				if (aleaMode) {                    
 					nextPosition = SuccessorAlea (position);
 				} else {
-					if (i < nodesToCross.Count) {
-						nextPosition = nodesToCross [i].name;
-						i++;
+					if (indexNode < nodesToCross.Count) {
+						nextPosition = nodesToCross [indexNode].name;
+						indexNode++;
 					}
 				}                
 			}
@@ -91,31 +91,23 @@ public class ExtCarController : CarController {
 				{
 					if (nodes [exitKnown.Row] == exit)
 					{
-						Position exisPosition;
+						Position exitPosition = new Position(0);
 						for (int i = 0; i < nodes.Count; i++) {
 							if (nodes [i] == exit) {
-								exisPosition = new Position (i);
+								exitPosition = new Position (i);
 							}
 						}
-						target = exisPosition;
+						target = exitPosition;
 					}
 				}
 			}
 		}
 	}
 
-    public override void Stop (GameObject hitCar)
+	public override void Stop (GameObject hitCar)
     {
-		ExtCarController extCarHit;
-		IntCarController intCarHit;
-		if (hitCar.tag == "ExtCar")
-		{
-			extCarHit = hitCar.gameObject.GetComponent<ExtCarController> ();
-		}
-		else if (hitCar.tag == "IntCar")
-		{
-			intCarHit = hitCar.gameObject.GetComponent<IntCarController> ();
-		}
+		ExtCarController extCarHit =hitCar.gameObject.GetComponent<ExtCarController> ();
+		IntCarController intCarHit =hitCar.gameObject.GetComponent<IntCarController> ();
 
 		// Pas de target
 		if (aleaMode)
@@ -156,5 +148,9 @@ public class ExtCarController : CarController {
 			}
 		}
     }
+
+
+
+
 
 }

@@ -8,7 +8,7 @@ public class IntCarController : CarController
 	public bool sincerity;
 	// Tableau des sorties connues (1 connaît, 0 connaît pas)
 	// Index 0 : bleu, 1 : orange, 2 : jaune
-	public List<Position> exitsKnown = List<Position>();
+	public List<Position> exitsKnown = new List<Position>();
 
     public void Start()
     {
@@ -24,7 +24,7 @@ public class IntCarController : CarController
         // On définit la future position de manière aléatoire
         PathCalculation(target);
         // On définit la prochaine cible
-        nextPosition = nodesToCross[i].name;
+        nextPosition = nodesToCross[indexNode].name;
 
 		if (alea.Next (0, 2) == 1) {
 			exitsKnown.Add (new Position (113));
@@ -63,10 +63,10 @@ public class IntCarController : CarController
                 position = nextPosition;
 
                 // S'il est toujours sur le chemin pour atteindre son objectif
-                if (i < nodesToCross.Count)
+                if (indexNode < nodesToCross.Count)
                 {
-                    nextPosition = nodesToCross[i].name;
-                    i++;
+                    nextPosition = nodesToCross[indexNode].name;
+                    indexNode++;
                 }
                 // S'il a atteint son objectif
                 else
@@ -76,9 +76,9 @@ public class IntCarController : CarController
                     // On recalcule
                     PathCalculation(target);
                     // On définit le prochain objectif
-                    i = 0;
-                    nextPosition = nodesToCross[i].name;
-                    i++;
+                    indexNode = 0;
+                    nextPosition = nodesToCross[indexNode].name;
+                    indexNode++;
                 }
             }
 
@@ -94,4 +94,5 @@ public class IntCarController : CarController
 	public override void Stop (GameObject hitCar)
 	{
 	}
+
 }
