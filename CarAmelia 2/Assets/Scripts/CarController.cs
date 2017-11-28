@@ -190,6 +190,7 @@ public abstract class CarController : MonoBehaviour
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
+            isBraking = true;
         }
 
         //front right sensor
@@ -197,12 +198,14 @@ public abstract class CarController : MonoBehaviour
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
+            isBraking = true;
         }
 
         //front right angle sensor
         if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
+            isBraking = true;
         }
 
         //front left sensor
@@ -210,6 +213,7 @@ public abstract class CarController : MonoBehaviour
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
+            isBraking = true;
         }
 
         //front left angle sensor
