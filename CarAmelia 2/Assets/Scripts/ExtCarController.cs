@@ -121,6 +121,15 @@ public class ExtCarController : CarController
         }
     }
 
+    private void FindingPath()
+    {
+        PathCalculation(target);
+        // On définit le prochain objectif
+        indexNode = 1;
+        nextPosition = nodesToCross[indexNode].name;
+        indexNode++;
+    }
+
     private void ReceivingInformation(CarController car)
     {
         if (car is ExtCarController)
@@ -132,6 +141,7 @@ public class ExtCarController : CarController
                 // Je reçois de l'info que si la voiture extérieure que je crois
                 // a assez généreuse et n'est pas en mode aléatoire
                 this.target = car.target;
+                FindingPath();
                 aleaMode = false;
             }
         }
@@ -153,6 +163,28 @@ public class ExtCarController : CarController
                             }
                         }
                         target = exitPosition;
+                        FindingPath();
+                        aleaMode = false;
+                    }
+                }
+            }
+
+            else
+            {
+                foreach (Position exitKnown in intCar.exitsKnown)
+                {
+                    if (nodes[exitKnown.Row] == exit)
+                    {
+                        Position exitPosition = new Position(0);
+                        for (int i = 0; i < nodes.Count; i++)
+                        {
+                            if (nodes[i] != exit)
+                            {
+                                exitPosition = new Position(i);
+                            }
+                        }
+                        target = exitPosition;
+                        FindingPath();
                         aleaMode = false;
                     }
                 }

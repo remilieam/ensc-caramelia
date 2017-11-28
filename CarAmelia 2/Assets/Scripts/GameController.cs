@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class GameController : MonoBehaviour
     private List<Transform> nodes;
     private System.Random alea;
     private Transform[] pathTransforms;
+
+    public Canvas canvas;
+    private Text text;
 
     void Start()
     {
@@ -34,6 +38,8 @@ public class GameController : MonoBehaviour
         alea = new System.Random();
 
         StartCoroutine(AddCars());
+        text = canvas.GetComponentsInChildren<Text>()[0];
+        text.text = nodes.Count.ToString();
     }
 
     IEnumerator AddExtCar(GameObject car, int nbCars)
@@ -63,7 +69,7 @@ public class GameController : MonoBehaviour
         Transform node;
         for (int i = 0; i < nbCars; i++)
         {
-            node = nodes[alea.Next(pathTransforms.Length)];
+            node = nodes[alea.Next(nodes.Count)];
             Vector3 spawnPosition = new Vector3(node.transform.position.x, 0, node.transform.position.z);
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, node.transform.eulerAngles.y, 0);

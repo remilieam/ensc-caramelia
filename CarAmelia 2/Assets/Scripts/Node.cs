@@ -156,6 +156,6 @@ public class Node
     /// <returns>Nœud</returns>
     public override string ToString()
     {
-        return "Ligne : " + (this.name.Row + 1);
+        return "Ligne : " + this.name.Row;
     }
 }

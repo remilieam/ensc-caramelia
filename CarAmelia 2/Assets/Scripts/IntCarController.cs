@@ -11,7 +11,7 @@ public class IntCarController : CarController
 	// Index 0 : bleu, 1 : orange, 2 : jaune
 	public List<Position> exitsKnown = new List<Position>();
 
-    LineRenderer lineRenderer;
+    //LineRenderer lineRenderer;
     public Canvas caneva;
     Text textCanvas;
 
@@ -27,39 +27,36 @@ public class IntCarController : CarController
         position = new Position(findNode(positionX, positionZ));
         // Position aléatoire de sa destination
         Position targetTemp = new Position(alea.Next(nodesTable.GetLength(1)));
-        while(targetTemp == position)
+        while (targetTemp.SamePosition(position))
         {
             targetTemp = new Position(alea.Next(nodesTable.GetLength(1)));
         }
         target = targetTemp;
-        
-
-        
 
         // On définit la future position de manière aléatoire
         PathCalculation(target);
 
 
-        textCanvas.text = target.ToString() + "      " + nodesToCross.Count.ToString();
+        //textCanvas.text = target.ToString() + "      " + nodesToCross.Count.ToString();
 
         // On définit la prochaine cible
         nextPosition = nodesToCross[indexNode].name;
 
-        lineRenderer = this.gameObject.AddComponent<LineRenderer>();
+        //lineRenderer = this.gameObject.AddComponent<LineRenderer>();
 
 
-        if (alea.Next (0, 2) == 1) {
-			exitsKnown.Add (new Position (113));
-		}
-		if (alea.Next (0, 2) == 1) {
-			exitsKnown.Add (new Position (115));
-		}
-		if (alea.Next (0, 2) == 1) {
-			exitsKnown.Add (new Position (117));
-		}
-
-        
-
+        if (alea.Next(0, 2) == 1)
+        {
+            exitsKnown.Add(new Position(113));
+        }
+        if (alea.Next(0, 2) == 1)
+        {
+            exitsKnown.Add(new Position(115));
+        }
+        if (alea.Next(0, 2) == 1)
+        {
+            exitsKnown.Add(new Position(117));
+        }
 
     }
 
@@ -68,12 +65,12 @@ public class IntCarController : CarController
         caneva.enabled = false;
     }
 
-    public void Update()
-    {
-        lineRenderer.SetPosition(0, this.transform.position);
-        lineRenderer.SetPosition(1, nodes[target.Row].position);
+    //public void Update()
+    //{
+    //    lineRenderer.SetPosition(0, this.transform.position);
+    //    lineRenderer.SetPosition(1, nodes[target.Row].position);
 
-    }
+    //}
 
     private int findNode(float x, float z)
     {
@@ -114,7 +111,7 @@ public class IntCarController : CarController
                     // On recalcule
                     PathCalculation(target);
                     // On définit le prochain objectif
-                    indexNode = 0;
+                    indexNode = 1;
                     nextPosition = nodesToCross[indexNode].name;
                     indexNode++;
                 }
