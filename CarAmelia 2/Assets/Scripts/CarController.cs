@@ -12,20 +12,20 @@ public abstract class CarController : MonoBehaviour
     protected int[,] nodesTable;
 
     // Tous les attributs pour faire rouler la voiture
-    public WheelCollider wheelFL;
-    public WheelCollider wheelFR;
-    public WheelCollider wheelRL;
-    public WheelCollider wheelRR;
-    public float maxMotorTorque = 80f;
-    public float maxBrakeTorque = 150f;
-    public float maxSteerAngle = 45f;
+    private WheelCollider wheelFL;
+    private WheelCollider wheelFR;
+    private WheelCollider wheelRL;
+    private WheelCollider wheelRR;
+    public float maxMotorTorque = 2000f;//80f;
+    public float maxBrakeTorque = 20000f;//150f;
+    public float maxSteerAngle = 25f;//45f;
     public float currentSpeed;
-    public float maxSpeed = 100f;
+    public float maxSpeed = 140f;//100f;
     public Vector3 centerOfMass;
     public bool isBraking = false;
     public Texture2D textureNormal;
     public Texture2D textureBraking;
-    public Renderer carRenderer;
+    private Renderer carRenderer;
     // Valeurs pour tester les distances
     public float distance_frein = 10;
     public float distance_chgt = 0.5f;
@@ -55,6 +55,15 @@ public abstract class CarController : MonoBehaviour
     protected void StartCar()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
+
+
+        WheelCollider[] wheelColliders = GetComponentsInChildren<WheelCollider>();
+        wheelRL = wheelColliders[0];
+        wheelRR = wheelColliders[1];
+        wheelFL = wheelColliders[2];
+        wheelFR = wheelColliders[3];
+
+        carRenderer = GetComponentsInChildren<Renderer>()[0];
 
         // On recrée notre liste de noeuds
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();

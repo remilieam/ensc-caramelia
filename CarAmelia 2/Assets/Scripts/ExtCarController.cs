@@ -14,7 +14,7 @@ public class ExtCarController : CarController
     // d'informations avec une voiture de même couleur et 5 très généreux)
     public int trust;
     public int generosity;
-    public Canvas canvas;
+    private Canvas canvas;
 
     LineRenderer lineRenderer;
 
@@ -29,6 +29,7 @@ public class ExtCarController : CarController
     {
         StartCar();
 
+        canvas = GetComponentsInChildren<Canvas>()[0];
         // Voiture démarre à l'entrée de la map et de manière aléatoire
         position = new Position(111);
         aleaMode = true;

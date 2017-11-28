@@ -701,20 +701,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 4767236524481270, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
-  wheelFL: {fileID: 146337531914887588}
-  wheelFR: {fileID: 146796592839345294}
-  wheelRL: {fileID: 146278212688622024}
-  wheelRR: {fileID: 146209690527739742}
-  maxMotorTorque: 80
-  maxBrakeTorque: 20
-  maxSteerAngle: 45
+  maxMotorTorque: 2000
+  maxBrakeTorque: 20000
+  maxSteerAngle: 25
   currentSpeed: 0
-  maxSpeed: 50
-  centerOfMass: {x: 0, y: -0.2, z: 0}
+  maxSpeed: 140
+  centerOfMass: {x: 0, y: 0, z: 0}
   isBraking: 0
   textureNormal: {fileID: 2800000, guid: 431c08ead26123444aa91c06a1e80bbd, type: 3}
   textureBraking: {fileID: 2800000, guid: 1f1562ee792ac2143ac961596baa49ca, type: 3}
-  carRenderer: {fileID: 23850877069488072}
   distance_frein: 10
   distance_chgt: 0.5
   test_vit: 10
@@ -724,7 +719,6 @@ MonoBehaviour:
   frontSensorAngle: 30
   trust: 0
   generosity: 0
-  canvas: {fileID: 223097903521160338}
   exit: {fileID: 4995526933103076, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
 --- !u!114 &114254399012353036
 MonoBehaviour:

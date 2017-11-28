@@ -12,13 +12,13 @@ public class IntCarController : CarController
 	public List<Position> exitsKnown = new List<Position>();
 
     //LineRenderer lineRenderer;
-    public Canvas caneva;
+    private Canvas caneva;
     Text textCanvas;
 
     public void Start()
     {
         StartCar();
-
+        caneva = GetComponentsInChildren<Canvas>()[0];
         textCanvas = caneva.GetComponentsInChildren<Text>()[0];
         float positionX = this.transform.position.x;
         float positionZ = this.transform.position.z;
