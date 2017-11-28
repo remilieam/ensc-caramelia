@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class IntCarController : CarController
 {
-	public bool sincerity;
-	// Tableau des sorties connues (1 connaît, 0 connaît pas)
-	// Index 0 : bleu, 1 : orange, 2 : jaune
-	public List<Position> exitsKnown = new List<Position>();
+    // Tableau des sorties connues (1 connaît, 0 connaît pas)
+    // Index 0 : bleu, 1 : orange, 2 : jaune
+    public List<Position> exitsKnown = new List<Position>();
 
-    //LineRenderer lineRenderer;
+    public bool sincerity;
+    
     private Canvas caneva;
-    Text textCanvas;
+    private Text textCanvas;
 
     public void Start()
     {
@@ -36,15 +36,11 @@ public class IntCarController : CarController
         // On définit la future position de manière aléatoire
         PathCalculation(target);
 
-
         //textCanvas.text = target.ToString() + "      " + nodesToCross.Count.ToString();
 
         // On définit la prochaine cible
         nextPosition = nodesToCross[indexNode].name;
-
-        //lineRenderer = this.gameObject.AddComponent<LineRenderer>();
-
-
+        
         if (alea.Next(0, 2) == 1)
         {
             exitsKnown.Add(new Position(113));
@@ -64,14 +60,7 @@ public class IntCarController : CarController
     {
         caneva.enabled = false;
     }
-
-    //public void Update()
-    //{
-    //    lineRenderer.SetPosition(0, this.transform.position);
-    //    lineRenderer.SetPosition(1, nodes[target.Row].position);
-
-    //}
-
+    
     private int findNode(float x, float z)
     {
         for (int i = 0; i < nodes.Count; i++)

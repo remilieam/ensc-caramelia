@@ -143,11 +143,11 @@ MonoBehaviour:
   IntCarGreen: {fileID: 1684624302900554, guid: a105896e2f8021244b53f63f4a21dbb5,
     type: 2}
   IntCarRed: {fileID: 1177853575126362, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-  nbBlue: 0
-  nbOrange: 0
-  nbYellow: 0
-  nbGreen: 20
-  nbRed: 0
+  nbBlue: 2
+  nbOrange: 2
+  nbYellow: 2
+  nbGreen: 10
+  nbRed: 10
   path: {fileID: 4767236524481270, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
   wait: 3
   canvas: {fileID: 684913165}

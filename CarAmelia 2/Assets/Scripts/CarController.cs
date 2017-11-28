@@ -11,26 +11,6 @@ public abstract class CarController : MonoBehaviour
     protected List<Transform> nodes;
     protected int[,] nodesTable;
 
-    // Tous les attributs pour faire rouler la voiture
-    private WheelCollider wheelFL;
-    private WheelCollider wheelFR;
-    private WheelCollider wheelRL;
-    private WheelCollider wheelRR;
-    public float maxMotorTorque = 2000f;//80f;
-    public float maxBrakeTorque = 20000f;//150f;
-    public float maxSteerAngle = 25f;//45f;
-    public float currentSpeed;
-    public float maxSpeed = 140f;//100f;
-    public Vector3 centerOfMass;
-    public bool isBraking = false;
-    public Texture2D textureNormal;
-    public Texture2D textureBraking;
-    private Renderer carRenderer;
-    // Valeurs pour tester les distances
-    public float distance_frein = 10;
-    public float distance_chgt = 0.5f;
-    public float test_vit = 10;
-
     // Chiffre aléatoire
     protected System.Random alea;
 
@@ -46,11 +26,34 @@ public abstract class CarController : MonoBehaviour
     protected Graph graph;
     protected int indexNode = 1;
 
-    [Header("Sensors")]
-    public float sensorLength = 10f;
-    public Vector3 frontSensorPosition = new Vector3(0f, 0.2f, 0f);
-    public float frontSideSensorPosition = 0.4f;
-    public float frontSensorAngle = 30f;
+    // Tous les attributs pour faire rouler la voiture
+    protected Renderer carRenderer;
+    protected WheelCollider wheelFL;
+    protected WheelCollider wheelFR;
+    protected WheelCollider wheelRL;
+    protected WheelCollider wheelRR;
+    protected float maxMotorTorque = 80f;
+    protected float maxBrakeTorque = 200f;
+    protected float maxSteerAngle = 40f;
+    protected float maxSpeed = 280f;
+    protected Vector3 centerOfMass;
+    protected float currentSpeed;
+    public bool isBraking = false;
+
+    // Valeurs pour tester les distances
+    protected float distance_frein = 10;
+    protected float distance_chgt = 0.5f;
+    protected float test_vit = 10;
+
+    // Capteurs [Header("Sensors")]
+    protected float sensorLength = 10f;
+    protected Vector3 frontSensorPosition = new Vector3(0f, 0.2f, 0f);
+    protected float frontSideSensorPosition = 0.4f;
+    protected float frontSensorAngle = 30f;
+
+    // Textures de la voiture"
+    public Texture2D textureNormal;
+    public Texture2D textureBraking;
 
     protected void StartCar()
     {

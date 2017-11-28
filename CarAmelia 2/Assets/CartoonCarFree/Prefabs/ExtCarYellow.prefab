@@ -750,11 +750,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 4767236524481270, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
-  maxMotorTorque: 2000
-  maxBrakeTorque: 20000
-  maxSteerAngle: 25
+  maxMotorTorque: 80
+  maxBrakeTorque: 200
+  maxSteerAngle: 40
   currentSpeed: 0
-  maxSpeed: 140
+  maxSpeed: 280
   centerOfMass: {x: 0, y: 0, z: 0}
   isBraking: 0
   textureNormal: {fileID: 2800000, guid: c1ad44ac557e7044da3327245074c927, type: 3}

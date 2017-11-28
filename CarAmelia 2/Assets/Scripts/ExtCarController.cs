@@ -6,20 +6,20 @@ using UnityEngine.UI;
 
 public class ExtCarController : CarController
 {
-
     // Correspond aux noeuds qu'a parcourus la voiture
     private List<Position> crossedNodes;
+
     // Correspond à son degré de confiance (1 pas confiant dans les infos qu'il reçoit
     // et 5 confiance aveugle) et de générosité (1 pas généreux dans le partage
     // d'informations avec une voiture de même couleur et 5 très généreux)
-    public int trust;
-    public int generosity;
-    private Canvas canvas;
+    private int trust;
+    private int generosity;
 
-    LineRenderer lineRenderer;
+    private Canvas canvas;
+    private LineRenderer lineRenderer;
 
     // Permet de définir si la voiture a un noeud objectif ou si elle roule aléatoirement dans la carte
-    bool aleaMode;
+    private bool aleaMode;
 
     public Transform exit;
 
