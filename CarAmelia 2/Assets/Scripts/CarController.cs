@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using UnityEngine.UI;
 
 public abstract class CarController : MonoBehaviour
 {
@@ -55,10 +56,26 @@ public abstract class CarController : MonoBehaviour
     public Texture2D textureNormal;
     public Texture2D textureBraking;
 
+    protected Canvas canvas;
+    public Camera cameraView;
+    protected Camera cameraBackCar;
+    protected Button buttonCanvas;
+    protected Text textCanvas;
+
     protected void StartCar()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
+        
+        cameraBackCar = GetComponentsInChildren<Camera>()[0];
+        cameraBackCar.enabled = false;
+        canvas = GetComponentsInChildren<Canvas>()[0];
 
+        // On n'affiche pas le canvas
+        canvas.enabled = false;
+        // Récupération du texte et du bouton du canvas
+        textCanvas = canvas.GetComponentsInChildren<Text>()[0];
+        buttonCanvas = canvas.GetComponentsInChildren<Button>()[0];
+        buttonCanvas.onClick.AddListener(TaskOnClick);
 
         WheelCollider[] wheelColliders = GetComponentsInChildren<WheelCollider>();
         wheelRL = wheelColliders[0];
@@ -99,6 +116,37 @@ public abstract class CarController : MonoBehaviour
         alea = new System.Random();
         nodesToCross = new List<Node>();
         graph = new Graph();
+    }
+
+    protected void TaskOnClick()
+    {
+        // Si on clique sur le bouton du canvas celui-ci devient invisible
+        canvas.enabled = false;
+    }
+    protected void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!cameraBackCar.enabled && cameraView)
+            {
+                cameraView.enabled = false;
+                cameraBackCar.enabled = true;
+            }
+            else if (!cameraBackCar.enabled && !cameraView)
+            {
+
+            }
+            else
+            {
+                cameraView.enabled = true;
+                cameraBackCar.enabled = false;
+            }
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            // Si on clique sur la voiture le canvas devient visible
+            canvas.enabled = true;
+        }
     }
 
     public void FixedUpdate()

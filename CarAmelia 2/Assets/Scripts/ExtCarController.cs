@@ -15,7 +15,6 @@ public class ExtCarController : CarController
     private int trust;
     private int generosity;
 
-    private Canvas canvas;
     private LineRenderer lineRenderer;
 
     // Permet de définir si la voiture a un noeud objectif ou si elle roule aléatoirement dans la carte
@@ -32,7 +31,6 @@ public class ExtCarController : CarController
 
     private Canvas canvasCross;
     private Canvas canvasCheck;
-    public Camera cameraView;
     private Image cross;
     private Image check;
 
@@ -40,8 +38,6 @@ public class ExtCarController : CarController
     public void Start()
     {
         StartCar();
-        
-        canvas = GetComponentsInChildren<Canvas>()[0];
         canvasCross = GetComponentsInChildren<Canvas>()[1];
         canvasCheck = GetComponentsInChildren<Canvas>()[2];
         cross = canvasCross.GetComponentsInChildren<Image>()[0];
@@ -64,18 +60,10 @@ public class ExtCarController : CarController
         trust = alea.Next(1, 6);
         generosity = alea.Next(1, 6);
 
-        // On n'affiche pas le canvas
-        canvas.enabled = false;
-        // Récupération du texte et du bouton du canvas
-        Text textCanvas = canvas.GetComponentsInChildren<Text>()[0];
-        Button buttonCanvas = canvas.GetComponentsInChildren<Button>()[0];
         // Définition du texte et de l'action quand on clique sur le bouton
         textCanvas.text = "Générosité : " + generosity.ToString() + "\nConfiance : " + trust.ToString();
-        buttonCanvas.onClick.AddListener(TaskOnClick);
 
         lineRenderer = this.gameObject.GetComponent<LineRenderer>();
-
-
     }
 
     public void Update()
@@ -97,17 +85,6 @@ public class ExtCarController : CarController
             DrawLine();
             lineRenderer.enabled = true;
         }
-    }
-
-    void TaskOnClick()
-    {
-        // Si on clique sur le bouton du canvas celui-ci devient invisible
-        canvas.enabled = false;
-    }
-    void OnMouseDown()
-    {
-        // Si on clique sur la voiture le canvas devient visible
-        canvas.enabled = true;
     }
 
     // Permet d'actualiser le noeud

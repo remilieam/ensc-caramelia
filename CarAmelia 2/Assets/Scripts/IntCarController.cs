@@ -12,14 +12,10 @@ public class IntCarController : CarController
 
     public bool sincerity;
     
-    private Canvas canvas;
-    private Text textCanvas;
-
     public void Start()
     {
         StartCar();
-        canvas = GetComponentsInChildren<Canvas>()[0];
-        textCanvas = canvas.GetComponentsInChildren<Text>()[0];
+
         float positionX = this.transform.position.x;
         float positionZ = this.transform.position.z;
 
@@ -51,11 +47,7 @@ public class IntCarController : CarController
         {
             exitsKnown.Add(new Position(117));
         }
-
-        // On n'affiche pas le canvas
-        canvas.enabled = false;
-        // Récupération du texte et du bouton du canvas
-        Button buttonCanvas = canvas.GetComponentsInChildren<Button>()[0];
+        
         // Définition du texte et de l'action quand on clique sur le bouton
         string message = "";
         for (int j = 0; j < exitsKnown.Count; j++)
@@ -74,8 +66,6 @@ public class IntCarController : CarController
             }
         }
         textCanvas.text = "Les sorties connues : " + message + "\nTarget : " + target.ToString() + ", Noeuds : " + nodesToCross.Count.ToString();
-        buttonCanvas.onClick.AddListener(TaskOnClick);
-
     }
 
     public void Update()
@@ -137,18 +127,7 @@ public class IntCarController : CarController
         }
 
 	}
-
-    void TaskOnClick()
-    {
-        // Si on clique sur le bouton du canvas celui-ci devient invisible
-        canvas.enabled = false;
-    }
-    void OnMouseDown()
-    {
-        // Si on clique sur la voiture le canvas devient visible
-        canvas.enabled = true;
-    }
-
+    
     public override void Stop (GameObject hitCar)
 	{
 	}
