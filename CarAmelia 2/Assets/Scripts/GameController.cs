@@ -8,10 +8,10 @@ public class GameController : MonoBehaviour
 {
     public GameObject ExtCarBlue;
     public GameObject ExtCarOrange;
-    public GameObject ExtCarYellow;
+    public GameObject ExtCarWhite;
     public GameObject IntCarGreen;
     public GameObject IntCarRed;
-    public int nbBlue, nbOrange, nbYellow, nbGreen, nbRed;
+    public int nbBlue, nbOrange, nbWhite, nbGreen, nbRed;
     public Transform path;
     public float wait = 0;
 
@@ -57,11 +57,11 @@ public class GameController : MonoBehaviour
     IEnumerator AddExtCars()
     {
         StartCoroutine(AddExtCar(ExtCarBlue, nbBlue));
-        yield return new WaitForSeconds(2 * wait);
+        yield return new WaitForSeconds(nbBlue * wait);
         StartCoroutine(AddExtCar(ExtCarOrange, nbOrange));
-        yield return new WaitForSeconds(2 * wait);
-        StartCoroutine(AddExtCar(ExtCarYellow, nbYellow));
-        yield return new WaitForSeconds(2 * wait);
+        yield return new WaitForSeconds(nbOrange * wait);
+        StartCoroutine(AddExtCar(ExtCarWhite, nbWhite));
+        yield return new WaitForSeconds(nbWhite * wait);
     }
 
     IEnumerator AddIntCar(GameObject car, int nbCars)
@@ -81,9 +81,9 @@ public class GameController : MonoBehaviour
     IEnumerator AddCars()
     {
         StartCoroutine(AddIntCar(IntCarGreen, nbGreen));
-        yield return new WaitForSeconds(2 * wait);
+        yield return new WaitForSeconds(nbGreen * wait);
         StartCoroutine(AddIntCar(IntCarRed, nbRed));
-        yield return new WaitForSeconds(2 * wait);
+        yield return new WaitForSeconds(nbRed * wait);
         StartCoroutine(AddExtCars());
     }
 }

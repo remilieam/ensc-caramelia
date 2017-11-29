@@ -30,11 +30,25 @@ public class ExtCarController : CarController
     public Material arrowMat;
     public Material lineMat;
 
+    private Canvas canvasCross;
+    private Canvas canvasCheck;
+    public Camera cameraView;
+    private Image cross;
+    private Image check;
+
+
     public void Start()
     {
         StartCar();
-
+        
         canvas = GetComponentsInChildren<Canvas>()[0];
+        canvasCross = GetComponentsInChildren<Canvas>()[1];
+        canvasCheck = GetComponentsInChildren<Canvas>()[2];
+        cross = canvasCross.GetComponentsInChildren<Image>()[0];
+        check = canvasCheck.GetComponentsInChildren<Image>()[0];
+        canvasCross.enabled = false;
+        canvasCheck.enabled = false;
+
         // Voiture démarre à l'entrée de la map et de manière aléatoire
         position = new Position(111);
         aleaMode = true;
@@ -69,11 +83,19 @@ public class ExtCarController : CarController
         endExchange = true;
         Sensors();
 
+        if (endExchange)
+        {
+            lineRenderer.enabled = false;
+            canvasCross.enabled = false;
+            canvasCheck.enabled = false;
+        }
+
         if (!aleaMode && endExchange)
         {
-            DrawLine();
             lineRenderer.SetPosition(0, this.transform.position);
             lineRenderer.SetPosition(1, nodes[target.Row].position);
+            DrawLine();
+            lineRenderer.enabled = true;
         }
     }
 
@@ -144,8 +166,20 @@ public class ExtCarController : CarController
 
     private void ReceivingInformation(CarController car)
     {
+        lineRenderer.SetPosition(0, car.transform.position);
+        lineRenderer.SetPosition(1, this.transform.position);
         DrawArrow();
+        lineRenderer.enabled = true;
+        
+        Vector3 imageScene = new Vector3((this.transform.position.x + car.transform.position.x) / 2.0f, (this.transform.position.y + car.transform.position.y) / 2.0f, (this.transform.position.z + car.transform.position.z) / 2.0f);
+        Vector3 imageGame = cameraView.WorldToViewportPoint(imageScene);
 
+        cross.rectTransform.anchorMax = imageGame;
+        cross.rectTransform.anchorMin = imageGame;
+        
+        check.rectTransform.anchorMax = imageGame;
+        check.rectTransform.anchorMin = imageGame;
+        
         if (car is ExtCarController)
         {
             ExtCarController extCar = (ExtCarController)car;
@@ -155,10 +189,15 @@ public class ExtCarController : CarController
                 // Je reçois de l'info que si la voiture extérieure que je crois
                 // a assez généreuse et n'est pas en mode aléatoire
                 this.target = car.target;
-                lineRenderer.SetPosition(0, extCar.transform.position);
-                lineRenderer.SetPosition(1, this.transform.position);
+                
+                canvasCheck.enabled = true;
+
                 FindingPath();
                 aleaMode = false;
+            }
+            else
+            {
+                canvasCross.enabled = true;
             }
         }
         if (car is IntCarController)
@@ -166,52 +205,70 @@ public class ExtCarController : CarController
             IntCarController intCar = (IntCarController)car;
             if (intCar.sincerity)
             {
+                bool extCarKnowsExit = false;
+
                 foreach (Position exitKnown in intCar.exitsKnown)
                 {
                     if (nodes[exitKnown.Row] == exit)
                     {
-                        Position exitPosition = new Position(0);
-                        for (int i = 0; i < nodes.Count; i++)
-                        {
-                            if (nodes[i] == exit)
-                            {
-                                exitPosition = new Position(i);
-                                lineRenderer.SetPosition(0, intCar.transform.position);
-                                lineRenderer.SetPosition(1, this.transform.position);
-                            }
-                        }
-                        target = exitPosition;
+                        target = new Position(exitKnown.Row); ;
+                        extCarKnowsExit = true;
+                        canvasCheck.enabled = true;
                         FindingPath();
                         aleaMode = false;
                     }
+                }
+                if(!extCarKnowsExit)
+                {
+                    canvasCross.enabled = true;
                 }
             }
 
             else
             {
-                foreach (Position exitKnown in intCar.exitsKnown)
+
+                bool extCarGivesExit = false;
+
+                if(intCar.exitsKnown.Count != 0)
                 {
-                    if (nodes[exitKnown.Row] == exit)
+                    if (intCar.exitsKnown.Count == 1)
                     {
-                        Position exitPosition = new Position(0);
-                        for (int i = 0; i < nodes.Count; i++)
+                        if(nodes[intCar.exitsKnown[0].Row] != exit)
                         {
-                            if (nodes[i] != exit)
-                            {
-                                exitPosition = new Position(i);
-                                lineRenderer.SetPosition(0, intCar.transform.position);
-                                lineRenderer.SetPosition(1, this.transform.position);
-                            }
+                            target = new Position(intCar.exitsKnown[0].Row);
+
+                            extCarGivesExit = true;
+                            canvasCheck.enabled = true;
+                            FindingPath();
+                            aleaMode = false;
                         }
-                        target = exitPosition;
+
+                    }
+                    else
+                    {
+                        int exitGiven = alea.Next(intCar.exitsKnown.Count);
+
+                        while (nodes[intCar.exitsKnown[exitGiven].Row] == exit)
+                        {
+                            exitGiven = alea.Next(intCar.exitsKnown.Count);
+                        }
+                        target = new Position(intCar.exitsKnown[exitGiven].Row);
+
+                        extCarGivesExit = true;
+                        canvasCheck.enabled = true;
                         FindingPath();
                         aleaMode = false;
                     }
                 }
+                
+                if(!extCarGivesExit)
+                {
+                    canvasCross.enabled = true;
+                }
             }
         }
-
     }
+
 
     public override void Stop(GameObject hitCar)
     {
@@ -280,8 +337,8 @@ public class ExtCarController : CarController
     public void DrawLine()
     {
         AnimationCurve curve = new AnimationCurve();
-        curve.AddKey(0f, 0f);
-        curve.AddKey(0f, 0f);
+        curve.AddKey(1f, 1f);
+        curve.AddKey(1f, 1f);
         
         lineRenderer.material = lineMat;
         lineRenderer.numCapVertices = 0;

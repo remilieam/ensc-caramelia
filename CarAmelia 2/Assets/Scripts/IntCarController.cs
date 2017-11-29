@@ -12,14 +12,14 @@ public class IntCarController : CarController
 
     public bool sincerity;
     
-    private Canvas caneva;
+    private Canvas canvas;
     private Text textCanvas;
 
     public void Start()
     {
         StartCar();
-        caneva = GetComponentsInChildren<Canvas>()[0];
-        textCanvas = caneva.GetComponentsInChildren<Text>()[0];
+        canvas = GetComponentsInChildren<Canvas>()[0];
+        textCanvas = canvas.GetComponentsInChildren<Text>()[0];
         float positionX = this.transform.position.x;
         float positionZ = this.transform.position.z;
 
@@ -35,8 +35,6 @@ public class IntCarController : CarController
 
         // On définit la future position de manière aléatoire
         PathCalculation(target);
-
-        //textCanvas.text = target.ToString() + "      " + nodesToCross.Count.ToString();
 
         // On définit la prochaine cible
         nextPosition = nodesToCross[indexNode].name;
@@ -54,17 +52,37 @@ public class IntCarController : CarController
             exitsKnown.Add(new Position(117));
         }
 
+        // On n'affiche pas le canvas
+        canvas.enabled = false;
+        // Récupération du texte et du bouton du canvas
+        Button buttonCanvas = canvas.GetComponentsInChildren<Button>()[0];
+        // Définition du texte et de l'action quand on clique sur le bouton
+        string message = "";
+        for (int j = 0; j < exitsKnown.Count; j++)
+        {
+            if(exitsKnown[j].Row == 113)
+            {
+                message += "\n- Sortie Bleue";
+            }
+            if (exitsKnown[j].Row == 115)
+            {
+                message += "\n- Sortie Orange";
+            }
+            if (exitsKnown[j].Row == 117)
+            {
+                message += "\n- Sortie Blanche";
+            }
+        }
+        textCanvas.text = "Les sorties connues : " + message + "\nTarget : " + target.ToString() + ", Noeuds : " + nodesToCross.Count.ToString();
+        buttonCanvas.onClick.AddListener(TaskOnClick);
+
     }
 
     public void Update()
     {
         Sensors();
     }
-
-    public void OnMouseDown()
-    {
-        caneva.enabled = false;
-    }
+    
     
     private int findNode(float x, float z)
     {
@@ -120,7 +138,18 @@ public class IntCarController : CarController
 
 	}
 
-	public override void Stop (GameObject hitCar)
+    void TaskOnClick()
+    {
+        // Si on clique sur le bouton du canvas celui-ci devient invisible
+        canvas.enabled = false;
+    }
+    void OnMouseDown()
+    {
+        // Si on clique sur la voiture le canvas devient visible
+        canvas.enabled = true;
+    }
+
+    public override void Stop (GameObject hitCar)
 	{
 	}
 
