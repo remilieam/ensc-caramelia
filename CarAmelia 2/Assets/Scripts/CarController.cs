@@ -103,7 +103,7 @@ public abstract class CarController : MonoBehaviour
 
     public void FixedUpdate()
     {
-        Sensors();
+        //Sensors();
         ApplySteer();
         Drive();
         CheckWaypoint();
@@ -181,7 +181,7 @@ public abstract class CarController : MonoBehaviour
         nodesToCross = graph.FindPath(node);
     }
 
-    private void Sensors()
+    protected void Sensors()
     {
         RaycastHit hit;
         Vector3 sensorStartPos = transform.position + frontSensorPosition;
@@ -190,7 +190,7 @@ public abstract class CarController : MonoBehaviour
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            isBraking = true;
+            //isBraking = true;
         }
 
         //front right sensor
@@ -198,14 +198,14 @@ public abstract class CarController : MonoBehaviour
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            isBraking = true;
+            //isBraking = true;
         }
 
         //front right angle sensor
         if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            isBraking = true;
+            //isBraking = true;
         }
 
         //front left sensor
@@ -213,7 +213,7 @@ public abstract class CarController : MonoBehaviour
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            isBraking = true;
+            //isBraking = true;
         }
 
         //front left angle sensor
@@ -225,5 +225,7 @@ public abstract class CarController : MonoBehaviour
     }
 
 	public abstract void Stop(GameObject hitCar);
+
+
 
 }

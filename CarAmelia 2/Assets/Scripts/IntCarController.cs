@@ -56,6 +56,11 @@ public class IntCarController : CarController
 
     }
 
+    public void Update()
+    {
+        Sensors();
+    }
+
     public void OnMouseDown()
     {
         caneva.enabled = false;

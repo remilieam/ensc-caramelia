@@ -311,7 +311,7 @@ Transform:
   m_GameObject: {fileID: 1684624302900554}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -34.1, y: 0, z: -47.9}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4909921723318444}
   - {fileID: 4267202300455724}
@@ -649,22 +649,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 4767236524481270, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
-  maxMotorTorque: 80
-  maxBrakeTorque: 200
-  maxSteerAngle: 40
-  currentSpeed: 0
-  maxSpeed: 280
-  centerOfMass: {x: 0, y: 0, z: 0}
   isBraking: 0
   textureNormal: {fileID: 2800000, guid: b279edfd010aa58429554d06a1e5f767, type: 3}
   textureBraking: {fileID: 2800000, guid: e1f5395793031494e8540be6b79211d5, type: 3}
-  distance_frein: 10
-  distance_chgt: 0.5
-  test_vit: 10
-  sensorLength: 10
-  frontSensorPosition: {x: 0, y: 0.2, z: 0}
-  frontSideSensorPosition: 0.4
-  frontSensorAngle: 30
   sincerity: 1
 --- !u!114 &114069841480993546
 MonoBehaviour:

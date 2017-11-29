@@ -25,6 +25,11 @@ public class ExtCarController : CarController
 
     // nodesToCross; : limité à 6 noeuds car la voiture a une petite mémoire
 
+    private bool endExchange = true;
+
+    public Material arrowMat;
+    public Material lineMat;
+
     public void Start()
     {
         StartCar();
@@ -54,13 +59,19 @@ public class ExtCarController : CarController
         textCanvas.text = "Générosité : " + generosity.ToString() + "\nConfiance : " + trust.ToString();
         buttonCanvas.onClick.AddListener(TaskOnClick);
 
-        lineRenderer = this.gameObject.AddComponent<LineRenderer>();
+        lineRenderer = this.gameObject.GetComponent<LineRenderer>();
+
+
     }
 
     public void Update()
     {
-        if (!aleaMode)
+        endExchange = true;
+        Sensors();
+
+        if (!aleaMode && endExchange)
         {
+            DrawLine();
             lineRenderer.SetPosition(0, this.transform.position);
             lineRenderer.SetPosition(1, nodes[target.Row].position);
         }
@@ -133,6 +144,8 @@ public class ExtCarController : CarController
 
     private void ReceivingInformation(CarController car)
     {
+        DrawArrow();
+
         if (car is ExtCarController)
         {
             ExtCarController extCar = (ExtCarController)car;
@@ -142,6 +155,8 @@ public class ExtCarController : CarController
                 // Je reçois de l'info que si la voiture extérieure que je crois
                 // a assez généreuse et n'est pas en mode aléatoire
                 this.target = car.target;
+                lineRenderer.SetPosition(0, extCar.transform.position);
+                lineRenderer.SetPosition(1, this.transform.position);
                 FindingPath();
                 aleaMode = false;
             }
@@ -161,6 +176,8 @@ public class ExtCarController : CarController
                             if (nodes[i] == exit)
                             {
                                 exitPosition = new Position(i);
+                                lineRenderer.SetPosition(0, intCar.transform.position);
+                                lineRenderer.SetPosition(1, this.transform.position);
                             }
                         }
                         target = exitPosition;
@@ -182,6 +199,8 @@ public class ExtCarController : CarController
                             if (nodes[i] != exit)
                             {
                                 exitPosition = new Position(i);
+                                lineRenderer.SetPosition(0, intCar.transform.position);
+                                lineRenderer.SetPosition(1, this.transform.position);
                             }
                         }
                         target = exitPosition;
@@ -191,6 +210,7 @@ public class ExtCarController : CarController
                 }
             }
         }
+
     }
 
     public override void Stop(GameObject hitCar)
@@ -240,5 +260,33 @@ public class ExtCarController : CarController
                 // Pas de réception d'infos ==> confiance
             }
         }
+
+        endExchange = false;
     }
+
+    private void DrawArrow()
+    {
+        AnimationCurve curve = new AnimationCurve();
+        curve.AddKey(0f, 0f);
+        curve.AddKey(1f, 1f);
+
+        lineRenderer.material = arrowMat;
+        lineRenderer.numCapVertices = 1;
+        lineRenderer.widthMultiplier = 1f;
+        lineRenderer.widthCurve = curve;
+        
+    }
+
+    public void DrawLine()
+    {
+        AnimationCurve curve = new AnimationCurve();
+        curve.AddKey(0f, 0f);
+        curve.AddKey(0f, 0f);
+        
+        lineRenderer.material = lineMat;
+        lineRenderer.numCapVertices = 0;
+        lineRenderer.widthMultiplier = 0.5f;
+        lineRenderer.widthCurve = curve;
+    }
+       
 }
