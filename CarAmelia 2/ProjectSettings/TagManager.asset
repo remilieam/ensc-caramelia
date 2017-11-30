@@ -6,6 +6,7 @@ TagManager:
   tags:
   - IntCar
   - ExtCar
+  - PanelInstructions
   layers:
   - Default
   - TransparentFX

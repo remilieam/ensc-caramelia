@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class GameController : MonoBehaviour
     private Button playInstructionsButton;
     private Button playBreakButton;
     private Button playRestartButton;
+    private GameObject panelInstructions;
 
     void Start()
     {
@@ -52,6 +54,8 @@ public class GameController : MonoBehaviour
         playCanvas.enabled = false;
         playInstructionsButton = playCanvas.GetComponentsInChildren<Button>()[0];
         playInstructionsButton.onClick.AddListener(InstructionsOnClick);
+        panelInstructions = GameObject.FindGameObjectWithTag("PanelInstructions");
+        panelInstructions.SetActive(false);
         playBreakButton = playCanvas.GetComponentsInChildren<Button>()[1];
         playBreakButton.onClick.AddListener(BreakOnClick);
         playRestartButton = playCanvas.GetComponentsInChildren<Button>()[2];
@@ -92,6 +96,14 @@ public class GameController : MonoBehaviour
 
     private void InstructionsOnClick()
     {
+        if (panelInstructions.activeSelf)
+        {
+            panelInstructions.SetActive(false);
+        }
+        else
+        {
+            panelInstructions.SetActive(true);
+        }
     }
 
     private void BreakOnClick()
@@ -109,7 +121,10 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void RestartOnClick() { }
+    private void RestartOnClick()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
     IEnumerator AddExtColorCar(GameObject car, int nbCars)
     {
