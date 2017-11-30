@@ -2495,6 +2495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e242d6afc6d71c4bb7cf7fffec47a6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path: {fileID: 4679684028019564, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
   ExtCarBlue: {fileID: 1443333903778096, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
   ExtCarOrange: {fileID: 1310590377343412, guid: 344b7924382509b4fa10c32aea3bdbb7,
     type: 2}
@@ -2503,7 +2504,6 @@ MonoBehaviour:
   IntCarGreen: {fileID: 1229601543115580, guid: a105896e2f8021244b53f63f4a21dbb5,
     type: 2}
   IntCarRed: {fileID: 1044996294075548, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-  path: {fileID: 4679684028019564, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
 --- !u!4 &389905157
 Transform:
   m_ObjectHideFlags: 0
@@ -9576,6 +9576,10 @@ Prefab:
     - target: {fileID: 4679684028019564, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4235862684036858, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: de54777b9fe4a9249a33e64645c16137, type: 2}

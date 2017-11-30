@@ -67,7 +67,6 @@ public class ExtCarController : CarController
 
         // Définition du texte à afficher dans le canevas (informations relatives à la voiture extérieure)
         textCanvas.text = "Générosité : " + generosity.ToString() + "\nConfiance : " + trust.ToString();
-        textCanvas.text += "\nProchaine position : " + nextPosition.ToString();
 
         lineRenderer = this.gameObject.GetComponent<LineRenderer>();
         // Initialisation des objets pour afficher la flèche d'échange d'information
@@ -87,7 +86,7 @@ public class ExtCarController : CarController
         // On part du principe que la voiture n'échange d'information
         endExchange = true;
         // On vérifie cette hypothèse
-        SensorsObstacle();
+        SensorMeeting();
         // Cas où la voiture n'échange réellement pas d'information
         if (endExchange)
         {
@@ -102,6 +101,8 @@ public class ExtCarController : CarController
             // Affichage du trait qui indique la position objectif
             DrawLine();
         }
+
+        SensorsObstacle();
     }
 
     /// <summary>

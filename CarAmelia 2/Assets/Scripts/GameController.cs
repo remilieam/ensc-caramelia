@@ -42,14 +42,12 @@ public class GameController : MonoBehaviour
     void Start()
     {
         // Création de la liste contenant les noeuds de la map
-        string message = "";
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         for (int i = 0; i < pathTransforms.Length; i++)
         {
             if (pathTransforms[i] != path.transform)
             {
                 nodes.Add(pathTransforms[i]);
-                message += pathTransforms[i].name + "\n";
             }
         }
         
@@ -69,8 +67,6 @@ public class GameController : MonoBehaviour
         playBreakButton.onClick.AddListener(BreakOnClick);
         playRestartButton = playCanvas.GetComponentsInChildren<Button>()[2];
         playRestartButton.onClick.AddListener(RestartOnClick);
-
-        playCanvas.GetComponentInChildren<Text>().text = message;
     }
 
     /// <summary>
