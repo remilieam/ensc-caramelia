@@ -6,61 +6,76 @@ using UnityEngine.UI;
 
 public class IntCarController : CarController
 {
-    // Tableau des sorties connues (1 connaît, 0 connaît pas)
-    // Index 0 : bleu, 1 : orange, 2 : jaune
-    public List<Position> exitsKnown = new List<Position>();
+    // Liste des positions des sorties connues
+    private List<Position> exitsKnown = new List<Position>();
 
-    public bool sincerity;
-    
+    // `true` si la voiture est honnête (dit toujours la vérité lors des échanges d'informations)
+    // et `false` sinon
+    private bool sincerity;
+
+    public List<Position> ExitsKnown
+    {
+        get { return exitsKnown; }
+    }
+
+    public bool Sincerity
+    {
+        get { return sincerity; }
+        set { sincerity = value; }
+    }
+
+    /// <summary>
+    /// "Constructeur" pour initialiser les paramètres de la voiture intérieure
+    /// </summary>
     public void Start()
     {
         StartCar();
 
+        // Récupération de sa position initiale
         float positionX = this.transform.position.x;
         float positionZ = this.transform.position.z;
+        position = new Position(FindNode(positionX, positionZ));
 
-        // Voiture démarre à une position aléatoire sur la map
-        position = new Position(findNode(positionX, positionZ));
-        // Position aléatoire de sa destination
-        Position targetTemp = new Position(alea.Next(nodesTable.GetLength(1)));
-        while (targetTemp.SamePosition(position))
+        // Détermination aléatoire de sa position objectif
+        target = new Position(alea.Next(nodesTable.GetLength(1)));
+        // Vérification que la position objectif n'est pas sa position initiale
+        while (target.SamePosition(position))
         {
-            targetTemp = new Position(alea.Next(nodesTable.GetLength(1)));
+            target = new Position(alea.Next(nodesTable.GetLength(1)));
         }
-        target = targetTemp;
+        // Calcul du chemin pour atteindre la position objectif
+        PathCalculation();
 
-        // On définit la future position de manière aléatoire
-        PathCalculation(target);
-
-        // On définit la prochaine cible
+        // Détermination de la prochaine position
         nextPosition = nodesToCross[indexNode].name;
-        
+
+        // Détermination aléatoire des sorties connues
         if (alea.Next(0, 2) == 1)
         {
-            exitsKnown.Add(new Position(113));
+            exitsKnown.Add(new Position(113)); // Sortie Bleue
         }
         if (alea.Next(0, 2) == 1)
         {
-            exitsKnown.Add(new Position(115));
+            exitsKnown.Add(new Position(115)); // Sortie Orange
         }
         if (alea.Next(0, 2) == 1)
         {
-            exitsKnown.Add(new Position(117));
+            exitsKnown.Add(new Position(117)); // Sortie Blanche
         }
-        
-        // Définition du texte et de l'action quand on clique sur le bouton
+
+        // Définition du texte à afficher dans le canevas (informations relatives à la voiture intérieure)
         string message = "";
         for (int j = 0; j < exitsKnown.Count; j++)
         {
-            if(exitsKnown[j].Row == 113)
+            if (exitsKnown[j].Number == 113)
             {
                 message += "\n- Sortie Bleue";
             }
-            if (exitsKnown[j].Row == 115)
+            if (exitsKnown[j].Number == 115)
             {
                 message += "\n- Sortie Orange";
             }
-            if (exitsKnown[j].Row == 117)
+            if (exitsKnown[j].Number == 117)
             {
                 message += "\n- Sortie Blanche";
             }
@@ -68,17 +83,25 @@ public class IntCarController : CarController
         textCanvas.text = "Les sorties connues : " + message + "\nTarget : " + target.ToString() + ", Noeuds : " + nodesToCross.Count.ToString();
     }
 
+    /// <summary>
+    /// C'est clair !
+    /// </summary>
     public void Update()
     {
-        Sensors();
+        SensorsObstacle();
     }
-    
-    
-    private int findNode(float x, float z)
+
+    /// <summary>
+    /// Méthode pour trouver le numéro du noeud qui correspond à la position de la voiture
+    /// </summary>
+    /// <param name="x">Coordonnées de la voiture sur l'axe x</param>
+    /// <param name="z">Coordonnées de la voiture sur l'axe z</param>
+    /// <returns></returns>
+    private int FindNode(float x, float z)
     {
         for (int i = 0; i < nodes.Count; i++)
         {
-            if(x == nodes[i].transform.position.x && z == nodes[i].transform.position.z)
+            if (x == nodes[i].transform.position.x && z == nodes[i].transform.position.z)
             {
                 return i;
             }
@@ -87,49 +110,45 @@ public class IntCarController : CarController
         return 0;
     }
 
-    // Permet d'actualiser le noeud
+    /// <summary>
+    /// Méthode pour actualiser la position de la voiture
+    /// </summary>
     protected override void CheckWaypoint()
     {
         // On fait freiner la voiture avant l'arrivée sur le point
-        if (Vector3.Distance(transform.position, nodes[nextPosition.Row].position) < distance_frein)
+        if (Vector3.Distance(transform.position, nodes[nextPosition.Number].position) < distance_frein)
         {
             isBraking = true;
-            // On change le point objectif dès qu'il est suffisament proche 
-            if (Vector3.Distance(transform.position, nodes[nextPosition.Row].position) < distance_chgt)
+
+            // Dès que la voiture est assez proche de sa destination, on lui définit une nouvelle destination 
+            if (Vector3.Distance(transform.position, nodes[nextPosition.Number].position) < distance_chgt)
             {
                 position = nextPosition;
 
-                // S'il est toujours sur le chemin pour atteindre son objectif
+                // Cas où la voiture est toujours sur le chemin pour atteindre sa position objectif
                 if (indexNode < nodesToCross.Count)
                 {
+                    // On définit la prochaine position que la voiture doit atteindre
                     nextPosition = nodesToCross[indexNode].name;
                     indexNode++;
                 }
-                // S'il a atteint son objectif
+
+                // Cas où la voiture a atteint sa position objectif
                 else
                 {
-                    // On re définit une position aléatoire
-                    target = new Position(alea.Next(nodesTable.GetLength(1)));
-                    // On recalcule
-                    PathCalculation(target);
-                    // On définit le prochain objectif
                     indexNode = 1;
+                    // On re définit une position objectif aléatoire
+                    target = new Position(alea.Next(nodesTable.GetLength(1)));
+                    PathCalculation();
+                    // On définit la prochaine position que la voiture doit atteindre
                     nextPosition = nodesToCross[indexNode].name;
                     indexNode++;
                 }
             }
-
         }
         else
         {
             isBraking = false;
-
         }
-
-	}
-    
-    public override void Stop (GameObject hitCar)
-	{
-	}
-
+    }
 }

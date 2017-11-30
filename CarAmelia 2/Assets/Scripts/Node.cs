@@ -133,7 +133,7 @@ public class Node
 
         for (int i = 0; i < table.GetLength(1); i++)
         {
-            if (table[this.name.Row, i] == 1)
+            if (table[this.name.Number, i] == 1)
             {
                 listSuccessors.Add(new Node(new Position(i)));
             }
@@ -156,6 +156,6 @@ public class Node
     /// <returns>Nœud</returns>
     public override string ToString()
     {
-        return "Ligne : " + this.name.Row;
+        return this.name.Number.ToString();
     }
 }

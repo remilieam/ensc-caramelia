@@ -50,6 +50,5 @@ public class Path : MonoBehaviour
             Gizmos.DrawWireSphere(currentNode, 0.3f);
         }
     }
-
 }
 

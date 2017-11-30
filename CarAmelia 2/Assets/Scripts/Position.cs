@@ -6,16 +6,16 @@ using System.Text;
 
 public class Position
 {
-    public int Row { get; set; }
+    public int Number { get; set; }
 
     public Position(int x)
     {
-        this.Row = x;
+        this.Number = x;
     }
 
     public bool SamePosition(Position position)
     {
-        if (this.Row == position.Row)
+        if (this.Number == position.Number)
         {
             return true;
         }
@@ -25,7 +25,7 @@ public class Position
 
     public override string ToString()
     {
-        return "Ligne : " + this.Row;
+        return this.Number.ToString();
     }
 }
 

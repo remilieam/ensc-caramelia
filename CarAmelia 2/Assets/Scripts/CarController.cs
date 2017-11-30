@@ -9,26 +9,29 @@ public abstract class CarController : MonoBehaviour
 {
     // La map dans Unity
     public Transform path;
-    protected List<Transform> nodes;
-    protected int[,] nodesTable;
+    protected List<Transform> nodes = new List<Transform>(); // Liste des noeuds de la map de Unity
+    protected int[,] nodesTable = new int[118, 118]; // Cf. excel
 
     // Chiffre aléatoire
-    protected System.Random alea;
+    protected System.Random alea= new System.Random();
 
-    // Prochaine position objectif pour la voiture
-    protected Position nextPosition;
-    // Position de l'objectif à atteindre (sur un long chemin)
-    public Position target;
+    // Le chemin que la voiture doit parcourir pour atteindre une position objectif
+    protected List<Node> nodesToCross = new List<Node>();
+    // Là où la voiture en est sur le chemin pour atteindre une position objectif
+    protected int indexNode = 1;
     // Correspond à la position d'un noeud dans la map-tableau de la voiture
     protected Position position;
+    // Prochaine position à atteindre pour la voiture
+    protected Position nextPosition;
+    // Position objectif de la voiture
+    protected Position target;
+    // Utilisé pour trouver le chemin le plus court pour atteindre une position objectif
+    protected Graph graph = new Graph();
 
-    // Le chemin que la voiture doit parcourir pour atteindre un position objective
-    protected List<Node> nodesToCross;
-    protected Graph graph;
-    protected int indexNode = 1;
-
-    // Tous les attributs pour faire rouler la voiture
+    // Attributs inhérents à la voiture
     protected Renderer carRenderer;
+    public Texture2D textureNormal;
+    public Texture2D textureBraking;
     protected WheelCollider wheelFL;
     protected WheelCollider wheelFR;
     protected WheelCollider wheelRL;
@@ -37,14 +40,11 @@ public abstract class CarController : MonoBehaviour
     protected float maxBrakeTorque = 200f;
     protected float maxSteerAngle = 40f;
     protected float maxSpeed = 280f;
-    protected Vector3 centerOfMass;
-    protected float currentSpeed;
-    public bool isBraking = false;
-
-    // Valeurs pour tester les distances
     protected float distance_frein = 10;
     protected float distance_chgt = 0.5f;
-    protected float test_vit = 10;
+    protected bool isBraking = false;
+    protected float minSpeed = 10;
+    protected float currentSpeed;
 
     // Capteurs [Header("Sensors")]
     protected float sensorLength = 10f;
@@ -52,42 +52,30 @@ public abstract class CarController : MonoBehaviour
     protected float frontSideSensorPosition = 0.4f;
     protected float frontSensorAngle = 30f;
 
-    // Textures de la voiture"
-    public Texture2D textureNormal;
-    public Texture2D textureBraking;
-
-    protected Canvas canvas;
+    // Canevas et caméras
     public Camera cameraView;
+    protected Canvas canvas;
     protected Camera cameraBackCar;
     protected Button buttonCanvas;
     protected Text textCanvas;
+    
+    public Position Target
+    {
+        get { return target; }
+    }
 
+    public bool IsBraking
+    {
+        set { isBraking = value; }
+    }
+
+    /// <summary>
+    /// "Constructeur" pour initialiser les paramètres de la voiture
+    /// </summary>
     protected void StartCar()
     {
-        GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-        
-        cameraBackCar = GetComponentsInChildren<Camera>()[0];
-        cameraBackCar.enabled = false;
-        canvas = GetComponentsInChildren<Canvas>()[0];
-
-        // On n'affiche pas le canvas
-        canvas.enabled = false;
-        // Récupération du texte et du bouton du canvas
-        textCanvas = canvas.GetComponentsInChildren<Text>()[0];
-        buttonCanvas = canvas.GetComponentsInChildren<Button>()[0];
-        buttonCanvas.onClick.AddListener(TaskOnClick);
-
-        WheelCollider[] wheelColliders = GetComponentsInChildren<WheelCollider>();
-        wheelRL = wheelColliders[0];
-        wheelRR = wheelColliders[1];
-        wheelFL = wheelColliders[2];
-        wheelFR = wheelColliders[3];
-
-        carRenderer = GetComponentsInChildren<Renderer>()[0];
-
-        // On recrée notre liste de noeuds
+        // Création de la liste contenant les noeuds de la map
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
-        nodes = new List<Transform>();
         for (int i = 0; i < pathTransforms.Length; i++)
         {
             if (pathTransforms[i] != path.transform)
@@ -96,9 +84,7 @@ public abstract class CarController : MonoBehaviour
             }
         }
 
-
         // Initialisation de la map
-        nodesTable = new int[118, 118];
         string filePath = @"Assets\Scripts\Files\carte_2.csv";
         StreamReader sr = new StreamReader(filePath);
         int row = 0;
@@ -112,29 +98,66 @@ public abstract class CarController : MonoBehaviour
             row++;
         }
 
-        // Initialisation
-        alea = new System.Random();
-        nodesToCross = new List<Node>();
-        graph = new Graph();
+        // Initalisation des attributs inhérents à la voiture
+        WheelCollider[] wheelColliders = GetComponentsInChildren<WheelCollider>();
+        wheelRL = wheelColliders[0];
+        wheelRR = wheelColliders[1];
+        wheelFL = wheelColliders[2];
+        wheelFR = wheelColliders[3];
+        carRenderer = GetComponentsInChildren<Renderer>()[0];
+
+        // Initialisation de la caméra arrière
+        cameraBackCar = GetComponentsInChildren<Camera>()[0];
+        cameraBackCar.enabled = false;
+
+        // Initialisation du canevas affichant le comportement de la voiture
+        canvas = GetComponentsInChildren<Canvas>()[0];
+        canvas.enabled = false;
+        textCanvas = canvas.GetComponentsInChildren<Text>()[0];
+        buttonCanvas = canvas.GetComponentsInChildren<Button>()[0];
+        buttonCanvas.onClick.AddListener(TaskOnClick);
     }
 
+    /// <summary>
+    /// Assez clair...
+    /// </summary>
+    public void FixedUpdate()
+    {
+        ApplySteer();
+        Drive();
+        CheckWaypoint();
+        Braking();
+    }
+
+    /// <summary>
+    /// Méthode appelée lorsqu'on clique sur le bouton du canevas de la voiture
+    /// </summary>
     protected void TaskOnClick()
     {
-        // Si on clique sur le bouton du canvas celui-ci devient invisible
         canvas.enabled = false;
     }
+
+    /// <summary>
+    /// Méthode appelée lorsqu'on passe le pointeur de la souris sur la voiture
+    /// pour afficher le canevas ou changer de caméra
+    /// </summary>
     protected void OnMouseOver()
     {
+        // Si on clique sur le bouton gauche
         if (Input.GetMouseButtonDown(0))
         {
+            // Cas où on passe de la caméra générale à la caméra arrière
             if (!cameraBackCar.enabled && cameraView.enabled)
             {
                 cameraView.enabled = false;
                 cameraBackCar.enabled = true;
             }
+
+            // Cas où on passe de la caméra arrière d'une autre voiture à "notre" caméra arrière
             else if (!cameraBackCar.enabled && !cameraView.enabled)
             {
                 Camera[] cameras = FindObjectsOfType<Camera>();
+                // On désactive toutes les caméras arrières activées en épargnant la caméra générale
                 foreach (Camera camera in cameras)
                 {
                     if(camera.enabled && camera.transform.position != cameraView.transform.position)
@@ -144,6 +167,8 @@ public abstract class CarController : MonoBehaviour
                 }
                 cameraBackCar.enabled = true;
             }
+
+            // Cas où on passe de la caméra arrière à la caméra générale
             else
             {
 
@@ -151,38 +176,35 @@ public abstract class CarController : MonoBehaviour
                 cameraBackCar.enabled = false;
             }
         }
+
+        // Si on clique sur le bouton droit
         if (Input.GetMouseButtonDown(1))
         {
-            // Si on clique sur la voiture le canvas devient visible
             canvas.enabled = true;
         }
     }
 
-    public void FixedUpdate()
-    {
-        //Sensors();
-        ApplySteer();
-        Drive();
-        CheckWaypoint();
-        Braking();
-
-    }
-
+    /// <summary>
+    /// Méthode pour faire tourner la voiture
+    /// </summary>
     protected void ApplySteer()
     {
-        Vector3 relativeVector = transform.InverseTransformPoint(nodes[nextPosition.Row].position);
-        // Calcul que je n'ai pas compris
+        Vector3 relativeVector = transform.InverseTransformPoint(nodes[nextPosition.Number].position);
+        // Calcul que nous n'avons pas compris...
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         wheelFL.steerAngle = newSteer;
         wheelFR.steerAngle = newSteer;
     }
 
-
+    /// <summary>
+    /// Méthode pour faire avancer la voiture
+    /// </summary>
     protected void Drive()
     {
-        // Vitesse
+        // Réglage de la vitesse
         currentSpeed = 2 * Mathf.PI * wheelFL.radius * wheelFL.rpm * 60 / 1000;
 
+        // Vérification que la voiture roule en-dessous de la vitesse maximale autorisée
         if (currentSpeed < maxSpeed && !isBraking)
         {
             wheelFL.motorTorque = maxMotorTorque;
@@ -195,9 +217,13 @@ public abstract class CarController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Méthode pour faire freiner la voiture
+    /// </summary>
     protected void Braking()
     {
-        if (isBraking && currentSpeed > test_vit)
+        // Vérification que la voiture ne roule pas trop lentement quand elle freine
+        if (isBraking && currentSpeed > minSpeed)
         {
             carRenderer.material.mainTexture = textureBraking;
             wheelRL.brakeTorque = maxBrakeTorque;
@@ -211,78 +237,90 @@ public abstract class CarController : MonoBehaviour
         }
     }
 
-    protected abstract void CheckWaypoint();
-
-    // Méthode qui définit le successeur aléatoire de la position de la voiture
-    protected Position SuccessorAlea(Position currentPosition)
+    /// <summary>
+    /// Méthode qui définit aléatoirement la prochaine position de la voiture
+    /// </summary>
+    /// <param name="currentPosition">Position actuelle de la voiture</param>
+    /// <returns></returns>
+    protected void SuccessorAlea()
     {
         List<Position> successors = new List<Position>();
 
+        // Récupération de toutes les prochaines positions possibles à partir de la position actuelle
         for (int i = 0; i < nodesTable.GetLength(1); i++)
         {
-            if (nodesTable[currentPosition.Row, i] == 1)
+            if (nodesTable[position.Number, i] == 1)
             {
                 successors.Add(new Position(i));
             }
         }
 
-        Position position = successors[alea.Next(successors.Count)];
-
-        return position;
+        // Choix aléatoire d'une position possible
+        nextPosition = successors[alea.Next(successors.Count)];
     }
-
-    // Calcul du chemin pour atteindre un objectif
-    protected void PathCalculation(Position final)
+    
+    /// <summary>
+    /// Méthode pour trouver le chemin le plus court vers la position objectif
+    /// à l'aide de l'A*
+    /// </summary>
+    protected void PathCalculation()
     {
-        Node node = new Node(position, final, nodesTable);
+        Node node = new Node(position, target, nodesTable);
         nodesToCross = graph.FindPath(node);
     }
 
-    protected void Sensors()
+    /// <summary>
+    /// Méthode pour détecter les autres voitures
+    /// </summary>
+    protected void SensorsObstacle()
     {
         RaycastHit hit;
+
+        // Position du capteur
         Vector3 sensorStartPos = transform.position + frontSensorPosition;
 
-        //front center sensor
+        // Capteur du milieu
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             //isBraking = true;
         }
 
-        //front right sensor
+        // Repositionnement du capteur vers la droite
         sensorStartPos.x += frontSideSensorPosition;
+
+        // Capteur de droite
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             //isBraking = true;
         }
 
-        //front right angle sensor
+        // Capteur oblique de droite
         if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             //isBraking = true;
         }
 
-        //front left sensor
+        // Repositionnement du capteur vers la gauche
         sensorStartPos.x -= 2 * frontSideSensorPosition;
+
+        // Capteur de gauche
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             //isBraking = true;
         }
-
-        //front left angle sensor
-        if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
-        {
-            Debug.DrawLine(sensorStartPos, hit.point);
-			Stop (hit.transform.gameObject);
-        }
+    }
+    
+    /// <summary>
+    /// Méthode ...
+    /// </summary>
+    /// <param name="hitCar"></param>
+    public void DetectionObstacle(GameObject hitCar)
+    {
     }
 
-	public abstract void Stop(GameObject hitCar);
-
-
-
+    protected abstract void CheckWaypoint();
 }
