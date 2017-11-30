@@ -1047,13 +1047,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf84840e0ed7ba4884133395dc8fbe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: {fileID: 4767236524481270, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
+  path: {fileID: 4679684028019564, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
   isBraking: 0
   textureNormal: {fileID: 2800000, guid: 09e5fb8a28dee2246b48de2e6169769a, type: 3}
   textureBraking: {fileID: 2800000, guid: 503cd9b97a0e0254f837c7f470dd9631, type: 3}
   cameraView: {fileID: 20231341209481920, guid: 933422982d834a54c8be0ec0ac8f0f37,
     type: 2}
-  exit: {fileID: 4656151358937484, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
+  exit: {fileID: 4825186214559140, guid: de54777b9fe4a9249a33e64645c16137, type: 2}
   arrowMat: {fileID: 2100000, guid: d0a62d7d9fcc7d3459f6b6f46bee4f7e, type: 2}
   lineMat: {fileID: 2100000, guid: 95013a1fab885a54aa0d56f6e9359da5, type: 2}
 --- !u!114 &114783796359287402
