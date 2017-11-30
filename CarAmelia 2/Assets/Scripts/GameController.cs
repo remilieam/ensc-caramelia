@@ -21,8 +21,13 @@ public class GameController : MonoBehaviour
     private System.Random alea;
     private Transform[] pathTransforms;
 
-    private Canvas canvas;
+    private Canvas startCanvas;
     private Button startButton;
+
+    private Canvas playCanvas;
+    private Button playInstructionsButton;
+    private Button playBreakButton;
+    private Button playRestartButton;
 
     void Start()
     {
@@ -39,35 +44,72 @@ public class GameController : MonoBehaviour
 
         alea = new System.Random();
 
-        canvas = this.GetComponentsInChildren<Canvas>()[0];
-        startButton = canvas.GetComponentsInChildren<Button>()[0];
-        startButton.onClick.AddListener(TaskOnClick);
+        startCanvas = this.GetComponentsInChildren<Canvas>()[0];
+        startButton = startCanvas.GetComponentsInChildren<Button>()[0];
+        startButton.onClick.AddListener(StartOnClick);
+
+        playCanvas = this.GetComponentsInChildren<Canvas>()[1];
+        playCanvas.enabled = false;
+        playInstructionsButton = playCanvas.GetComponentsInChildren<Button>()[0];
+        playInstructionsButton.onClick.AddListener(InstructionsOnClick);
+        playBreakButton = playCanvas.GetComponentsInChildren<Button>()[1];
+        playBreakButton.onClick.AddListener(BreakOnClick);
+        playRestartButton = playCanvas.GetComponentsInChildren<Button>()[2];
+        playRestartButton.onClick.AddListener(RestartOnClick);
     }
 
-    protected void TaskOnClick()
+    public void Update()
     {
-        try
+        bool ready = true;
+        startButton.enabled = false;
+        for (int i = 0; i < startCanvas.GetComponentsInChildren<InputField>().Length; i++)
         {
-            Convert.ToInt32(canvas.GetComponentsInChildren<InputField>()[0].text);
-            Convert.ToInt32(canvas.GetComponentsInChildren<InputField>()[1].text);
-            Convert.ToInt32(canvas.GetComponentsInChildren<InputField>()[2].text);
-            Convert.ToInt32(canvas.GetComponentsInChildren<InputField>()[3].text);
-            Convert.ToInt32(canvas.GetComponentsInChildren<InputField>()[4].text);
+            if (startCanvas.GetComponentsInChildren<InputField>()[i].text == "")
+            {
+                ready = false;
+            }
         }
-        catch (Exception e)
+        if (ready)
         {
-            
+            nbGreen = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[0].text);
+            nbRed = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[1].text);
+            nbBlue = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[2].text);
+            nbOrange = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[3].text);
+            nbWhite = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[4].text);
+            if (nbGreen + nbRed <= 116)
+            {
+                startButton.enabled = true;
+            }
         }
-        nbGreen = Convert.ToInt32(canvas.GetComponentsInChildren<InputField>()[0].text);
-        nbRed = Convert.ToInt32(canvas.GetComponentsInChildren<InputField>()[1].text);
-        nbBlue = Convert.ToInt32(canvas.GetComponentsInChildren<InputField>()[2].text);
-        nbOrange = Convert.ToInt32(canvas.GetComponentsInChildren<InputField>()[3].text);
-        nbWhite = Convert.ToInt32(canvas.GetComponentsInChildren<InputField>()[4].text);
+    }
 
-        canvas.enabled = false;
-
+    private void StartOnClick()
+    {
+        startCanvas.enabled = false;
+        playCanvas.enabled = true;
         StartCoroutine(AddCars());
     }
+
+    private void InstructionsOnClick()
+    {
+    }
+
+    private void BreakOnClick()
+    {
+        if (Time.timeScale == 1)
+        {
+            Time.timeScale = 0;
+            playBreakButton.GetComponentInChildren<Text>().text = "Reprendre";
+        }
+        else
+        {
+
+            Time.timeScale = 1;
+            playBreakButton.GetComponentInChildren<Text>().text = "Pause";
+        }
+    }
+
+    private void RestartOnClick() { }
 
     IEnumerator AddExtColorCar(GameObject car, int nbCars)
     {
