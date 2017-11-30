@@ -127,17 +127,26 @@ public abstract class CarController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (!cameraBackCar.enabled && cameraView)
+            if (!cameraBackCar.enabled && cameraView.enabled)
             {
                 cameraView.enabled = false;
                 cameraBackCar.enabled = true;
             }
-            else if (!cameraBackCar.enabled && !cameraView)
+            else if (!cameraBackCar.enabled && !cameraView.enabled)
             {
-
+                Camera[] cameras = FindObjectsOfType<Camera>();
+                foreach (Camera camera in cameras)
+                {
+                    if(camera.enabled && camera.transform.position != cameraView.transform.position)
+                    {
+                        camera.enabled = false;
+                    }
+                }
+                cameraBackCar.enabled = true;
             }
             else
             {
+
                 cameraView.enabled = true;
                 cameraBackCar.enabled = false;
             }

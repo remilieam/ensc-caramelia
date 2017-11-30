@@ -147,10 +147,32 @@ public class ExtCarController : CarController
         lineRenderer.SetPosition(1, this.transform.position);
         DrawArrow();
         lineRenderer.enabled = true;
-        
-        Vector3 imageScene = new Vector3((this.transform.position.x + car.transform.position.x) / 2.0f, (this.transform.position.y + car.transform.position.y) / 2.0f, (this.transform.position.z + car.transform.position.z) / 2.0f);
-        Vector3 imageGame = cameraView.WorldToViewportPoint(imageScene);
 
+        Vector3 imageScene = new Vector3((this.transform.position.x + car.transform.position.x) / 2.0f, (this.transform.position.y + car.transform.position.y) / 2.0f, (this.transform.position.z + car.transform.position.z) / 2.0f);
+        Vector3 imageGame = new Vector3();
+
+        if (cameraView.enabled)
+        {
+            imageGame = cameraView.WorldToViewportPoint(imageScene);
+            cross.rectTransform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            check.rectTransform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+        }
+        else
+        {
+            Camera[] cameras = FindObjectsOfType<Camera>();
+            Camera cameraActive = new Camera();
+            foreach (Camera camera in cameras)
+            {
+                if (camera.enabled && camera.transform.position != cameraView.transform.position)
+                {
+                    cameraActive = camera;
+                }
+            }
+            imageGame = cameraActive.WorldToViewportPoint(imageScene);
+            cross.rectTransform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+            check.rectTransform.localScale = new Vector3(1f, 1f, 1f);
+        }
+        
         cross.rectTransform.anchorMax = imageGame;
         cross.rectTransform.anchorMin = imageGame;
         
