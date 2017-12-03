@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System;
 
 public class Path : MonoBehaviour
 {
@@ -8,18 +10,34 @@ public class Path : MonoBehaviour
     public Color lineColor;
 
     // Les noeuds du chemin
-    private List<Transform> nodes = new List<Transform>();
+	private List<Transform> nodes = new List<Transform>(); // Noeuds réels sur la SceneView
+	protected int[,] nodesTable = new int[118, 118]; // Tableau Excel des noeuds avec les relations
 
-    // Fonction qui dessine dans l'éditeur de Unity
-    void OnDrawGizmosSelected()
-    {
+	// Fonction qui dessine dans l'éditeur de Unity (OnDrawGizmosSelected)
+    void OnDrawGizmos()
+	{
+		// Récupération du tableau Excel
+		string filePath = @"Assets\Scripts\Files\carte_2.csv";
+		StreamReader sr = new StreamReader(filePath);
+		int row = 0;
+		while (!sr.EndOfStream)
+		{
+			string[] line = sr.ReadLine().Split(';');
+			for (int i = 0; i < 118; i++)
+			{
+				nodesTable[row, i] = Convert.ToInt32(line[i]);
+			}
+			row++;
+		}
+
+		// Couleur de la ligne
         Gizmos.color = lineColor;
 
-        // Liste des enfants dans l'objet "Path"
+        // Récupération de tous les objets "Transform" du "Path" et de ses enfants
         Transform[] pathTransforms = GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
 
-        // Pour chaque noeud du chemin, on ajoute les noeuds dans une nouvelles liste
+		// Récupération des objets "Transform" (les noeuds) uniquement dans les enfants du "Path"
         for (int i = 0; i < pathTransforms.Length; i++)
         {
             if (pathTransforms[i] != transform)
@@ -29,26 +47,20 @@ public class Path : MonoBehaviour
         }
 
         // On dessine les traits entre les noeuds
-        for (int i = 0; i < nodes.Count; i++)
-        {
-            Vector3 currentNode = nodes[i].position;
-            Vector3 previousNode = Vector3.zero;
+		for (int i = 0; i < nodes.Count; i++)
+		{
+			// On dessine une sphère autour du noeud
+			Gizmos.DrawWireSphere(nodes[i].position, 0.3f);
 
-            if (i > 0)
-            {
-                previousNode = nodes[i - 1].position;
-            }
-            // Si on est au premier noeud
-            else if (i == 0 && nodes.Count > 1)
-            {
-                previousNode = nodes[nodes.Count - 1].position;
-            }
-
-            // Dessine la ligne
-            Gizmos.DrawLine(previousNode, currentNode);
-            // Dessine un rond autour du noeud
-            Gizmos.DrawWireSphere(currentNode, 0.3f);
-        }
+			// Pour tous les prochains noeuds accessibles, on dessine une ligne
+			for (int j = 0; j < nodesTable.GetLength(1); j++)
+			{
+				if (nodesTable [i, j] == 1)
+				{
+					Gizmos.DrawLine(nodes[i].position, nodes[j].position);
+				}
+			}
+		}
     }
 }
 

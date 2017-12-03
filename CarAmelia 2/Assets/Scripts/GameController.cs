@@ -168,8 +168,8 @@ public class GameController : MonoBehaviour
             Vector3 spawnPosition = new Vector3(nodes[111].position.x, 0, nodes[111].position.z);
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, nodes[111].transform.eulerAngles.y, 0);
-            Instantiate(car, spawnPosition, rotation);
-            car.GetComponent<ExtCarController>().Exit = nodes[numberExit];
+			GameObject newCar = Instantiate(car, spawnPosition, rotation);
+            newCar.GetComponent<ExtCarController>().Exit = nodes[numberExit];
             yield return new WaitForSeconds(wait);
         }
     }
@@ -236,8 +236,8 @@ public class GameController : MonoBehaviour
             Vector3 spawnPosition = new Vector3(node.transform.position.x, 0, node.transform.position.z);
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, node.transform.eulerAngles.y, 0);
-            Instantiate(car, spawnPosition, rotation);
-            car.GetComponent<IntCarController>().Sincerity = sincerity;
+            GameObject newCar = Instantiate(car, spawnPosition, rotation);
+            newCar.GetComponent<IntCarController>().Sincerity = sincerity;
             yield return new WaitForSeconds(0f);
         }
     }

@@ -446,7 +446,6 @@ public class ExtCarController : CarController
         cross.rectTransform.anchorMin = imageGame;
         check.rectTransform.anchorMax = imageGame;
         check.rectTransform.anchorMin = imageGame;
-
     }
 
     /// <summary>
