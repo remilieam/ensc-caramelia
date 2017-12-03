@@ -429,7 +429,7 @@ public class ExtCarController : CarController
             Camera cameraActive = new Camera();
             foreach (Camera camera in cameras)
             {
-                if (camera.enabled && camera.transform.position != cameraView.transform.position)
+                if (camera.enabled)
                 {
                     cameraActive = camera;
                 }

@@ -14,6 +14,9 @@ public class GameController : MonoBehaviour
     // Chiffre aléatoire
     protected System.Random alea = new System.Random();
 
+	// La caméra
+	public Camera cameraView;
+
     // Les voitures
     public GameObject ExtCarBlue;
     public GameObject ExtCarOrange;
@@ -50,6 +53,9 @@ public class GameController : MonoBehaviour
                 nodes.Add(pathTransforms[i]);
             }
         }
+
+		// Initialisation de la caméra générale
+		cameraView.enabled = true;
         
         // Initialisation de l'interface de départ
         startCanvas = this.GetComponentsInChildren<Canvas>()[0];
@@ -169,7 +175,9 @@ public class GameController : MonoBehaviour
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, nodes[111].transform.eulerAngles.y, 0);
 			GameObject newCar = Instantiate(car, spawnPosition, rotation);
-            newCar.GetComponent<ExtCarController>().Exit = nodes[numberExit];
+			newCar.GetComponent<ExtCarController>().Exit = nodes[numberExit];
+			newCar.GetComponent<ExtCarController>().Path = path;
+			newCar.GetComponent<ExtCarController>().CameraView = cameraView;
             yield return new WaitForSeconds(wait);
         }
     }
@@ -237,7 +245,9 @@ public class GameController : MonoBehaviour
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, node.transform.eulerAngles.y, 0);
             GameObject newCar = Instantiate(car, spawnPosition, rotation);
-            newCar.GetComponent<IntCarController>().Sincerity = sincerity;
+			newCar.GetComponent<IntCarController>().Sincerity = sincerity;
+			newCar.GetComponent<IntCarController>().Path = path;
+			newCar.GetComponent<IntCarController>().CameraView = cameraView;
             yield return new WaitForSeconds(0f);
         }
     }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public abstract class CarController : MonoBehaviour
 {
     // La map dans Unity
-    public Transform path;
+	protected Transform path;
     protected List<Transform> nodes = new List<Transform>(); // Liste des noeuds de la map de Unity
     protected int[,] nodesTable = new int[118, 118]; // Cf. excel
 
@@ -53,7 +53,7 @@ public abstract class CarController : MonoBehaviour
     protected float frontSensorAngle = 30f;
 
     // Canevas et caméras
-    public Camera cameraView;
+	protected Camera cameraView;
     protected Canvas canvas;
     protected Camera cameraBackCar;
     protected Button buttonCanvas;
@@ -68,6 +68,18 @@ public abstract class CarController : MonoBehaviour
     {
         set { isBraking = value; }
     }
+
+	public Camera CameraView
+	{
+		get { return cameraView; }
+		set { cameraView = value; }
+	}
+
+	public Transform Path
+	{
+		get { return path; }
+		set { path = value; }
+	}
 
     /// <summary>
     /// "Constructeur" pour initialiser les paramètres de la voiture
@@ -148,24 +160,25 @@ public abstract class CarController : MonoBehaviour
         {
             // Cas où on passe de la caméra générale à la caméra arrière
             if (!cameraBackCar.enabled && cameraView.enabled)
-            {
+			{
+				cameraBackCar.enabled = true;
                 cameraView.enabled = false;
-                cameraBackCar.enabled = true;
             }
 
             // Cas où on passe de la caméra arrière d'une autre voiture à "notre" caméra arrière
             else if (!cameraBackCar.enabled && !cameraView.enabled)
-            {
+			{
+				cameraBackCar.enabled = true;
+
+				// On désactive toutes les caméras arrières activées en épargnant la caméra de "notre" voiture
                 Camera[] cameras = FindObjectsOfType<Camera>();
-                // On désactive toutes les caméras arrières activées en épargnant la caméra générale
                 foreach (Camera camera in cameras)
                 {
-                    if(camera.enabled && camera.transform.position != cameraView.transform.position)
+					if(camera.enabled && camera.transform.position != cameraBackCar.transform.position)
                     {
                         camera.enabled = false;
                     }
                 }
-                cameraBackCar.enabled = true;
             }
 
             // Cas où on passe de la caméra arrière à la caméra générale
