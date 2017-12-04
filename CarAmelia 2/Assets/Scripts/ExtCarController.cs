@@ -111,12 +111,12 @@ public class ExtCarController : CarController
     protected override void CheckWaypoint()
     {
         // On fait freiner la voiture avant l'arrivée sur le point
-        if (Vector3.Distance(transform.position, nodes[nextPosition.Number].position) < distance_frein)
+        if (Vector3.Distance(transform.position, nodes[nextPosition.Number].position) < brakeDistance)
         {
             isBraking = true;
 
             // Dès que la voiture est assez proche de sa destination, on lui définit une nouvelle destination 
-            if (Vector3.Distance(transform.position, nodes[nextPosition.Number].position) < distance_chgt)
+            if (Vector3.Distance(transform.position, nodes[nextPosition.Number].position) < changeNodeDistance)
             {
                 // Si la voiture a atteint sa sortie (même par hasard), elle a gagné ! (Et donc est détruite, c'est très logique.)
                 if (nodes[nextPosition.Number] == exit)
@@ -168,6 +168,8 @@ public class ExtCarController : CarController
     /// </summary>
     public void SensorMeeting()
     {
+        float frontSensorAngle = 30f;
+        float sensorLengthMeeting = 10f;
         RaycastHit hit;
 
         // Position du capteur à gauche
@@ -175,7 +177,7 @@ public class ExtCarController : CarController
         sensorStartPos.x -= 2 * frontSideSensorPosition;
 
         // Capteur oblique de gauche
-        if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
+        if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, transform.up) * transform.forward, out hit, sensorLengthMeeting))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             DetectionMeeting(hit.transform.gameObject);
@@ -185,7 +187,7 @@ public class ExtCarController : CarController
     /// <summary>
     /// Méthode appelée lorsque la voiture détecte une autre voiture arrivant en sens inverse
     /// </summary>
-    /// <param name="hitCar"></param>
+    /// <param name="hitCar">Voiture détéctée</param>
     public void DetectionMeeting(GameObject hitCar)
     {
         ExtCarController extCarHit = hitCar.gameObject.GetComponent<ExtCarController>();

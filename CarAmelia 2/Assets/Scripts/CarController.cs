@@ -40,17 +40,16 @@ public abstract class CarController : MonoBehaviour
     protected float maxBrakeTorque = 200f;
     protected float maxSteerAngle = 40f;
     protected float maxSpeed = 280f;
-    protected float distance_frein = 10;
-    protected float distance_chgt = 0.5f;
+    protected float brakeDistance = 10f;
+    protected float changeNodeDistance = 3f;
     protected bool isBraking = false;
-    protected float minSpeed = 10;
-    protected float currentSpeed;
+    protected bool isStopped = false;
+    protected float minSpeed = 5f;
+    protected float currentSpeed; 
 
     // Capteurs [Header("Sensors")]
-    protected float sensorLength = 10f;
     protected Vector3 frontSensorPosition = new Vector3(0f, 0.2f, 0f);
     protected float frontSideSensorPosition = 0.4f;
-    protected float frontSensorAngle = 30f;
 
     // Canevas et caméras
 	protected Camera cameraView;
@@ -138,7 +137,7 @@ public abstract class CarController : MonoBehaviour
         ApplySteer();
         Drive();
         CheckWaypoint();
-        Braking();
+        //Braking();
     }
 
     /// <summary>
@@ -210,7 +209,7 @@ public abstract class CarController : MonoBehaviour
     }
 
     /// <summary>
-    /// Méthode pour faire avancer la voiture
+    /// Méthode pour faire avancer/freiner/stopper la voiture
     /// </summary>
     protected void Drive()
     {
@@ -218,36 +217,74 @@ public abstract class CarController : MonoBehaviour
         currentSpeed = 2 * Mathf.PI * wheelFL.radius * wheelFL.rpm * 60 / 1000;
 
         // Vérification que la voiture roule en-dessous de la vitesse maximale autorisée
-        if (currentSpeed < maxSpeed && !isBraking)
+        if (isBraking)
         {
-            wheelFL.motorTorque = maxMotorTorque;
-            wheelFR.motorTorque = maxMotorTorque;
+            carRenderer.material.mainTexture = textureBraking;
+
+            if (currentSpeed < minSpeed)
+            {
+                textCanvas.text = "Frein + currentSpeed < minSpeed";
+                wheelFL.motorTorque = maxMotorTorque;
+                wheelFR.motorTorque = maxMotorTorque;
+                wheelRL.brakeTorque = 0;
+                wheelRR.brakeTorque = 0;
+                wheelFL.brakeTorque = 0;
+                wheelFR.brakeTorque = 0;
+            }
+            else
+            {
+                textCanvas.text = "Frein + currentSpeed > minSpeed";
+                wheelFL.motorTorque = 0;
+                wheelFR.motorTorque = 0;
+                wheelRL.brakeTorque = maxBrakeTorque;
+                wheelRR.brakeTorque = maxBrakeTorque;
+                wheelFL.brakeTorque = 0;
+                wheelFR.brakeTorque = 0;
+            }
         }
-        else
+        if (!isBraking)
+        {
+            carRenderer.material.mainTexture = textureNormal;
+
+            if (currentSpeed < maxSpeed)
+            {
+                textCanvas.text = "!Frein + currentSpeed < maxSpeed";
+
+                wheelFL.motorTorque = maxMotorTorque;
+                wheelFR.motorTorque = maxMotorTorque;
+                wheelRL.brakeTorque = 0;
+                wheelRR.brakeTorque = 0;
+                wheelFL.brakeTorque = 0;
+                wheelFR.brakeTorque = 0;
+            }
+            else
+            {
+                textCanvas.text = "!Frein + currentSpeed > maxSpeed";
+
+                wheelFL.motorTorque = 0;
+                wheelFR.motorTorque = 0;
+                wheelRL.brakeTorque = 0;
+                wheelRR.brakeTorque = 0;
+                wheelFL.brakeTorque = 0;
+                wheelFR.brakeTorque = 0;
+            }
+        }
+        if (isStopped)
         {
             wheelFL.motorTorque = 0;
             wheelFR.motorTorque = 0;
+            wheelFL.brakeTorque = maxBrakeTorque + 100f;
+            wheelFR.brakeTorque = maxBrakeTorque + 100f;
+            wheelRL.brakeTorque = maxBrakeTorque + 100f;
+            wheelRR.brakeTorque = maxBrakeTorque + 100f;
         }
     }
 
     /// <summary>
-    /// Méthode pour faire freiner la voiture
+    /// Méthode pour réguler la vitesse de la voiture
     /// </summary>
-    protected void Braking()
+    protected void SpeedRegulation()
     {
-        // Vérification que la voiture ne roule pas trop lentement quand elle freine
-        if (isBraking && currentSpeed > minSpeed)
-        {
-            carRenderer.material.mainTexture = textureBraking;
-            wheelRL.brakeTorque = maxBrakeTorque;
-            wheelRR.brakeTorque = maxBrakeTorque;
-        }
-        else
-        {
-            carRenderer.material.mainTexture = textureNormal;
-            wheelRL.brakeTorque = 0;
-            wheelRR.brakeTorque = 0;
-        }
     }
 
     /// <summary>
@@ -287,52 +324,85 @@ public abstract class CarController : MonoBehaviour
     /// </summary>
     protected void SensorsObstacle()
     {
+        float sensorLengthObstacle = 10f;
+        float frontSensorAngle = 30f;
         RaycastHit hit;
+
+        // Permet de savoir si la voiture détècte une autre voiture
+        bool detected = false;
 
         // Position du capteur
         Vector3 sensorStartPos = transform.position + frontSensorPosition;
 
-        // Capteur du milieu
-        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
+        // Capteur frontal du milieu
+        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLengthObstacle))
         {
+            detected = true;
             Debug.DrawLine(sensorStartPos, hit.point);
-            //isBraking = true;
+            DetectionFront(hit.transform.gameObject);
         }
 
         // Repositionnement du capteur vers la droite
         sensorStartPos.x += frontSideSensorPosition;
 
-        // Capteur de droite
-        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
+        // Capteur frontal de droite
+        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLengthObstacle))
         {
+            detected = true;
             Debug.DrawLine(sensorStartPos, hit.point);
-            //isBraking = true;
+            DetectionFront(hit.transform.gameObject);
         }
 
-        // Capteur oblique de droite
-        if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
-        {
-            Debug.DrawLine(sensorStartPos, hit.point);
-            //isBraking = true;
-        }
+        ////Capteur oblique de droite
+        ////if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLengthObstacle))
+        ////{
+        ////    detected = true;
+        ////    Debug.DrawLine(sensorStartPos, hit.point);
+        ////    DetectionRight(hit.transform.gameObject);
+        ////}
 
         // Repositionnement du capteur vers la gauche
         sensorStartPos.x -= 2 * frontSideSensorPosition;
 
-        // Capteur de gauche
-        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
+        // Capteur frontal de gauche
+        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLengthObstacle))
         {
+            detected = true;
             Debug.DrawLine(sensorStartPos, hit.point);
-            //isBraking = true;
+            DetectionFront(hit.transform.gameObject);
+        }
+
+        if(!detected)
+        {
+            isStopped = false;
         }
     }
-    
+
     /// <summary>
-    /// Méthode ...
+    /// Méthode qui fait stopper la voiture lorsqu'elle détecte
+    /// une voiture en face d'elle
     /// </summary>
-    /// <param name="hitCar"></param>
-    public void DetectionObstacle(GameObject hitCar)
+    /// <param name="hitCar">Voiture détéctée</param>
+    public void DetectionFront(GameObject hitCar)
     {
+        //if (hitCar.GetComponent<CarController>().isStopped)
+        //{
+            isStopped = true;
+        //}
+        //else
+        //{
+        //    isStopped = false;
+        //}
+    }
+
+    /// <summary>
+    /// Méthode qui fait stopper la voiture lorsqu'elle détecte
+    /// une voiture dans une priorité à droite
+    /// </summary>
+    /// <param name="hitCar">Voiture détéctée</param>
+    public void DetectionRight(GameObject hitCar)
+    {
+        isStopped = true;
     }
 
     protected abstract void CheckWaypoint();

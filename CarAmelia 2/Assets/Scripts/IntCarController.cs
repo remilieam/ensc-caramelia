@@ -116,12 +116,12 @@ public class IntCarController : CarController
     protected override void CheckWaypoint()
     {
         // On fait freiner la voiture avant l'arrivée sur le point
-        if (Vector3.Distance(transform.position, nodes[nextPosition.Number].position) < distance_frein)
+        if (Vector3.Distance(transform.position, nodes[nextPosition.Number].position) < brakeDistance)
         {
             isBraking = true;
 
             // Dès que la voiture est assez proche de sa destination, on lui définit une nouvelle destination 
-            if (Vector3.Distance(transform.position, nodes[nextPosition.Number].position) < distance_chgt)
+            if (Vector3.Distance(transform.position, nodes[nextPosition.Number].position) < changeNodeDistance)
             {
                 position = nextPosition;
 
