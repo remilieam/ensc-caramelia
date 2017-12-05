@@ -44,8 +44,9 @@ public abstract class CarController : MonoBehaviour
     protected float changeNodeDistance = 3f;
     protected bool isBraking = false;
     protected bool isStopped = false;
+    protected bool isSteering = false;
     protected float minSpeed = 5f;
-    protected float currentSpeed; 
+    public float currentSpeed; 
 
     // Capteurs [Header("Sensors")]
     protected Vector3 frontSensorPosition = new Vector3(0f, 0.2f, 0f);
@@ -57,7 +58,9 @@ public abstract class CarController : MonoBehaviour
     protected Camera cameraBackCar;
     protected Button buttonCanvas;
     protected Text textCanvas;
-    
+
+    public float newSteer;
+
     public Position Target
     {
         get { return target; }
@@ -137,7 +140,6 @@ public abstract class CarController : MonoBehaviour
         ApplySteer();
         Drive();
         CheckWaypoint();
-        //Braking();
     }
 
     /// <summary>
@@ -203,9 +205,17 @@ public abstract class CarController : MonoBehaviour
     {
         Vector3 relativeVector = transform.InverseTransformPoint(nodes[nextPosition.Number].position);
         // Calcul que nous n'avons pas compris...
-        float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
+        newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         wheelFL.steerAngle = newSteer;
         wheelFR.steerAngle = newSteer;
+        if (newSteer > 1.5f || newSteer < -1.5f)
+        {
+            isSteering = true;
+        }
+        else
+        {
+            isSteering = false;
+        }
     }
 
     /// <summary>
@@ -216,67 +226,72 @@ public abstract class CarController : MonoBehaviour
         // Réglage de la vitesse
         currentSpeed = 2 * Mathf.PI * wheelFL.radius * wheelFL.rpm * 60 / 1000;
 
-        // Vérification que la voiture roule en-dessous de la vitesse maximale autorisée
-        if (isBraking)
-        {
-            carRenderer.material.mainTexture = textureBraking;
-
-            if (currentSpeed < minSpeed)
-            {
-                textCanvas.text = "Frein + currentSpeed < minSpeed";
-                wheelFL.motorTorque = maxMotorTorque;
-                wheelFR.motorTorque = maxMotorTorque;
-                wheelRL.brakeTorque = 0;
-                wheelRR.brakeTorque = 0;
-                wheelFL.brakeTorque = 0;
-                wheelFR.brakeTorque = 0;
-            }
-            else
-            {
-                textCanvas.text = "Frein + currentSpeed > minSpeed";
-                wheelFL.motorTorque = 0;
-                wheelFR.motorTorque = 0;
-                wheelRL.brakeTorque = maxBrakeTorque;
-                wheelRR.brakeTorque = maxBrakeTorque;
-                wheelFL.brakeTorque = 0;
-                wheelFR.brakeTorque = 0;
-            }
-        }
-        if (!isBraking)
-        {
-            carRenderer.material.mainTexture = textureNormal;
-
-            if (currentSpeed < maxSpeed)
-            {
-                textCanvas.text = "!Frein + currentSpeed < maxSpeed";
-
-                wheelFL.motorTorque = maxMotorTorque;
-                wheelFR.motorTorque = maxMotorTorque;
-                wheelRL.brakeTorque = 0;
-                wheelRR.brakeTorque = 0;
-                wheelFL.brakeTorque = 0;
-                wheelFR.brakeTorque = 0;
-            }
-            else
-            {
-                textCanvas.text = "!Frein + currentSpeed > maxSpeed";
-
-                wheelFL.motorTorque = 0;
-                wheelFR.motorTorque = 0;
-                wheelRL.brakeTorque = 0;
-                wheelRR.brakeTorque = 0;
-                wheelFL.brakeTorque = 0;
-                wheelFR.brakeTorque = 0;
-            }
-        }
         if (isStopped)
         {
+            textCanvas.text = "Stop";
             wheelFL.motorTorque = 0;
             wheelFR.motorTorque = 0;
-            wheelFL.brakeTorque = maxBrakeTorque + 100f;
-            wheelFR.brakeTorque = maxBrakeTorque + 100f;
-            wheelRL.brakeTorque = maxBrakeTorque + 100f;
-            wheelRR.brakeTorque = maxBrakeTorque + 100f;
+            wheelFL.brakeTorque = maxBrakeTorque * 100f;
+            wheelFR.brakeTorque = maxBrakeTorque * 100f;
+            wheelRL.brakeTorque = maxBrakeTorque * 100f;
+            wheelRR.brakeTorque = maxBrakeTorque * 100f;
+        }
+        else
+        {
+            // Vérification que la voiture roule en-dessous de la vitesse maximale autorisée
+            if (isBraking)
+            {
+                carRenderer.material.mainTexture = textureBraking;
+
+                if (currentSpeed < minSpeed)
+                {
+                    textCanvas.text = "Frein + currentSpeed < minSpeed";
+                    wheelFL.motorTorque = maxMotorTorque;
+                    wheelFR.motorTorque = maxMotorTorque;
+                    wheelRL.brakeTorque = 0;
+                    wheelRR.brakeTorque = 0;
+                    wheelFL.brakeTorque = 0;
+                    wheelFR.brakeTorque = 0;
+                }
+                else
+                {
+                    textCanvas.text = "Frein + currentSpeed > minSpeed";
+                    wheelFL.motorTorque = 0;
+                    wheelFR.motorTorque = 0;
+                    wheelRL.brakeTorque = maxBrakeTorque;
+                    wheelRR.brakeTorque = maxBrakeTorque;
+                    wheelFL.brakeTorque = 0;
+                    wheelFR.brakeTorque = 0;
+                }
+            }
+
+            if (!isBraking)
+            {
+                carRenderer.material.mainTexture = textureNormal;
+
+                if (currentSpeed < maxSpeed)
+                {
+                    textCanvas.text = "!Frein + currentSpeed < maxSpeed";
+
+                    wheelFL.motorTorque = maxMotorTorque;
+                    wheelFR.motorTorque = maxMotorTorque;
+                    wheelRL.brakeTorque = 0;
+                    wheelRR.brakeTorque = 0;
+                    wheelFL.brakeTorque = 0;
+                    wheelFR.brakeTorque = 0;
+                }
+                else
+                {
+                    textCanvas.text = "!Frein + currentSpeed > maxSpeed";
+
+                    wheelFL.motorTorque = 0;
+                    wheelFR.motorTorque = 0;
+                    wheelRL.brakeTorque = 0;
+                    wheelRR.brakeTorque = 0;
+                    wheelFL.brakeTorque = 0;
+                    wheelFR.brakeTorque = 0;
+                }
+            }
         }
     }
 
@@ -324,55 +339,69 @@ public abstract class CarController : MonoBehaviour
     /// </summary>
     protected void SensorsObstacle()
     {
-        float sensorLengthObstacle = 10f;
-        float frontSensorAngle = 30f;
-        RaycastHit hit;
-
         // Permet de savoir si la voiture détècte une autre voiture
         bool detected = false;
 
-        // Position du capteur
-        Vector3 sensorStartPos = transform.position + frontSensorPosition;
-
-        // Capteur frontal du milieu
-        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLengthObstacle))
+        //textCanvas.text = "";
+        if (!isSteering)
         {
-            detected = true;
-            Debug.DrawLine(sensorStartPos, hit.point);
-            DetectionFront(hit.transform.gameObject);
+            float sensorLengthObstacle = 10f;
+            float frontSensorAngle = 5f;
+            float obliqueSensorAngle = 30f;
+            RaycastHit hit;
+
+            // Position du capteur
+            Vector3 sensorStartPos = transform.position + frontSensorPosition;
+
+            // Capteur frontal du milieu
+            if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLengthObstacle))
+            {
+                //textCanvas.text = "Milieu";
+                detected = true;
+                Debug.DrawLine(sensorStartPos, hit.point);
+                DetectionFront(hit.transform.gameObject);
+            }
+
+            // Repositionnement du capteur vers la droite
+            sensorStartPos.x += frontSideSensorPosition;
+
+            // Capteur frontal de droite
+            if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLengthObstacle))
+            {
+                detected = true;
+                Debug.DrawLine(sensorStartPos, hit.point);
+                DetectionFront(hit.transform.gameObject);
+            }
+
+            // Capteur oblique de droite
+            if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(obliqueSensorAngle, transform.up) * transform.forward, out hit, sensorLengthObstacle))
+            {
+                //textCanvas.text = "Droite";
+                detected = true;
+                Debug.DrawLine(sensorStartPos, hit.point);
+                DetectionRight(hit.transform.gameObject);
+            }
+
+            //// Repositionnement du capteur vers la gauche
+            //sensorStartPos.x -= 2 * frontSideSensorPosition;
+
+            // Capteur frontal de gauche
+            if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLengthObstacle))
+            {
+                detected = true;
+                Debug.DrawLine(sensorStartPos, hit.point);
+                DetectionFront(hit.transform.gameObject);
+            }
+
+            //// Capteur oblique de gauche
+            //if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-obliqueSensorAngle, transform.up) * transform.forward, out hit, sensorLengthObstacle))
+            //{
+            //    detected = true;
+            //    Debug.DrawLine(sensorStartPos, hit.point);
+            //    DetectionFront(hit.transform.gameObject);
+            //}
         }
-
-        // Repositionnement du capteur vers la droite
-        sensorStartPos.x += frontSideSensorPosition;
-
-        // Capteur frontal de droite
-        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLengthObstacle))
-        {
-            detected = true;
-            Debug.DrawLine(sensorStartPos, hit.point);
-            DetectionFront(hit.transform.gameObject);
-        }
-
-        ////Capteur oblique de droite
-        ////if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLengthObstacle))
-        ////{
-        ////    detected = true;
-        ////    Debug.DrawLine(sensorStartPos, hit.point);
-        ////    DetectionRight(hit.transform.gameObject);
-        ////}
-
-        // Repositionnement du capteur vers la gauche
-        sensorStartPos.x -= 2 * frontSideSensorPosition;
-
-        // Capteur frontal de gauche
-        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLengthObstacle))
-        {
-            detected = true;
-            Debug.DrawLine(sensorStartPos, hit.point);
-            DetectionFront(hit.transform.gameObject);
-        }
-
-        if(!detected)
+        if (!detected)
         {
             isStopped = false;
         }

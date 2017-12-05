@@ -168,7 +168,7 @@ public class ExtCarController : CarController
     /// </summary>
     public void SensorMeeting()
     {
-        float frontSensorAngle = 30f;
+        float frontSensorAngleMeeting = 90f;
         float sensorLengthMeeting = 10f;
         RaycastHit hit;
 
@@ -177,7 +177,7 @@ public class ExtCarController : CarController
         sensorStartPos.x -= 2 * frontSideSensorPosition;
 
         // Capteur oblique de gauche
-        if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, transform.up) * transform.forward, out hit, sensorLengthMeeting))
+        if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngleMeeting, transform.up) * transform.forward, out hit, sensorLengthMeeting))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             DetectionMeeting(hit.transform.gameObject);
