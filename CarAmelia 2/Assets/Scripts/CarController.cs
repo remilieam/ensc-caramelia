@@ -13,7 +13,7 @@ public abstract class CarController : MonoBehaviour
     protected int[,] nodesTable = new int[118, 118]; // Cf. excel
 
     // Chiffre aléatoire
-    protected System.Random alea= new System.Random();
+    protected System.Random alea = new System.Random();
 
     // Le chemin que la voiture doit parcourir pour atteindre une position objectif
     protected List<Node> nodesToCross = new List<Node>();
@@ -228,7 +228,7 @@ public abstract class CarController : MonoBehaviour
 
         if (isStopped)
         {
-            textCanvas.text = "Stop";
+            //textCanvas.text = "Stop";
             wheelFL.motorTorque = 0;
             wheelFR.motorTorque = 0;
             wheelFL.brakeTorque = maxBrakeTorque * 100f;
@@ -245,7 +245,7 @@ public abstract class CarController : MonoBehaviour
 
                 if (currentSpeed < minSpeed)
                 {
-                    textCanvas.text = "Frein + currentSpeed < minSpeed";
+                    //textCanvas.text = "Frein + currentSpeed < minSpeed";
                     wheelFL.motorTorque = maxMotorTorque;
                     wheelFR.motorTorque = maxMotorTorque;
                     wheelRL.brakeTorque = 0;
@@ -255,7 +255,7 @@ public abstract class CarController : MonoBehaviour
                 }
                 else
                 {
-                    textCanvas.text = "Frein + currentSpeed > minSpeed";
+                    //textCanvas.text = "Frein + currentSpeed > minSpeed";
                     wheelFL.motorTorque = 0;
                     wheelFR.motorTorque = 0;
                     wheelRL.brakeTorque = maxBrakeTorque;
@@ -271,7 +271,7 @@ public abstract class CarController : MonoBehaviour
 
                 if (currentSpeed < maxSpeed)
                 {
-                    textCanvas.text = "!Frein + currentSpeed < maxSpeed";
+                    //textCanvas.text = "!Frein + currentSpeed < maxSpeed";
 
                     wheelFL.motorTorque = maxMotorTorque;
                     wheelFR.motorTorque = maxMotorTorque;
@@ -282,7 +282,7 @@ public abstract class CarController : MonoBehaviour
                 }
                 else
                 {
-                    textCanvas.text = "!Frein + currentSpeed > maxSpeed";
+                    //textCanvas.text = "!Frein + currentSpeed > maxSpeed";
 
                     wheelFL.motorTorque = 0;
                     wheelFR.motorTorque = 0;
@@ -435,4 +435,9 @@ public abstract class CarController : MonoBehaviour
     }
 
     protected abstract void CheckWaypoint();
+
+    /// <summary>
+    /// Méthode pour écrire les informations dans le canevas de la voiture
+    /// </summary>
+    public abstract void WriteInformation();
 }

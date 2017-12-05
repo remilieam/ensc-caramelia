@@ -36,6 +36,14 @@ public class ExtCarController : CarController
     private Image cross;
     private Image check;
 
+    public int Trust
+    {
+        set { trust = value; }
+    }
+    public int Generosity
+    {
+        set { generosity = value; }
+    }
     public Transform Exit
     {
         get { return exit; }
@@ -53,9 +61,9 @@ public class ExtCarController : CarController
         // Récupération de sa position initiale
         position = new Position(111);
 
-        // Définition aléatoire de son degré de confiance et de générosité
-        trust = alea.Next(1, 6);
-        generosity = alea.Next(1, 6);
+        //// Définition aléatoire de son degré de confiance et de générosité
+        //trust = alea.Next(1, 6);
+        //generosity = alea.Next(1, 6);
 
         // La voiture démarre en mode aléatoire ==> pas de position objectif
         aleaMode = true;
@@ -64,9 +72,6 @@ public class ExtCarController : CarController
         SuccessorAlea();
         // On ajoute cette première position aux positions que la voiture a parcourues
         crossedNodes.Add(position);
-
-        // Définition du texte à afficher dans le canevas (informations relatives à la voiture extérieure)
-        textCanvas.text = "Générosité : " + generosity.ToString() + "\nConfiance : " + trust.ToString();
 
         lineRenderer = this.gameObject.GetComponent<LineRenderer>();
         // Initialisation des objets pour afficher la flèche d'échange d'information
@@ -103,6 +108,7 @@ public class ExtCarController : CarController
         }
 
         SensorsObstacle();
+        WriteInformation();
     }
 
     /// <summary>
@@ -471,4 +477,15 @@ public class ExtCarController : CarController
 
         lineRenderer.enabled = true;
     }
+
+    /// <summary>
+    /// Méthode pour écrire les informations dans le canevas de la voiture
+    /// </summary>
+    public override void WriteInformation()
+    {
+        // Définition du texte à afficher dans le canevas (informations relatives à la voiture extérieure)
+        textCanvas.text = "Générosité : " + generosity.ToString() + "\nConfiance : " + trust.ToString();
+    }
+    
+        
 }

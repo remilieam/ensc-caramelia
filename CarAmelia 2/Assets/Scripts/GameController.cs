@@ -23,7 +23,26 @@ public class GameController : MonoBehaviour
     public GameObject ExtCarWhite;
     public GameObject IntCarGreen;
     public GameObject IntCarRed;
-    private int nbBlue, nbOrange, nbWhite, nbGreen, nbRed;
+
+    // Les paramètres des voitures vertes
+    private int nbGreen;
+    private int nbGreenExit0, nbGreenExit1, nbGreenExit2, nbGreenExit3;
+    // Les paramètres des voitures rouges
+    private int nbRed;
+    private int nbRedExit0, nbRedExit1, nbRedExit2, nbRedExit3;
+    // Les paramètres des voitures bleues
+    private int nbBlue;
+    private int nbBlueTrust1, nbBlueTrust2, nbBlueTrust3, nbBlueTrust4, nbBlueTrust5;
+    private int nbBlueGenerosity1, nbBlueGenerosity2, nbBlueGenerosity3, nbBlueGenerosity4, nbBlueGenerosity5;
+    // Les paramètres des voitures orange
+    private int nbOrange;
+    private int nbOrangeTrust1, nbOrangeTrust2, nbOrangeTrust3, nbOrangeTrust4, nbOrangeTrust5;
+    private int nbOrangeGenerosity1, nbOrangeGenerosity2, nbOrangeGenerosity3, nbOrangeGenerosity4, nbOrangeGenerosity5;
+    // Les paramètres des voitures blanches
+    private int nbWhite;
+    private int nbWhiteTrust1, nbWhiteTrust2, nbWhiteTrust3, nbWhiteTrust4, nbWhiteTrust5;
+    private int nbWhiteGenerosity1, nbWhiteGenerosity2, nbWhiteGenerosity3, nbWhiteGenerosity4, nbWhiteGenerosity5;    
+
     private float wait = 5;
 
     // Liste des positions initiales des voitures intérieures
@@ -96,14 +115,69 @@ public class GameController : MonoBehaviour
         // Initialisation des paramètres si tout est ok
         if (ready)
         {
+            // Pour les voitures vertes
             nbGreen = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[0].text);
-            nbRed = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[1].text);
-            nbBlue = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[2].text);
-            nbOrange = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[3].text);
-            nbWhite = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[4].text);
+            nbGreenExit0 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[1].text);
+            nbGreenExit1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[2].text);
+            nbGreenExit2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[3].text);
+            nbGreenExit3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[4].text);
 
-            // Vérification que toutes les voitures intérieures peuvent avoir une position initiale
-            if (nbGreen + nbRed <= 116)
+            // Pour les voitures rouges
+            nbRed = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[5].text);
+            nbRedExit0 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[6].text);
+            nbRedExit1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[7].text);
+            nbRedExit2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[8].text);
+            nbRedExit3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[9].text);
+
+            // Pour les voitures bleues
+            nbBlue = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[10].text);
+            nbBlueTrust1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[11].text);
+            nbBlueTrust2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[12].text);
+            nbBlueTrust3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[13].text);
+            nbBlueTrust4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[14].text);
+            nbBlueTrust5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[15].text);
+            nbBlueGenerosity1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[16].text);
+            nbBlueGenerosity2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[17].text);
+            nbBlueGenerosity3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[18].text);
+            nbBlueGenerosity4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[19].text);
+            nbBlueGenerosity5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[20].text);
+
+            // Pour les voitures orange
+            nbOrange = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[21].text);
+            nbOrangeTrust1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[22].text);
+            nbOrangeTrust2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[23].text);
+            nbOrangeTrust3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[24].text);
+            nbOrangeTrust4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[25].text);
+            nbOrangeTrust5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[26].text);
+            nbOrangeGenerosity1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[27].text);
+            nbOrangeGenerosity2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[28].text);
+            nbOrangeGenerosity3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[29].text);
+            nbOrangeGenerosity4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[30].text);
+            nbOrangeGenerosity5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[31].text);
+
+            // Pour les voitures blanches
+            nbWhite = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[32].text);
+            nbWhiteTrust1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[33].text);
+            nbWhiteTrust2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[34].text);
+            nbWhiteTrust3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[35].text);
+            nbWhiteTrust4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[36].text);
+            nbWhiteTrust5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[37].text);
+            nbWhiteGenerosity1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[38].text);
+            nbWhiteGenerosity2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[39].text);
+            nbWhiteGenerosity3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[40].text);
+            nbWhiteGenerosity4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[41].text);
+            nbWhiteGenerosity5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[42].text);
+
+            // Vérification que toutes les voitures intérieures peuvent avoir une position initiale et que l'utilisateur sait compter
+            if (nbGreen + nbRed <= 116 &&
+                nbGreenExit0 + nbGreenExit1 + nbGreenExit2 + nbGreenExit3 == nbGreen &&
+                nbRedExit0 + nbRedExit1 + nbRedExit2 + nbRedExit3 == nbRed &&
+                nbBlueTrust1 + nbBlueTrust2 + nbBlueTrust3 + nbBlueTrust4 + nbBlueTrust5 == nbBlue &&
+                nbBlueGenerosity1 + nbBlueGenerosity2 + nbBlueGenerosity3 + nbBlueGenerosity4 + nbBlueGenerosity5 == nbBlue &&
+                nbOrangeTrust1 + nbOrangeTrust2 + nbOrangeTrust3 + nbOrangeTrust4 + nbOrangeTrust5 == nbOrange &&
+                nbOrangeGenerosity1 + nbOrangeGenerosity2 + nbOrangeGenerosity3 + nbOrangeGenerosity4 + nbOrangeGenerosity5 == nbOrange &&
+                nbWhiteTrust1 + nbWhiteTrust2 + nbWhiteTrust3 + nbWhiteTrust4 + nbWhiteTrust5 == nbWhite &&
+                nbWhiteGenerosity1 + nbWhiteGenerosity2 + nbWhiteGenerosity3 + nbWhiteGenerosity4 + nbWhiteGenerosity5 == nbWhite)
             {
                 startButton.enabled = true;
             }
@@ -166,8 +240,13 @@ public class GameController : MonoBehaviour
     /// <param name="car">Préfab de la voiture extérieure</param>
     /// <param name="nbCars">Nombre de voitures à ajouter</param>
     /// <param name="numberExit">Numéro de la position de la sortie des voitures de même couleur</param>
-    IEnumerator AddExtColorCar(GameObject car, int nbCars, int numberExit)
+    IEnumerator AddExtColorCar(GameObject car, int nbCars, int numberExit, int nbTrust1, int nbTrust2, int nbTrust3, int nbTrust4, int nbTrust5, int nbGenerosity1, int nbGenerosity2, int nbGenerosity3, int nbGenerosity4, int nbGenerosity5)
     {
+        // Liste des nbTrust
+        List<int> nbTrust = new List<int> { nbTrust1, nbTrust2, nbTrust3, nbTrust4, nbTrust5 };
+        // Liste des nbGenerosity
+        List<int> nbGenerosity = new List<int> { nbGenerosity1, nbGenerosity2, nbGenerosity3, nbGenerosity4, nbGenerosity5 };
+        
         for (int i = 0; i < nbCars; i++)
         {
             // La position initiale des voitures extérieures est toujours la position numéro 111
@@ -175,11 +254,38 @@ public class GameController : MonoBehaviour
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, nodes[111].transform.eulerAngles.y, 0);
 			GameObject newCar = Instantiate(car, spawnPosition, rotation);
-			newCar.GetComponent<ExtCarController>().Exit = nodes[numberExit];
+            newCar.GetComponent<ExtCarController>().Exit = nodes[numberExit];
 			newCar.GetComponent<ExtCarController>().Path = path;
-			newCar.GetComponent<ExtCarController>().CameraView = cameraView;
+            newCar.GetComponent<ExtCarController>().CameraView = cameraView;
+
+            // TRUST
+            // alea.Next(6) car la taille des listes Trust est de 5
+            // On vérifie que le nombre de la liste est différent de 0
+            int trust = alea.Next(6);
+            while (nbTrust[trust] == 0)
+            {
+                trust = alea.Next(6);
+            }
+            // On associe le paramètre "Trust" à la voiture
+            newCar.GetComponent<ExtCarController>().Trust = trust + 1;
+            // On dés-incrémente les nombres dans la liste
+            nbTrust[trust] -= 1;
+
+            // GENEROSITY
+            // alea.Next(6) car la taille des listes Generosity est de 5
+            // On vérifie que le nombre de la liste est différent de 0
+            int generosity = alea.Next(6);
+            while (nbTrust[trust] == 0)
+            {
+                generosity = alea.Next(6);
+            }
+            // On associe le paramètre "Generosity" à la voiture
+            newCar.GetComponent<ExtCarController>().Generosity = trust + 1;
+            // On dés-incrémente le nombre dans la liste
+            nbGenerosity[generosity] -= 1;
+
             yield return new WaitForSeconds(wait);
-        }
+        }        
     }
 
     /// <summary>
@@ -187,11 +293,11 @@ public class GameController : MonoBehaviour
     /// </summary>
     IEnumerator AddExtCars()
     {
-        StartCoroutine(AddExtColorCar(ExtCarBlue, nbBlue, 113));
+        StartCoroutine(AddExtColorCar(ExtCarBlue, nbBlue, 113, nbBlueTrust1, nbBlueTrust2, nbBlueTrust3, nbBlueTrust4, nbBlueTrust5, nbBlueGenerosity1, nbBlueGenerosity2, nbBlueGenerosity3, nbBlueGenerosity4, nbBlueGenerosity5));
         yield return new WaitForSeconds(nbBlue * wait);
-        StartCoroutine(AddExtColorCar(ExtCarOrange, nbOrange, 115));
+        StartCoroutine(AddExtColorCar(ExtCarOrange, nbOrange, 115, nbOrangeTrust1, nbOrangeTrust2, nbOrangeTrust3, nbOrangeTrust4, nbOrangeTrust5, nbOrangeGenerosity1, nbOrangeGenerosity2, nbOrangeGenerosity3, nbOrangeGenerosity4, nbOrangeGenerosity5));
         yield return new WaitForSeconds(nbOrange * wait);
-        StartCoroutine(AddExtColorCar(ExtCarWhite, nbWhite, 117));
+        StartCoroutine(AddExtColorCar(ExtCarWhite, nbWhite, 117, nbWhiteTrust1, nbWhiteTrust2, nbWhiteTrust3, nbWhiteTrust4, nbWhiteTrust5, nbWhiteGenerosity1, nbWhiteGenerosity2, nbWhiteGenerosity3, nbWhiteGenerosity4, nbWhiteGenerosity5));
         yield return new WaitForSeconds(nbWhite * wait);
     }
 
@@ -201,8 +307,13 @@ public class GameController : MonoBehaviour
     /// <param name="car">Préfab de la voiture intérieure</param>
     /// <param name="nbCars">Nombre de voitures à ajouter</param>
     /// <param name="sincerity">Honnête ou non</param>
-    IEnumerator AddIntCar(GameObject car, int nbCars, bool sincerity)
+    IEnumerator AddIntCar(GameObject car, int nbCars, bool sincerity, int nbExit0, int nbExit1, int nbExit2, int nbExit3)
     {
+        // Liste des nbExit
+        List<int> nbExit = new List<int> { nbExit0, nbExit1, nbExit2, nbExit3 };
+        // Un petit incrément pour parcourir la liste
+        int increment = 0;
+        
         for (int i = 0; i < nbCars; i++)
         {
             // Numéro de la position initiale
@@ -222,14 +333,14 @@ public class GameController : MonoBehaviour
                 for (int j = 0; j < positionTakenInt.Count; j++)
                 {
                     // Si la position choisie aléatoirement est déjà occupée par une voiture intérieure ou à côté d'une voiture extérieure
-                    if(positionTakenInt[j] == positionTakenIndex || positionTakenIndex == 111 || positionTakenIndex == 110)
+                    if (positionTakenInt[j] == positionTakenIndex || positionTakenIndex == 111 || positionTakenIndex == 110)
                     {
                         positionNotTakenBool = false;
                     }
                 }
-                
+
                 // Si la position n'est pas prise
-                if(positionNotTakenBool)
+                if (positionNotTakenBool)
                 {
                     notFound = false;
                 }
@@ -245,11 +356,40 @@ public class GameController : MonoBehaviour
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, node.transform.eulerAngles.y, 0);
             GameObject newCar = Instantiate(car, spawnPosition, rotation);
-			newCar.GetComponent<IntCarController>().Sincerity = sincerity;
-			newCar.GetComponent<IntCarController>().Path = path;
-			newCar.GetComponent<IntCarController>().CameraView = cameraView;
+            newCar.GetComponent<IntCarController>().Sincerity = sincerity;
+            newCar.GetComponent<IntCarController>().Path = path;
+            newCar.GetComponent<IntCarController>().CameraView = cameraView;
+
+            // On vérifie que le nombre de la liste est différent de 0
+            while (nbExit[increment] == 0)
+            {
+                increment += 1;
+            }
+
+            // Liste des sorties possibles
+            List<int> exits = new List<int> { 113, 115, 117 };
+            int exitKnown;
+            // On crée la liste de sorties connues pour la voiture
+            List<Position> exitsKnown = new List<Position>();
+            for (int j = 0; j < increment; j++)
+            {
+                exitKnown = alea.Next(exits.Count);
+                // On ajoute une sortie à la liste des sorties connues
+                exitsKnown.Add(new Position(exits[exitKnown]));
+                // On enlève l'élément de la liste des sorties possibles pour éviter de l'avoir en double dans la liste des sortie connues
+                exits.RemoveAt(exitKnown);
+            }
+            // On dés-incrémente le nombre dans la liste
+            nbExit[increment] -= 1;
+            // On associe la liste à la voiture
+            newCar.GetComponent<IntCarController>().ExitsKnown = exitsKnown;
+
+            //Text teext = playCanvas.GetComponentInChildren<Text>();
+            //teext.text = "Increment : " + increment.ToString() + " 0S : " + nbExit[0].ToString() + " 1S : " + nbExit[1].ToString() + " 2S : " + nbExit[2].ToString() + " 3S : " + nbExit[3].ToString();
+
             yield return new WaitForSeconds(0f);
         }
+
     }
 
     /// <summary>
@@ -257,9 +397,9 @@ public class GameController : MonoBehaviour
     /// </summary>
     IEnumerator AddCars()
     {
-        StartCoroutine(AddIntCar(IntCarGreen, nbGreen, true));
+        StartCoroutine(AddIntCar(IntCarGreen, nbGreen, true, nbGreenExit0, nbGreenExit1, nbGreenExit2, nbGreenExit3));
         yield return new WaitForSeconds(0f);
-        StartCoroutine(AddIntCar(IntCarRed, nbRed, false));
+        StartCoroutine(AddIntCar(IntCarRed, nbRed, false, nbRedExit0, nbRedExit1, nbRedExit2, nbRedExit3));
         yield return new WaitForSeconds(0f);
         StartCoroutine(AddExtCars());
     }

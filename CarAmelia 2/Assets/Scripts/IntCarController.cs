@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class IntCarController : CarController
 {
     // Liste des positions des sorties connues
-    private List<Position> exitsKnown = new List<Position>();
+    private List<Position> exitsKnown;
 
     // `true` si la voiture est honnête (dit toujours la vérité lors des échanges d'informations)
     // et `false` sinon
@@ -16,6 +16,7 @@ public class IntCarController : CarController
     public List<Position> ExitsKnown
     {
         get { return exitsKnown; }
+        set { exitsKnown = value; }
     }
 
     public bool Sincerity
@@ -49,38 +50,6 @@ public class IntCarController : CarController
         // Détermination de la prochaine position
         nextPosition = nodesToCross[indexNode].name;
 
-        // Détermination aléatoire des sorties connues
-        if (alea.Next(0, 2) == 1)
-        {
-            exitsKnown.Add(new Position(113)); // Sortie Bleue
-        }
-        if (alea.Next(0, 2) == 1)
-        {
-            exitsKnown.Add(new Position(115)); // Sortie Orange
-        }
-        if (alea.Next(0, 2) == 1)
-        {
-            exitsKnown.Add(new Position(117)); // Sortie Blanche
-        }
-
-        // Définition du texte à afficher dans le canevas (informations relatives à la voiture intérieure)
-        string message = "";
-        for (int j = 0; j < exitsKnown.Count; j++)
-        {
-            if (exitsKnown[j].Number == 113)
-            {
-                message += "\n- Sortie Bleue";
-            }
-            if (exitsKnown[j].Number == 115)
-            {
-                message += "\n- Sortie Orange";
-            }
-            if (exitsKnown[j].Number == 117)
-            {
-                message += "\n- Sortie Blanche";
-            }
-        }
-        textCanvas.text = "Les sorties connues : " + message + "\nTarget : " + target.ToString() + ", Noeuds : " + nodesToCross.Count.ToString();
     }
 
     /// <summary>
@@ -89,6 +58,7 @@ public class IntCarController : CarController
     public void Update()
     {
         SensorsObstacle();
+        WriteInformation();
     }
 
     /// <summary>
@@ -150,5 +120,30 @@ public class IntCarController : CarController
         {
             isBraking = false;
         }
+    }
+
+    /// <summary>
+    /// Méthode pour écrire les informations dans le canevas de la voiture
+    /// </summary>
+    public override void WriteInformation()
+    {
+        // Définition du texte à afficher dans le canevas (informations relatives à la voiture intérieure)
+        string message = "";
+        for (int j = 0; j < exitsKnown.Count; j++)
+        {
+            if (exitsKnown[j].Number == 113)
+            {
+                message += "\n- Sortie Bleue";
+            }
+            if (exitsKnown[j].Number == 115)
+            {
+                message += "\n- Sortie Orange";
+            }
+            if (exitsKnown[j].Number == 117)
+            {
+                message += "\n- Sortie Blanche";
+            }
+        }
+        textCanvas.text = "Les sorties connues : " + message; // + "\nTarget : " + target.ToString() + ", Noeuds : " + nodesToCross.Count.ToString();
     }
 }
