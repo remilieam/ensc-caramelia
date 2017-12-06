@@ -42,6 +42,7 @@ public class ExtCarController : CarController
     }
     public int Generosity
     {
+        get { return generosity; }
         set { generosity = value; }
     }
     public Transform Exit
@@ -60,10 +61,6 @@ public class ExtCarController : CarController
 
         // Récupération de sa position initiale
         position = new Position(111);
-
-        //// Définition aléatoire de son degré de confiance et de générosité
-        //trust = alea.Next(1, 6);
-        //generosity = alea.Next(1, 6);
 
         // La voiture démarre en mode aléatoire ==> pas de position objectif
         aleaMode = true;
@@ -262,7 +259,7 @@ public class ExtCarController : CarController
             ExtCarController extCar = (ExtCarController)car;
 
             // Si la voiture est assez généreuse pour partager de l'information (elle n'est donc pas en mode aléatoire)
-            if (extCar.alea.Next(1, 5) >= extCar.generosity && !extCar.aleaMode)
+            if (extCar.alea.Next(1, 5) >= extCar.Generosity && !extCar.aleaMode)
             {
                 // ... alors la voiture prend la position objectif de la voiture croisée
                 this.target = car.Target;
