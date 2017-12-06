@@ -36,6 +36,14 @@ public class ExtCarController : CarController
     private Image cross;
     private Image check;
 
+    // Attributs pour l'interface de fin
+    private static List<int> nbSuccessExchangeExt = new List<int> { 0, 0, 0 };
+    private static List<int> nbSuccessExchangeInt = new List<int> { 0, 0, 0 };
+    private static List<int> nbExchangeExt = new List<int> { 0, 0, 0 };
+    private static List<int> nbExchangeInt = new List<int> { 0, 0, 0 };
+    private float exitTime;
+    private bool finish = false;
+
     public int Trust
     {
         set { trust = value; }
@@ -50,7 +58,10 @@ public class ExtCarController : CarController
         get { return exit; }
         set { exit = value; }
     }
-
+    public bool Finish
+    {
+        get { return finish; }
+    }
 
     /// <summary>
     /// "Constructeur" pour initialiser les paramètres de la voiture extérieure
@@ -124,7 +135,9 @@ public class ExtCarController : CarController
                 // Si la voiture a atteint sa sortie (même par hasard), elle a gagné ! (Et donc est détruite, c'est très logique.)
                 if (nodes[nextPosition.Number] == exit)
                 {
-                    Destroy(gameObject);
+                    exitTime = Time.time;
+                    gameObject.SetActive(false);
+                    finish = true;
                 }
 
                 // Actualisation de sa position et ajout aux positions déjà parcourues
@@ -266,6 +279,7 @@ public class ExtCarController : CarController
 
                 // Échange réussi ! ^^ ==> Affichage de la checkmark
                 canvasCheck.enabled = true;
+                UpdateExchange(true, true);
 
                 // Calcul du chemin le plus court pour atteindre sa position objectif
                 FindingPath();
@@ -275,6 +289,7 @@ public class ExtCarController : CarController
             {
                 // Échec de l'échange ! :'( ==> Affichage de la crossmark ==> Il ne se passe rien
                 canvasCross.enabled = true;
+                UpdateExchange(true, false);
             }
         }
 
@@ -300,7 +315,8 @@ public class ExtCarController : CarController
 
                         // Échange réussi ! ^^ ==> Affichage de la checkmark
                         canvasCheck.enabled = true;
-
+                        UpdateExchange(false, true);
+                        
                         // Calcul du chemin le plus court pour atteindre sa position objectif
                         FindingPath();
                         aleaMode = false;
@@ -312,6 +328,7 @@ public class ExtCarController : CarController
                 {
                     // Échec de l'échange ! :'( ==> Affichage de la crossmark ==> Il ne se passe rien
                     canvasCross.enabled = true;
+                    UpdateExchange(false, false);
                 }
             }
 
@@ -326,7 +343,7 @@ public class ExtCarController : CarController
                     // Cas où la voiture intérieure croisée ne connaît qu'une seule sortie
                     if (intCar.ExitsKnown.Count == 1)
                     {
-                        // Vérification que la sortie connue n'est pas seule de "notre" voiture
+                        // Vérification que la sortie connue n'est pas celle de "notre" voiture
                         if (nodes[intCar.ExitsKnown[0].Number] != exit)
                         {
                             extCarGivesExit = true;
@@ -336,12 +353,12 @@ public class ExtCarController : CarController
 
                             // Échange réussi ! ^^ ==> Affichage de la checkmark
                             canvasCheck.enabled = true;
+                            UpdateExchange(false, true);
 
                             // Calcul du chemin le plus court pour atteindre sa position objectif
                             FindingPath();
                             aleaMode = false;
                         }
-
                     }
 
                     // Cas où la voiture intérieure croisée connaît plusieurs sorties
@@ -361,6 +378,7 @@ public class ExtCarController : CarController
 
                         // Échange réussi ! ^^ ==> Affichage de la checkmark
                         canvasCheck.enabled = true;
+                        UpdateExchange(false, true);
 
                         // Calcul du chemin le plus court pour atteindre sa position objectif
                         FindingPath();
@@ -374,6 +392,76 @@ public class ExtCarController : CarController
                 {
                     // Échec de l'échange ! :'( ==> Affichage de la crossmark ==> Il ne se passe rien
                     canvasCross.enabled = true;
+                    UpdateExchange(false, false);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Méthode pour mettre à jour le nombre d'échanges
+    /// </summary>
+    /// <param name="type">True si la voiture est extérieure</param>
+    /// <param name="success">True si l'échange est un succère</param>
+    private void UpdateExchange(bool type, bool success)
+    {
+        // C'est la voiture bleue !
+        if (exit == nodes[113])
+        {
+            if (type)
+            {
+                nbExchangeExt[0] += 1;
+                if (success)
+                {
+                    nbSuccessExchangeExt[0] += 1;
+                }
+            }
+            else
+            {
+                nbExchangeInt[0] += 1;
+                if (success)
+                {
+                    nbSuccessExchangeInt[0] += 1;
+                }
+            }
+        }
+        // C'est la voiture orange !
+        else if (exit == nodes[115])
+        {
+            if (type)
+            {
+                nbExchangeExt[1] += 1;
+                if (success)
+                {
+                    nbSuccessExchangeExt[1] += 1;
+                }
+            }
+            else
+            {
+                nbExchangeInt[1] += 1;
+                if (success)
+                {
+                    nbSuccessExchangeInt[1] += 1;
+                }
+            }
+        }
+        // C'est la voiture blanche !
+        else
+        {
+            if (type)
+            {
+                nbExchangeExt[2] += 1;
+                if (success)
+                {
+                    nbSuccessExchangeExt[2] += 1;
+                }
+            }
+            else
+            {
+                nbExchangeInt[2] += 1;
+                if (success)
+                {
+                    nbSuccessExchangeInt[2] += 1;
                 }
             }
         }

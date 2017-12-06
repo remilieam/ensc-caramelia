@@ -49,7 +49,6 @@ public class IntCarController : CarController
 
         // Détermination de la prochaine position
         nextPosition = nodesToCross[indexNode].name;
-
     }
 
     /// <summary>

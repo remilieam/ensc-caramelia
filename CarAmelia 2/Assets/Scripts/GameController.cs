@@ -23,6 +23,8 @@ public class GameController : MonoBehaviour
     public GameObject ExtCarWhite;
     public GameObject IntCarGreen;
     public GameObject IntCarRed;
+    private List<ExtCarController> listExtCars = new List<ExtCarController>();
+    private List<IntCarController> listIntCars=new List<IntCarController>();
 
     // Les paramètres des voitures vertes
     private int nbGreen;
@@ -58,6 +60,8 @@ public class GameController : MonoBehaviour
     private Button playBreakButton;
     private Button playStopButton;
     private Button playRestartButton;
+    private Text timeDisplay;
+    private float startTime;
     // Cavenas de l'interface de fin
     private Canvas stopCanvas;
 
@@ -97,6 +101,7 @@ public class GameController : MonoBehaviour
         playStopButton.onClick.AddListener(StopOnClick);
         playRestartButton = playCanvas.GetComponentsInChildren<Button>()[3];
         playRestartButton.onClick.AddListener(RestartOnClick);
+        timeDisplay = playCanvas.GetComponentInChildren<Text>();
         
         // Initialisation de l'interface de fin
         stopCanvas = this.GetComponentsInChildren<Canvas>()[2];
@@ -180,7 +185,7 @@ public class GameController : MonoBehaviour
                 nbWhiteGenerosity5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[42].text);
 
                 // Vérification que toutes les voitures intérieures peuvent avoir une position initiale et que l'utilisateur sait compter
-                if (nbGreen + nbRed <= 116 &&
+                if (nbGreen + nbRed <= 115 &&
                     nbGreenExit0 + nbGreenExit1 + nbGreenExit2 + nbGreenExit3 == nbGreen &&
                     nbRedExit0 + nbRedExit1 + nbRedExit2 + nbRedExit3 == nbRed &&
                     nbBlueTrust1 + nbBlueTrust2 + nbBlueTrust3 + nbBlueTrust4 + nbBlueTrust5 == nbBlue &&
@@ -194,6 +199,37 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+
+        if(playCanvas.enabled)
+        {
+            float currentTime = Time.time - startTime;
+            string minutes = ((int)currentTime / 60).ToString();
+            string seconds = ((int)currentTime % 60).ToString();
+            timeDisplay.text = minutes + ":" + seconds;
+
+            // Vérification que le jeu est fini
+            bool notFinished = false;
+            foreach (ExtCarController extCar in listExtCars)
+            {
+                // Si une des voitures extérieures n'a pas atteint sa sortie, le jeu n'est pas fini
+                if(!extCar.Finish)
+                {
+                    notFinished = true;
+                }
+            }
+
+            // Cas où il n'y a que des voitures intérieures ==> on continue la simulation
+            if(listExtCars.Count == 0)
+            {
+                notFinished = true;
+            }
+
+            // Si toutes le jeu est fini
+            if(!notFinished)
+            {
+                DisplayEnd();
+            }
+        }
     }
 
     /// <summary>
@@ -204,6 +240,7 @@ public class GameController : MonoBehaviour
         startCanvas.enabled = false;
         playCanvas.enabled = true;
         StartCoroutine(AddCars());
+        startTime = Time.time;
     }
 
     /// <summary>
@@ -243,8 +280,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     private void StopOnClick()
     {
-        Time.timeScale = 0;
-        stopCanvas.enabled = true;
+        DisplayEnd();
     }
 
     /// <summary>
@@ -275,9 +311,10 @@ public class GameController : MonoBehaviour
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, nodes[111].transform.eulerAngles.y, 0);
 			GameObject newCar = Instantiate(car, spawnPosition, rotation);
-            newCar.GetComponent<ExtCarController>().Exit = nodes[numberExit];
-			newCar.GetComponent<ExtCarController>().Path = path;
-            newCar.GetComponent<ExtCarController>().CameraView = cameraView;
+            ExtCarController extCar = newCar.GetComponent<ExtCarController>();
+            extCar.Exit = nodes[numberExit];
+            extCar.Path = path;
+            extCar.CameraView = cameraView;
 
             // TRUST
             // alea.Next(5) car la taille des listes Trust est de 5
@@ -288,7 +325,7 @@ public class GameController : MonoBehaviour
                 trust = alea.Next(5);
             }
             // On associe le paramètre "Trust" à la voiture
-            newCar.GetComponent<ExtCarController>().Trust = trust + 1;
+            extCar.Trust = trust + 1;
             // On dés-incrémente les nombres dans la liste
             nbTrust[trust] -= 1;
 
@@ -301,10 +338,12 @@ public class GameController : MonoBehaviour
                 generosity = alea.Next(5);
             }
             // On associe le paramètre "Generosity" à la voiture
-            newCar.GetComponent<ExtCarController>().Generosity = generosity + 1;
+            extCar.Generosity = generosity + 1;
             // On dés-incrémente le nombre dans la liste
             nbGenerosity[generosity] -= 1;
-            
+
+            listExtCars.Add(extCar);
+
             yield return new WaitForSeconds(wait);
         }
     }
@@ -354,7 +393,7 @@ public class GameController : MonoBehaviour
                 for (int j = 0; j < positionTakenInt.Count; j++)
                 {
                     // Si la position choisie aléatoirement est déjà occupée par une voiture intérieure ou à côté d'une voiture extérieure
-                    if (positionTakenInt[j] == positionTakenIndex || positionTakenIndex == 111 || positionTakenIndex == 110)
+                    if (positionTakenInt[j] == positionTakenIndex || positionTakenIndex == 111 || positionTakenIndex == 110 || positionTakenIndex == 97)
                     {
                         positionNotTakenBool = false;
                     }
@@ -365,7 +404,6 @@ public class GameController : MonoBehaviour
                 {
                     notFound = false;
                 }
-
             }
 
             // Ajout de la position à la liste des positions initiales déjà prises
@@ -377,9 +415,10 @@ public class GameController : MonoBehaviour
             Quaternion rotation = Quaternion.identity;
             rotation.eulerAngles = new Vector3(0, node.transform.eulerAngles.y, 0);
             GameObject newCar = Instantiate(car, spawnPosition, rotation);
-            newCar.GetComponent<IntCarController>().Sincerity = sincerity;
-            newCar.GetComponent<IntCarController>().Path = path;
-            newCar.GetComponent<IntCarController>().CameraView = cameraView;
+            IntCarController intCar = newCar.GetComponent<IntCarController>();
+            intCar.Sincerity = sincerity;
+            intCar.Path = path;
+            intCar.CameraView = cameraView;
 
             // On vérifie que le nombre de la liste est différent de 0
             while (nbExit[increment] == 0)
@@ -403,11 +442,12 @@ public class GameController : MonoBehaviour
             // On dés-incrémente le nombre dans la liste
             nbExit[increment] -= 1;
             // On associe la liste à la voiture
-            newCar.GetComponent<IntCarController>().ExitsKnown = exitsKnown;
+            intCar.ExitsKnown = exitsKnown;
+
+            listIntCars.Add(intCar);
 
             yield return new WaitForSeconds(0f);
         }
-
     }
 
     /// <summary>
@@ -420,5 +460,58 @@ public class GameController : MonoBehaviour
         StartCoroutine(AddIntCar(IntCarRed, nbRed, false, nbRedExit0, nbRedExit1, nbRedExit2, nbRedExit3));
         yield return new WaitForSeconds(0f);
         StartCoroutine(AddExtCars());
+    }
+
+    /// <summary>
+    /// Méthode qui affiche l'interface de fin
+    /// </summary>
+    private void DisplayEnd()
+    {
+        // On arrête le temps
+        Time.timeScale = 0;
+
+        // Récupération des textes
+        Text[] textStopCanvas = stopCanvas.GetComponentsInChildren<Text>();
+        textStopCanvas[2].text += nbGreen.ToString();
+        textStopCanvas[3].text += MeanInt(0);
+        textStopCanvas[4].text += nbRed.ToString();
+        textStopCanvas[5].text += MeanInt(1);
+
+
+        stopCanvas.enabled = true;
+    }
+
+    /// <summary>
+    /// Méthode pour calculer des moyennes sur les voitures intérieures
+    /// </summary>
+    /// <param name="property">0 pour les voitures sincères, 1 pour les non-sincères</param>
+    /// <returns>La moyenne de la propriété qui nous intéresse</returns>
+    public float MeanInt(int property)
+    {
+        float mean = 0;
+        // Pour les voitures sincères
+        if (property == 0)
+        {
+            for (int i = 0; i < listIntCars.Count; i++)
+            {
+                if (listIntCars[i].Sincerity)
+                {
+                    mean += listIntCars[i].ExitsKnown.Count;
+                }
+            }
+            return mean / nbGreen * 1.0f;
+        }
+        // Pour les voitures non-sincères
+        else
+        {
+            for (int i = 0; i < listIntCars.Count; i++)
+            {
+                if (!listIntCars[i].Sincerity)
+                {
+                    mean += listIntCars[i].ExitsKnown.Count;
+                }
+            }
+            return mean / nbRed * 1.0f;
+        }
     }
 }
