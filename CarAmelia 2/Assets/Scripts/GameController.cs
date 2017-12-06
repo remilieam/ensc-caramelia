@@ -117,12 +117,17 @@ public class GameController : MonoBehaviour
         if (startCanvas.enabled)
         {
             bool ready = true;
-            startButton.enabled = false;
+			startButton.enabled = false;
+			InputField[] listInputFields = startCanvas.GetComponentsInChildren<InputField> ();
+			GameObject[] listImages = GameObject.FindGameObjectsWithTag("Cross");
+			listImages [0].GetComponent<Image>().enabled = false;
+			listImages [1].GetComponent<Image>().enabled = false;
+			listImages [2].GetComponent<Image>().enabled = false;
 
             // Vérification qu'aucun champs n'est vide
-            for (int i = 0; i < startCanvas.GetComponentsInChildren<InputField>().Length; i++)
+            for (int i = 0; i < listInputFields.Length; i++)
             {
-                if (startCanvas.GetComponentsInChildren<InputField>()[i].text == "")
+                if (listInputFields[i].text == "")
                 {
                     ready = false;
                 }
@@ -132,57 +137,88 @@ public class GameController : MonoBehaviour
             if (ready)
             {
                 // Pour les voitures vertes
-                nbGreen = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[0].text);
-                nbGreenExit0 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[1].text);
-                nbGreenExit1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[2].text);
-                nbGreenExit2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[3].text);
-                nbGreenExit3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[4].text);
+				listInputFields[0].enabled = false;
+				nbGreenExit0 = Convert.ToInt32(listInputFields[1].text);
+				nbGreenExit1 = Convert.ToInt32(listInputFields[2].text);
+				nbGreenExit2 = Convert.ToInt32(listInputFields[3].text);
+				nbGreenExit3 = Convert.ToInt32(listInputFields[4].text);
+				nbGreen = nbGreenExit0 + nbGreenExit1 + nbGreenExit2 + nbGreenExit3;
+				listInputFields[0].text = nbGreen.ToString();
 
-                // Pour les voitures rouges
-                nbRed = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[5].text);
-                nbRedExit0 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[6].text);
-                nbRedExit1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[7].text);
-                nbRedExit2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[8].text);
-                nbRedExit3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[9].text);
+				// Pour les voitures rouges
+				listInputFields[5].enabled = false;
+				nbRedExit0 = Convert.ToInt32(listInputFields[6].text);
+				nbRedExit1 = Convert.ToInt32(listInputFields[7].text);
+				nbRedExit2 = Convert.ToInt32(listInputFields[8].text);
+				nbRedExit3 = Convert.ToInt32(listInputFields[9].text);
+				nbRed = nbRedExit0 + nbRedExit1 + nbRedExit2 + nbRedExit3;
+				listInputFields[5].text = nbRed.ToString();
 
-                // Pour les voitures bleues
-                nbBlue = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[10].text);
-                nbBlueTrust1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[11].text);
-                nbBlueTrust2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[12].text);
-                nbBlueTrust3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[13].text);
-                nbBlueTrust4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[14].text);
-                nbBlueTrust5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[15].text);
-                nbBlueGenerosity1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[16].text);
-                nbBlueGenerosity2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[17].text);
-                nbBlueGenerosity3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[18].text);
-                nbBlueGenerosity4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[19].text);
-                nbBlueGenerosity5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[20].text);
+				// Pour les voitures bleues
+				listInputFields[10].enabled = false;
+				nbBlueTrust1 = Convert.ToInt32(listInputFields[11].text);
+				nbBlueTrust2 = Convert.ToInt32(listInputFields[12].text);
+				nbBlueTrust3 = Convert.ToInt32(listInputFields[13].text);
+				nbBlueTrust4 = Convert.ToInt32(listInputFields[14].text);
+				nbBlueTrust5 = Convert.ToInt32(listInputFields[15].text);
+				nbBlueGenerosity1 = Convert.ToInt32(listInputFields[16].text);
+				nbBlueGenerosity2 = Convert.ToInt32(listInputFields[17].text);
+				nbBlueGenerosity3 = Convert.ToInt32(listInputFields[18].text);
+				nbBlueGenerosity4 = Convert.ToInt32(listInputFields[19].text);
+				nbBlueGenerosity5 = Convert.ToInt32(listInputFields[20].text);
+				if (nbBlueTrust1 + nbBlueTrust2 + nbBlueTrust3 + nbBlueTrust4 + nbBlueTrust5 != nbBlueGenerosity1 + nbBlueGenerosity2 + nbBlueGenerosity3 + nbBlueGenerosity4 + nbBlueGenerosity5)
+				{
+					listImages [2].GetComponent<Image> ().enabled = true;
+				}
+				else
+				{
+					nbBlue = nbBlueTrust1 + nbBlueTrust2 + nbBlueTrust3 + nbBlueTrust4 + nbBlueTrust5;
+					listInputFields[10].text = nbBlue.ToString();
+				}
 
-                // Pour les voitures orange
-                nbOrange = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[21].text);
-                nbOrangeTrust1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[22].text);
-                nbOrangeTrust2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[23].text);
-                nbOrangeTrust3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[24].text);
-                nbOrangeTrust4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[25].text);
-                nbOrangeTrust5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[26].text);
-                nbOrangeGenerosity1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[27].text);
-                nbOrangeGenerosity2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[28].text);
-                nbOrangeGenerosity3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[29].text);
-                nbOrangeGenerosity4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[30].text);
-                nbOrangeGenerosity5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[31].text);
+				// Pour les voitures orange
+				listInputFields[21].enabled = false;
+                nbOrangeTrust1 = Convert.ToInt32(listInputFields[22].text);
+                nbOrangeTrust2 = Convert.ToInt32(listInputFields[23].text);
+                nbOrangeTrust3 = Convert.ToInt32(listInputFields[24].text);
+                nbOrangeTrust4 = Convert.ToInt32(listInputFields[25].text);
+                nbOrangeTrust5 = Convert.ToInt32(listInputFields[26].text);
+                nbOrangeGenerosity1 = Convert.ToInt32(listInputFields[27].text);
+                nbOrangeGenerosity2 = Convert.ToInt32(listInputFields[28].text);
+                nbOrangeGenerosity3 = Convert.ToInt32(listInputFields[29].text);
+                nbOrangeGenerosity4 = Convert.ToInt32(listInputFields[30].text);
+				nbOrangeGenerosity5 = Convert.ToInt32(listInputFields[31].text);
+				if (nbOrangeTrust1 + nbOrangeTrust2 + nbOrangeTrust3 + nbOrangeTrust4 + nbOrangeTrust5 != nbOrangeGenerosity1 + nbOrangeGenerosity2 + nbOrangeGenerosity3 + nbOrangeGenerosity4 + nbOrangeGenerosity5)
+				{
+					listImages [1].GetComponent<Image> ().enabled = true;
+				}
+				else
+				{
+					nbOrange = nbOrangeTrust1 + nbOrangeTrust2 + nbOrangeTrust3 + nbOrangeTrust4 + nbOrangeTrust5;
+					listInputFields[21].text = nbOrange.ToString();
+				}
 
-                // Pour les voitures blanches
-                nbWhite = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[32].text);
-                nbWhiteTrust1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[33].text);
-                nbWhiteTrust2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[34].text);
-                nbWhiteTrust3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[35].text);
-                nbWhiteTrust4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[36].text);
-                nbWhiteTrust5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[37].text);
-                nbWhiteGenerosity1 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[38].text);
-                nbWhiteGenerosity2 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[39].text);
-                nbWhiteGenerosity3 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[40].text);
-                nbWhiteGenerosity4 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[41].text);
-                nbWhiteGenerosity5 = Convert.ToInt32(startCanvas.GetComponentsInChildren<InputField>()[42].text);
+				// Pour les voitures blanches
+				listInputFields[32].enabled = false;
+                nbWhiteTrust1 = Convert.ToInt32(listInputFields[33].text);
+                nbWhiteTrust2 = Convert.ToInt32(listInputFields[34].text);
+                nbWhiteTrust3 = Convert.ToInt32(listInputFields[35].text);
+                nbWhiteTrust4 = Convert.ToInt32(listInputFields[36].text);
+                nbWhiteTrust5 = Convert.ToInt32(listInputFields[37].text);
+                nbWhiteGenerosity1 = Convert.ToInt32(listInputFields[38].text);
+                nbWhiteGenerosity2 = Convert.ToInt32(listInputFields[39].text);
+                nbWhiteGenerosity3 = Convert.ToInt32(listInputFields[40].text);
+                nbWhiteGenerosity4 = Convert.ToInt32(listInputFields[41].text);
+				nbWhiteGenerosity5 = Convert.ToInt32(listInputFields[42].text);
+				if (nbWhiteTrust1 + nbWhiteTrust2 + nbWhiteTrust3 + nbWhiteTrust4 + nbWhiteTrust5 != nbWhiteGenerosity1 + nbWhiteGenerosity2 + nbWhiteGenerosity3 + nbWhiteGenerosity4 + nbWhiteGenerosity5)
+				{
+					listImages [0].GetComponent<Image> ().enabled = true;
+				}
+				else
+				{
+					nbWhite = nbWhiteTrust1 + nbWhiteTrust2 + nbWhiteTrust3 + nbWhiteTrust4 + nbWhiteTrust5;
+					listInputFields[32].text = nbWhite.ToString();
+				}
 
                 // Vérification que toutes les voitures intérieures peuvent avoir une position initiale et que l'utilisateur sait compter
                 if (nbGreen + nbRed <= 115 &&
@@ -469,6 +505,7 @@ public class GameController : MonoBehaviour
     {
         // On arrête le temps
         Time.timeScale = 0;
+		playCanvas.enabled = false;
 
         // Récupération des textes
         Text[] textStopCanvas = stopCanvas.GetComponentsInChildren<Text>();

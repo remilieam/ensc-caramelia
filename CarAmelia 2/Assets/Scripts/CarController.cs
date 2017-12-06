@@ -296,13 +296,6 @@ public abstract class CarController : MonoBehaviour
     }
 
     /// <summary>
-    /// Méthode pour réguler la vitesse de la voiture
-    /// </summary>
-    protected void SpeedRegulation()
-    {
-    }
-
-    /// <summary>
     /// Méthode qui définit aléatoirement la prochaine position de la voiture
     /// </summary>
     /// <param name="currentPosition">Position actuelle de la voiture</param>

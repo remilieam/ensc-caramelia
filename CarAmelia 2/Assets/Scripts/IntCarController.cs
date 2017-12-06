@@ -37,8 +37,12 @@ public class IntCarController : CarController
         float positionZ = this.transform.position.z;
         position = new Position(FindNode(positionX, positionZ));
 
-        // Détermination aléatoire de sa position objectif
+		// Détermination aléatoire de sa position objectif (sauf parmi les noeuds inaccessibles)
         target = new Position(alea.Next(nodesTable.GetLength(1)));
+		while (target.Number == 110 || target.Number == 111 || target.Number == 96 || target.Number == 97)
+		{
+			target = new Position (alea.Next (nodesTable.GetLength (1)));
+		}
         // Vérification que la position objectif n'est pas sa position initiale
         while (target.SamePosition(position))
         {
