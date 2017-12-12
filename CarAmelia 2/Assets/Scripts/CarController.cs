@@ -298,7 +298,6 @@ public abstract class CarController : MonoBehaviour
     /// <summary>
     /// Méthode qui définit aléatoirement la prochaine position de la voiture
     /// </summary>
-    /// <param name="currentPosition">Position actuelle de la voiture</param>
     /// <returns></returns>
     protected void SuccessorAlea()
     {
@@ -352,7 +351,7 @@ public abstract class CarController : MonoBehaviour
                 //textCanvas.text = "Milieu";
                 detected = true;
                 Debug.DrawLine(sensorStartPos, hit.point);
-                DetectionFront(hit.transform.gameObject);
+                DetectionObstacle(hit.transform.gameObject);
             }
 
             // Repositionnement du capteur vers la droite
@@ -363,7 +362,7 @@ public abstract class CarController : MonoBehaviour
             {
                 detected = true;
                 Debug.DrawLine(sensorStartPos, hit.point);
-                DetectionFront(hit.transform.gameObject);
+                DetectionObstacle(hit.transform.gameObject);
             }
 
             // Capteur oblique de droite
@@ -372,27 +371,16 @@ public abstract class CarController : MonoBehaviour
                 //textCanvas.text = "Droite";
                 detected = true;
                 Debug.DrawLine(sensorStartPos, hit.point);
-                DetectionRight(hit.transform.gameObject);
+                DetectionObstacle(hit.transform.gameObject);
             }
-
-            //// Repositionnement du capteur vers la gauche
-            //sensorStartPos.x -= 2 * frontSideSensorPosition;
 
             // Capteur frontal de gauche
             if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLengthObstacle))
             {
                 detected = true;
                 Debug.DrawLine(sensorStartPos, hit.point);
-                DetectionFront(hit.transform.gameObject);
+                DetectionObstacle(hit.transform.gameObject);
             }
-
-            //// Capteur oblique de gauche
-            //if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-obliqueSensorAngle, transform.up) * transform.forward, out hit, sensorLengthObstacle))
-            //{
-            //    detected = true;
-            //    Debug.DrawLine(sensorStartPos, hit.point);
-            //    DetectionFront(hit.transform.gameObject);
-            //}
         }
         if (!detected)
         {
@@ -401,30 +389,15 @@ public abstract class CarController : MonoBehaviour
     }
 
     /// <summary>
-    /// Méthode qui fait stopper la voiture lorsqu'elle détecte
-    /// une voiture en face d'elle
+    /// Méthode qui fait stopper la voiture lorsqu'elle détecte une voiture
     /// </summary>
     /// <param name="hitCar">Voiture détéctée</param>
-    public void DetectionFront(GameObject hitCar)
+    public void DetectionObstacle(GameObject hitCar)
     {
-        //if (hitCar.GetComponent<CarController>().isStopped)
-        //{
+        if(position.Number != 111)
+        {
             isStopped = true;
-        //}
-        //else
-        //{
-        //    isStopped = false;
-        //}
-    }
-
-    /// <summary>
-    /// Méthode qui fait stopper la voiture lorsqu'elle détecte
-    /// une voiture dans une priorité à droite
-    /// </summary>
-    /// <param name="hitCar">Voiture détéctée</param>
-    public void DetectionRight(GameObject hitCar)
-    {
-        isStopped = true;
+        }
     }
 
     protected abstract void CheckWaypoint();

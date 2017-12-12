@@ -525,77 +525,6 @@ Transform:
   m_Father: {fileID: 368896798}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &37913755
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 120607770691256046, guid: 273fcbeca5a881f45b515e3ac9a4bda7,
-        type: 2}
-      propertyPath: m_Positions.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4262075924198002, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4262075924198002, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4262075924198002, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4262075924198002, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4262075924198002, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4262075924198002, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4262075924198002, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4262075924198002, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1443333903778096, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 120607770691256046, guid: 273fcbeca5a881f45b515e3ac9a4bda7,
-        type: 2}
-      propertyPath: m_Positions.Array.data[1].x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 120607770691256046, guid: 273fcbeca5a881f45b515e3ac9a4bda7,
-        type: 2}
-      propertyPath: m_Positions.Array.data[1].z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 120607770691256046, guid: 273fcbeca5a881f45b515e3ac9a4bda7,
-        type: 2}
-      propertyPath: m_Positions.Array.data[2].x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 120607770691256046, guid: 273fcbeca5a881f45b515e3ac9a4bda7,
-        type: 2}
-      propertyPath: m_Positions.Array.data[2].z
-      value: 2
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &40715202
 GameObject:
   m_ObjectHideFlags: 0
@@ -1933,7 +1862,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -379.24, y: 261.11945}
+  m_AnchoredPosition: {x: -640.998, y: 446.5}
   m_SizeDelta: {x: 1124.3, y: 1184.6}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &121616793
@@ -3679,7 +3608,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Nombre d'\xE9changes r\xE9ussis avec les voitures int\xE9rieures :"
+  m_Text: "Nombre d'\xE9changes r\xE9ussis avec les voitures int\xE9rieures : "
 --- !u!222 &221206295
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4366,7 +4295,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 656267828}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.6670817
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4742,7 +4671,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -374.86023, y: 265.90088}
+  m_AnchoredPosition: {x: -640.998, y: 446.50006}
   m_SizeDelta: {x: 1124.3, y: 1493.3}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &293293930
@@ -6641,7 +6570,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 130229300}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.35625795
+  m_Size: 0.5980044
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6838,14 +6767,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   path: {fileID: 368896798}
   cameraView: {fileID: 1550998761}
-  ExtCarBlue: {fileID: 1443333903778096, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
-  ExtCarOrange: {fileID: 1310590377343412, guid: 344b7924382509b4fa10c32aea3bdbb7,
+  ExtCarBlue: {fileID: 1736435081247996, guid: 273fcbeca5a881f45b515e3ac9a4bda7, type: 2}
+  ExtCarOrange: {fileID: 1564480561020634, guid: 344b7924382509b4fa10c32aea3bdbb7,
     type: 2}
-  ExtCarWhite: {fileID: 1784947168889394, guid: d4ed4f559a7d9cd409acc695f1079049,
+  ExtCarWhite: {fileID: 1619058733852384, guid: d4ed4f559a7d9cd409acc695f1079049,
     type: 2}
-  IntCarGreen: {fileID: 1272748162836764, guid: a105896e2f8021244b53f63f4a21dbb5,
+  IntCarGreen: {fileID: 1771034407677150, guid: a105896e2f8021244b53f63f4a21dbb5,
     type: 2}
-  IntCarRed: {fileID: 1044996294075548, guid: a775a12336c4af34c938c378329d0d03, type: 2}
+  IntCarRed: {fileID: 1126364399204804, guid: a775a12336c4af34c938c378329d0d03, type: 2}
 --- !u!4 &389905157
 Transform:
   m_ObjectHideFlags: 0
@@ -7633,7 +7562,7 @@ GameObject:
   - component: {fileID: 433854817}
   - component: {fileID: 433854816}
   m_Layer: 5
-  m_Name: Generosity
+  m_Name: Trust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7689,7 +7618,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "G\xE9n\xE9rosit\xE9 moyenne des voitures blanches : "
+  m_Text: 'Confiance moyenne des voitures blanches : '
 --- !u!222 &433854817
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7920,8 +7849,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1120273295}
   m_HandleRect: {fileID: 1120273294}
   m_Direction: 0
-  m_Value: 0.0113277845
-  m_Size: 0.6670817
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9606,7 +9535,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Nombre d'\xE9changes r\xE9ussis entre voitures bleues :"
+  m_Text: "Nombre d'\xE9changes r\xE9ussis entre voitures bleues : "
 --- !u!222 &510254836
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10940,7 +10869,7 @@ GameObject:
   - component: {fileID: 603198340}
   - component: {fileID: 603198339}
   m_Layer: 5
-  m_Name: Generosity
+  m_Name: Trust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10996,7 +10925,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "G\xE9n\xE9rosit\xE9 moyenne des voitures bleues : "
+  m_Text: 'Confiance moyenne des voitures bleues : '
 --- !u!222 &603198340
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14435,7 +14364,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 778018976}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.44175243
+  m_Size: 0.753841
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15096,7 +15025,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Nombre d'\xE9changes r\xE9ussis avec les voitures int\xE9rieures :"
+  m_Text: "Nombre d'\xE9changes r\xE9ussis avec les voitures int\xE9rieures : "
 --- !u!222 &813215708
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15188,7 +15117,7 @@ GameObject:
   - component: {fileID: 818805923}
   - component: {fileID: 818805922}
   m_Layer: 5
-  m_Name: Trust
+  m_Name: Generosity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15244,7 +15173,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Confiance moyenne des voitures blanches : '
+  m_Text: "G\xE9n\xE9rosit\xE9 moyenne des voitures blanches : "
 --- !u!222 &818805923
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20439,52 +20368,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1033393523}
---- !u!1001 &1033507883
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4581802944874694, guid: 344b7924382509b4fa10c32aea3bdbb7, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4581802944874694, guid: 344b7924382509b4fa10c32aea3bdbb7, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4581802944874694, guid: 344b7924382509b4fa10c32aea3bdbb7, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4581802944874694, guid: 344b7924382509b4fa10c32aea3bdbb7, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4581802944874694, guid: 344b7924382509b4fa10c32aea3bdbb7, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4581802944874694, guid: 344b7924382509b4fa10c32aea3bdbb7, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4581802944874694, guid: 344b7924382509b4fa10c32aea3bdbb7, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4581802944874694, guid: 344b7924382509b4fa10c32aea3bdbb7, type: 2}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1310590377343412, guid: 344b7924382509b4fa10c32aea3bdbb7, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 344b7924382509b4fa10c32aea3bdbb7, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1036267592
 GameObject:
   m_ObjectHideFlags: 0
@@ -27491,52 +27374,6 @@ Transform:
   m_Father: {fileID: 368896798}
   m_RootOrder: 74
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!1001 &1428223901
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4148117989421328, guid: d4ed4f559a7d9cd409acc695f1079049, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4148117989421328, guid: d4ed4f559a7d9cd409acc695f1079049, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4148117989421328, guid: d4ed4f559a7d9cd409acc695f1079049, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4148117989421328, guid: d4ed4f559a7d9cd409acc695f1079049, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4148117989421328, guid: d4ed4f559a7d9cd409acc695f1079049, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4148117989421328, guid: d4ed4f559a7d9cd409acc695f1079049, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4148117989421328, guid: d4ed4f559a7d9cd409acc695f1079049, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4148117989421328, guid: d4ed4f559a7d9cd409acc695f1079049, type: 2}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1784947168889394, guid: d4ed4f559a7d9cd409acc695f1079049, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: d4ed4f559a7d9cd409acc695f1079049, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &1429402882
 Prefab:
   m_ObjectHideFlags: 0
@@ -31117,7 +30954,7 @@ GameObject:
   - component: {fileID: 1623344910}
   - component: {fileID: 1623344909}
   m_Layer: 5
-  m_Name: Trust
+  m_Name: Generosity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31173,7 +31010,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Confiance moyenne des voitures orange : '
+  m_Text: "G\xE9n\xE9rosit\xE9 moyenne des voitures orange : "
 --- !u!222 &1623344910
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32847,7 +32684,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Nombre d'\xE9changes r\xE9ussis entre voitures blanches :"
+  m_Text: "Nombre d'\xE9changes r\xE9ussis entre voitures blanches : "
 --- !u!222 &1748860973
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32999,7 +32836,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Nombre d'\xE9changes r\xE9ussis avec les voitures int\xE9rieures :"
+  m_Text: "Nombre d'\xE9changes r\xE9ussis avec les voitures int\xE9rieures : "
 --- !u!222 &1754112083
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -33341,7 +33178,7 @@ GameObject:
   - component: {fileID: 1785827521}
   - component: {fileID: 1785827520}
   m_Layer: 5
-  m_Name: Trust
+  m_Name: Generosity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33397,7 +33234,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Confiance moyenne des voitures bleues : '
+  m_Text: "G\xE9n\xE9rosit\xE9 moyenne des voitures bleues : "
 --- !u!222 &1785827521
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -35267,7 +35104,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Nombre d'\xE9changes r\xE9ussis entre voitures orange :"
+  m_Text: "Nombre d'\xE9changes r\xE9ussis entre voitures orange : "
 --- !u!222 &1911138142
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -36018,7 +35855,7 @@ GameObject:
   - component: {fileID: 1946905888}
   - component: {fileID: 1946905887}
   m_Layer: 5
-  m_Name: Generosity
+  m_Name: Trust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36074,7 +35911,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "G\xE9n\xE9rosit\xE9 moyenne des voitures orange : "
+  m_Text: 'Confiance moyenne des voitures orange : '
 --- !u!222 &1946905888
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -37111,52 +36948,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1993910746}
---- !u!1001 &1996959663
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4738191910253920, guid: a105896e2f8021244b53f63f4a21dbb5, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4738191910253920, guid: a105896e2f8021244b53f63f4a21dbb5, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4738191910253920, guid: a105896e2f8021244b53f63f4a21dbb5, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4738191910253920, guid: a105896e2f8021244b53f63f4a21dbb5, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4738191910253920, guid: a105896e2f8021244b53f63f4a21dbb5, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4738191910253920, guid: a105896e2f8021244b53f63f4a21dbb5, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4738191910253920, guid: a105896e2f8021244b53f63f4a21dbb5, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4738191910253920, guid: a105896e2f8021244b53f63f4a21dbb5, type: 2}
-      propertyPath: m_RootOrder
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1272748162836764, guid: a105896e2f8021244b53f63f4a21dbb5, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: a105896e2f8021244b53f63f4a21dbb5, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1997053923
 GameObject:
   m_ObjectHideFlags: 0
@@ -37409,52 +37200,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2011880687}
---- !u!1001 &2014033778
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4336288187919332, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4336288187919332, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4336288187919332, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4336288187919332, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4336288187919332, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4336288187919332, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4336288187919332, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4336288187919332, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-      propertyPath: m_RootOrder
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 1044996294075548, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: a775a12336c4af34c938c378329d0d03, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &2014380198
 GameObject:
   m_ObjectHideFlags: 0

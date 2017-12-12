@@ -25,6 +25,7 @@ public class ExtCarController : CarController
 
     // Permet de savoir si la voiture échange de l'information
     private bool endExchange = true;
+    private CarController meetingCar;
 
     // Objets pour afficher la flèche d'échange d'information
     // et le trait qui indique sa position objectif
@@ -36,16 +37,17 @@ public class ExtCarController : CarController
     private Image cross;
     private Image check;
 
-    // Attributs pour l'interface de fin
-    private static List<int> nbSuccessExchangeExt = new List<int> { 0, 0, 0 };
-    private static List<int> nbSuccessExchangeInt = new List<int> { 0, 0, 0 };
-    private static List<int> nbExchangeExt = new List<int> { 0, 0, 0 };
-    private static List<int> nbExchangeInt = new List<int> { 0, 0, 0 };
+    // Attributs pour l'interface de fin (index 0 : bleues ; 1 : orange ; 2 : blanches)
+    public static List<int> nbSuccessExchangeExt = new List<int> { 0, 0, 0 };
+    public static List<int> nbSuccessExchangeInt = new List<int> { 0, 0, 0 };
+    public static List<int> nbExchangeExt = new List<int> { 0, 0, 0 };
+    public static List<int> nbExchangeInt = new List<int> { 0, 0, 0 };
     private float exitTime;
     private bool finish = false;
 
     public int Trust
     {
+        get { return trust; }
         set { trust = value; }
     }
     public int Generosity
@@ -61,6 +63,10 @@ public class ExtCarController : CarController
     public bool Finish
     {
         get { return finish; }
+    }
+    public float ExitTime
+    {
+        get { return exitTime; }
     }
 
     /// <summary>
@@ -185,7 +191,7 @@ public class ExtCarController : CarController
     public void SensorMeeting()
     {
         float frontSensorAngleMeeting = 90f;
-        float sensorLengthMeeting = 10f;
+        float sensorLengthMeeting = 5f;
         RaycastHit hit;
 
         // Position du capteur à gauche
@@ -197,6 +203,10 @@ public class ExtCarController : CarController
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             DetectionMeeting(hit.transform.gameObject);
+        }
+        else
+        {
+            meetingCar = null;
         }
     }
 
@@ -279,7 +289,7 @@ public class ExtCarController : CarController
 
                 // Échange réussi ! ^^ ==> Affichage de la checkmark
                 canvasCheck.enabled = true;
-                UpdateExchange(true, true);
+                UpdateExchange(true, true, car);
 
                 // Calcul du chemin le plus court pour atteindre sa position objectif
                 FindingPath();
@@ -289,7 +299,7 @@ public class ExtCarController : CarController
             {
                 // Échec de l'échange ! :'( ==> Affichage de la crossmark ==> Il ne se passe rien
                 canvasCross.enabled = true;
-                UpdateExchange(true, false);
+                UpdateExchange(true, false, car);
             }
         }
 
@@ -315,7 +325,7 @@ public class ExtCarController : CarController
 
                         // Échange réussi ! ^^ ==> Affichage de la checkmark
                         canvasCheck.enabled = true;
-                        UpdateExchange(false, true);
+                        UpdateExchange(false, true, car);
                         
                         // Calcul du chemin le plus court pour atteindre sa position objectif
                         FindingPath();
@@ -328,7 +338,7 @@ public class ExtCarController : CarController
                 {
                     // Échec de l'échange ! :'( ==> Affichage de la crossmark ==> Il ne se passe rien
                     canvasCross.enabled = true;
-                    UpdateExchange(false, false);
+                    UpdateExchange(false, false, car);
                 }
             }
 
@@ -353,7 +363,7 @@ public class ExtCarController : CarController
 
                             // Échange réussi ! ^^ ==> Affichage de la checkmark
                             canvasCheck.enabled = true;
-                            UpdateExchange(false, true);
+                            UpdateExchange(false, true, car);
 
                             // Calcul du chemin le plus court pour atteindre sa position objectif
                             FindingPath();
@@ -378,7 +388,7 @@ public class ExtCarController : CarController
 
                         // Échange réussi ! ^^ ==> Affichage de la checkmark
                         canvasCheck.enabled = true;
-                        UpdateExchange(false, true);
+                        UpdateExchange(false, true, car);
 
                         // Calcul du chemin le plus court pour atteindre sa position objectif
                         FindingPath();
@@ -392,7 +402,7 @@ public class ExtCarController : CarController
                 {
                     // Échec de l'échange ! :'( ==> Affichage de la crossmark ==> Il ne se passe rien
                     canvasCross.enabled = true;
-                    UpdateExchange(false, false);
+                    UpdateExchange(false, false, car);
                 }
             }
         }
@@ -403,65 +413,71 @@ public class ExtCarController : CarController
     /// </summary>
     /// <param name="type">True si la voiture est extérieure</param>
     /// <param name="success">True si l'échange est un succère</param>
-    private void UpdateExchange(bool type, bool success)
+    /// <param name="hitCar">Voiture captée</param>
+    private void UpdateExchange(bool type, bool success, CarController hitCar)
     {
-        // C'est la voiture bleue !
-        if (exit == nodes[113])
+        // Vérification que la voiture croisée a déjà fait un échange d'informations
+        if (meetingCar == null && meetingCar != hitCar)
         {
-            if (type)
+            meetingCar = hitCar;
+            // C'est la voiture bleue !
+            if (exit == nodes[113])
             {
-                nbExchangeExt[0] += 1;
-                if (success)
+                if (type)
                 {
-                    nbSuccessExchangeExt[0] += 1;
+                    nbExchangeExt[0] += 1;
+                    if (success)
+                    {
+                        nbSuccessExchangeExt[0] += 1;
+                    }
+                }
+                else
+                {
+                    nbExchangeInt[0] += 1;
+                    if (success)
+                    {
+                        nbSuccessExchangeInt[0] += 1;
+                    }
                 }
             }
+            // C'est la voiture orange !
+            else if (exit == nodes[115])
+            {
+                if (type)
+                {
+                    nbExchangeExt[1] += 1;
+                    if (success)
+                    {
+                        nbSuccessExchangeExt[1] += 1;
+                    }
+                }
+                else
+                {
+                    nbExchangeInt[1] += 1;
+                    if (success)
+                    {
+                        nbSuccessExchangeInt[1] += 1;
+                    }
+                }
+            }
+            // C'est la voiture blanche !
             else
             {
-                nbExchangeInt[0] += 1;
-                if (success)
+                if (type)
                 {
-                    nbSuccessExchangeInt[0] += 1;
+                    nbExchangeExt[2] += 1;
+                    if (success)
+                    {
+                        nbSuccessExchangeExt[2] += 1;
+                    }
                 }
-            }
-        }
-        // C'est la voiture orange !
-        else if (exit == nodes[115])
-        {
-            if (type)
-            {
-                nbExchangeExt[1] += 1;
-                if (success)
+                else
                 {
-                    nbSuccessExchangeExt[1] += 1;
-                }
-            }
-            else
-            {
-                nbExchangeInt[1] += 1;
-                if (success)
-                {
-                    nbSuccessExchangeInt[1] += 1;
-                }
-            }
-        }
-        // C'est la voiture blanche !
-        else
-        {
-            if (type)
-            {
-                nbExchangeExt[2] += 1;
-                if (success)
-                {
-                    nbSuccessExchangeExt[2] += 1;
-                }
-            }
-            else
-            {
-                nbExchangeInt[2] += 1;
-                if (success)
-                {
-                    nbSuccessExchangeInt[2] += 1;
+                    nbExchangeInt[2] += 1;
+                    if (success)
+                    {
+                        nbSuccessExchangeInt[2] += 1;
+                    }
                 }
             }
         }

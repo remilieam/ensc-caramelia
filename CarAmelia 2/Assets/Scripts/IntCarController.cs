@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class IntCarController : CarController
 {
     // Liste des positions des sorties connues
-    private List<Position> exitsKnown;
+    private List<Position> exitsKnown = new List<Position>();
 
     // `true` si la voiture est honnête (dit toujours la vérité lors des échanges d'informations)
     // et `false` sinon
@@ -112,6 +112,10 @@ public class IntCarController : CarController
                     indexNode = 1;
                     // On re définit une position objectif aléatoire
                     target = new Position(alea.Next(nodesTable.GetLength(1)));
+                    while (target.Number == 110 || target.Number == 111 || target.Number == 96 || target.Number == 97)
+                    {
+                        target = new Position(alea.Next(nodesTable.GetLength(1)));
+                    }
                     PathCalculation();
                     // On définit la prochaine position que la voiture doit atteindre
                     nextPosition = nodesToCross[indexNode].name;
