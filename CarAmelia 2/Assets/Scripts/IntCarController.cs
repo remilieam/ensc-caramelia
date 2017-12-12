@@ -37,12 +37,12 @@ public class IntCarController : CarController
         float positionZ = this.transform.position.z;
         position = new Position(FindNode(positionX, positionZ));
 
-		// Détermination aléatoire de sa position objectif (sauf parmi les noeuds inaccessibles)
+        // Détermination aléatoire de sa position objectif (sauf parmi les noeuds inaccessibles)
         target = new Position(alea.Next(nodesTable.GetLength(1)));
-		while (target.Number == 110 || target.Number == 111 || target.Number == 96 || target.Number == 97)
-		{
-			target = new Position (alea.Next (nodesTable.GetLength (1)));
-		}
+        while (target.Number == 110 || target.Number == 111 || target.Number == 96 || target.Number == 97)
+        {
+            target = new Position(alea.Next(nodesTable.GetLength(1)));
+        }
         // Vérification que la position objectif n'est pas sa position initiale
         while (target.SamePosition(position))
         {
@@ -79,7 +79,6 @@ public class IntCarController : CarController
                 return i;
             }
         }
-
         return 0;
     }
 
@@ -132,7 +131,7 @@ public class IntCarController : CarController
     /// <summary>
     /// Méthode pour écrire les informations dans le canevas de la voiture
     /// </summary>
-    public override void WriteInformation()
+    protected override void WriteInformation()
     {
         // Définition du texte à afficher dans le canevas (informations relatives à la voiture intérieure)
         string message = "";
@@ -151,6 +150,6 @@ public class IntCarController : CarController
                 message += "\n- Sortie Blanche";
             }
         }
-        textCanvas.text = "Les sorties connues : " + message; // + "\nTarget : " + target.ToString() + ", Noeuds : " + nodesToCross.Count.ToString();
+        textCanvas.text = "Les sorties connues : " + message;
     }
 }

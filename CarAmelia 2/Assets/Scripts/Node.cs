@@ -64,13 +64,7 @@ public class Node
     {
         get { return children; }
     }
-
-    /* public Node Parent
-    {
-        get { return Parent; }
-        set { parent = value; value.children.Add(this); }
-    } */
-
+    
     public Node Parent()
     {
         return parent;

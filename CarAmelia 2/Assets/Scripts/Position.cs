@@ -28,4 +28,3 @@ public class Position
         return this.Number.ToString();
     }
 }
-

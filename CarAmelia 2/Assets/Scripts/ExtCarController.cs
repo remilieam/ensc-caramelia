@@ -18,11 +18,6 @@ public class ExtCarController : CarController
     // Permet de définir si la voiture a un noeud objectif ou si elle roule aléatoirement dans la map
     private bool aleaMode;
 
-    // Correspond aux noeuds qu'a parcourus la voiture
-    private List<Position> crossedNodes = new List<Position>();
-
-    // nodesToCross; : limité à 6 noeuds car la voiture a une petite mémoire
-
     // Permet de savoir si la voiture échange de l'information
     private bool endExchange = true;
     private CarController meetingCar;
@@ -84,8 +79,6 @@ public class ExtCarController : CarController
 
         // Détermination aléatoire de la prochaine position
         SuccessorAlea();
-        // On ajoute cette première position aux positions que la voiture a parcourues
-        crossedNodes.Add(position);
 
         lineRenderer = this.gameObject.GetComponent<LineRenderer>();
         // Initialisation des objets pour afficher la flèche d'échange d'information
@@ -148,7 +141,6 @@ public class ExtCarController : CarController
 
                 // Actualisation de sa position et ajout aux positions déjà parcourues
                 position = nextPosition;
-                crossedNodes.Add(position);
 
                 // Cas où la voiture est en mode aléatoire
                 if (aleaMode)
@@ -188,7 +180,7 @@ public class ExtCarController : CarController
     /// <summary>
     /// Méthode pour détecter si la voiture croise une autre voiture
     /// </summary>
-    public void SensorMeeting()
+    private void SensorMeeting()
     {
         float frontSensorAngleMeeting = 90f;
         float sensorLengthMeeting = 5f;
@@ -214,7 +206,7 @@ public class ExtCarController : CarController
     /// Méthode appelée lorsque la voiture détecte une autre voiture arrivant en sens inverse
     /// </summary>
     /// <param name="hitCar">Voiture détéctée</param>
-    public void DetectionMeeting(GameObject hitCar)
+    private void DetectionMeeting(GameObject hitCar)
     {
         ExtCarController extCarHit = hitCar.gameObject.GetComponent<ExtCarController>();
         IntCarController intCarHit = hitCar.gameObject.GetComponent<IntCarController>();
@@ -326,7 +318,7 @@ public class ExtCarController : CarController
                         // Échange réussi ! ^^ ==> Affichage de la checkmark
                         canvasCheck.enabled = true;
                         UpdateExchange(false, true, car);
-                        
+
                         // Calcul du chemin le plus court pour atteindre sa position objectif
                         FindingPath();
                         aleaMode = false;
@@ -560,7 +552,7 @@ public class ExtCarController : CarController
     /// <summary>
     /// Méthode pour dessiner le trait qui indique la position objectif
     /// </summary>
-    public void DrawLine()
+    private void DrawLine()
     {
         AnimationCurve curve = new AnimationCurve();
         curve.AddKey(1f, 1f);
@@ -582,11 +574,9 @@ public class ExtCarController : CarController
     /// <summary>
     /// Méthode pour écrire les informations dans le canevas de la voiture
     /// </summary>
-    public override void WriteInformation()
+    protected override void WriteInformation()
     {
         // Définition du texte à afficher dans le canevas (informations relatives à la voiture extérieure)
         textCanvas.text = "Générosité : " + generosity.ToString() + "\nConfiance : " + trust.ToString();
     }
-    
-        
 }

@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour
     // Chiffre aléatoire
     protected System.Random alea = new System.Random();
 
-    // La caméra
+    // La caméra générale
     public Camera cameraView;
 
     // Les voitures
@@ -69,7 +69,7 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// "Constructeur" pour initialiser les paramètres de la simulation
     /// </summary>
-    void Start()
+    public void Start()
     {
         // Création de la liste contenant les noeuds de la map
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
@@ -336,7 +336,7 @@ public class GameController : MonoBehaviour
     /// <param name="car">Préfab de la voiture extérieure</param>
     /// <param name="nbCars">Nombre de voitures à ajouter</param>
     /// <param name="numberExit">Numéro de la position de la sortie des voitures de même couleur</param>
-    IEnumerator AddExtColorCar(GameObject car, int nbCars, int numberExit, int nbTrust1, int nbTrust2, int nbTrust3, int nbTrust4, int nbTrust5, int nbGenerosity1, int nbGenerosity2, int nbGenerosity3, int nbGenerosity4, int nbGenerosity5)
+    private IEnumerator AddExtColorCar(GameObject car, int nbCars, int numberExit, int nbTrust1, int nbTrust2, int nbTrust3, int nbTrust4, int nbTrust5, int nbGenerosity1, int nbGenerosity2, int nbGenerosity3, int nbGenerosity4, int nbGenerosity5)
     {
         // Liste des nbTrust
         List<int> nbTrust = new List<int> { nbTrust1, nbTrust2, nbTrust3, nbTrust4, nbTrust5 };
@@ -390,7 +390,7 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// Méthode pour ajouter toutes les voitures extérieures à intervalle de temps régulier
     /// </summary>
-    IEnumerator AddExtCars()
+    private IEnumerator AddExtCars()
     {
         StartCoroutine(AddExtColorCar(ExtCarBlue, nbBlue, 113, nbBlueTrust1, nbBlueTrust2, nbBlueTrust3, nbBlueTrust4, nbBlueTrust5, nbBlueGenerosity1, nbBlueGenerosity2, nbBlueGenerosity3, nbBlueGenerosity4, nbBlueGenerosity5));
         yield return new WaitForSeconds(nbBlue * wait);
@@ -406,7 +406,7 @@ public class GameController : MonoBehaviour
     /// <param name="car">Préfab de la voiture intérieure</param>
     /// <param name="nbCars">Nombre de voitures à ajouter</param>
     /// <param name="sincerity">Honnête ou non</param>
-    IEnumerator AddIntCar(GameObject car, int nbCars, bool sincerity, int nbExit0, int nbExit1, int nbExit2, int nbExit3)
+    private IEnumerator AddIntCar(GameObject car, int nbCars, bool sincerity, int nbExit0, int nbExit1, int nbExit2, int nbExit3)
     {
         // Liste des nbExit
         List<int> nbExit = new List<int> { nbExit0, nbExit1, nbExit2, nbExit3 };
@@ -492,7 +492,7 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// Méthode pour ajouter toutes les voitures (intérieures + extérieures) de la simulation
     /// </summary>
-    IEnumerator AddCars()
+    private IEnumerator AddCars()
     {
         StartCoroutine(AddIntCar(IntCarGreen, nbGreen, true, nbGreenExit0, nbGreenExit1, nbGreenExit2, nbGreenExit3));
         yield return new WaitForSeconds(0f);
@@ -520,7 +520,7 @@ public class GameController : MonoBehaviour
         // Pour les voitures intérieures rouges
         textStopCanvas[4].text += nbRed.ToString();
         textStopCanvas[5].text += CalculationProperty(1).ToString("0.00");
-        
+
         // Pour les voitures extérieures bleues
         textStopCanvas[7].text += SuccessCars(0).ToString() + " sur " + nbBlue.ToString();
         textStopCanvas[8].text += CalculationProperty(2).ToString("0.00");
@@ -671,7 +671,7 @@ public class GameController : MonoBehaviour
                     val += extCar.ExitTime - startTime;
                 }
             }
-            if(SuccessCars(0) != 0)
+            if (SuccessCars(0) != 0)
             {
                 return val / SuccessCars(0) * 1.0f;
             }
@@ -798,7 +798,7 @@ public class GameController : MonoBehaviour
                 {
                     i++;
                 }
-                if(i!= listExtCars.Count)
+                if (i != listExtCars.Count)
                 {
                     val = listExtCars[i].ExitTime - startTime;
                 }

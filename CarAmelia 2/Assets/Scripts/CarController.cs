@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public abstract class CarController : MonoBehaviour
 {
     // La map dans Unity
-	protected Transform path;
+    protected Transform path;
     protected List<Transform> nodes = new List<Transform>(); // Liste des noeuds de la map de Unity
     protected int[,] nodesTable = new int[118, 118]; // Cf. excel
 
@@ -46,20 +46,18 @@ public abstract class CarController : MonoBehaviour
     protected bool isStopped = false;
     protected bool isSteering = false;
     protected float minSpeed = 5f;
-    public float currentSpeed; 
+    protected float currentSpeed;
 
     // Capteurs [Header("Sensors")]
     protected Vector3 frontSensorPosition = new Vector3(0f, 0.2f, 0f);
     protected float frontSideSensorPosition = 0.4f;
 
     // Canevas et caméras
-	protected Camera cameraView;
+    protected Camera cameraView;
     protected Canvas canvas;
     protected Camera cameraBackCar;
     protected Button buttonCanvas;
     protected Text textCanvas;
-
-    public float newSteer;
 
     public Position Target
     {
@@ -71,17 +69,17 @@ public abstract class CarController : MonoBehaviour
         set { isBraking = value; }
     }
 
-	public Camera CameraView
-	{
-		get { return cameraView; }
-		set { cameraView = value; }
-	}
+    public Camera CameraView
+    {
+        get { return cameraView; }
+        set { cameraView = value; }
+    }
 
-	public Transform Path
-	{
-		get { return path; }
-		set { path = value; }
-	}
+    public Transform Path
+    {
+        get { return path; }
+        set { path = value; }
+    }
 
     /// <summary>
     /// "Constructeur" pour initialiser les paramètres de la voiture
@@ -161,21 +159,21 @@ public abstract class CarController : MonoBehaviour
         {
             // Cas où on passe de la caméra générale à la caméra arrière
             if (!cameraBackCar.enabled && cameraView.enabled)
-			{
-				cameraBackCar.enabled = true;
+            {
+                cameraBackCar.enabled = true;
                 cameraView.enabled = false;
             }
 
             // Cas où on passe de la caméra arrière d'une autre voiture à "notre" caméra arrière
             else if (!cameraBackCar.enabled && !cameraView.enabled)
-			{
-				cameraBackCar.enabled = true;
+            {
+                cameraBackCar.enabled = true;
 
-				// On désactive toutes les caméras arrières activées en épargnant la caméra de "notre" voiture
+                // On désactive toutes les caméras arrières activées en épargnant la caméra de "notre" voiture
                 Camera[] cameras = FindObjectsOfType<Camera>();
                 foreach (Camera camera in cameras)
                 {
-					if(camera.enabled && camera.transform.position != cameraBackCar.transform.position)
+                    if (camera.enabled && camera.transform.position != cameraBackCar.transform.position)
                     {
                         camera.enabled = false;
                     }
@@ -185,7 +183,6 @@ public abstract class CarController : MonoBehaviour
             // Cas où on passe de la caméra arrière à la caméra générale
             else
             {
-
                 cameraView.enabled = true;
                 cameraBackCar.enabled = false;
             }
@@ -205,7 +202,7 @@ public abstract class CarController : MonoBehaviour
     {
         Vector3 relativeVector = transform.InverseTransformPoint(nodes[nextPosition.Number].position);
         // Calcul que nous n'avons pas compris...
-        newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
+        float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         wheelFL.steerAngle = newSteer;
         wheelFR.steerAngle = newSteer;
         if (newSteer > 1.5f || newSteer < -1.5f)
@@ -228,7 +225,6 @@ public abstract class CarController : MonoBehaviour
 
         if (isStopped)
         {
-            //textCanvas.text = "Stop";
             wheelFL.motorTorque = 0;
             wheelFR.motorTorque = 0;
             wheelFL.brakeTorque = maxBrakeTorque * 100f;
@@ -245,7 +241,6 @@ public abstract class CarController : MonoBehaviour
 
                 if (currentSpeed < minSpeed)
                 {
-                    //textCanvas.text = "Frein + currentSpeed < minSpeed";
                     wheelFL.motorTorque = maxMotorTorque;
                     wheelFR.motorTorque = maxMotorTorque;
                     wheelRL.brakeTorque = 0;
@@ -255,7 +250,6 @@ public abstract class CarController : MonoBehaviour
                 }
                 else
                 {
-                    //textCanvas.text = "Frein + currentSpeed > minSpeed";
                     wheelFL.motorTorque = 0;
                     wheelFR.motorTorque = 0;
                     wheelRL.brakeTorque = maxBrakeTorque;
@@ -271,8 +265,6 @@ public abstract class CarController : MonoBehaviour
 
                 if (currentSpeed < maxSpeed)
                 {
-                    //textCanvas.text = "!Frein + currentSpeed < maxSpeed";
-
                     wheelFL.motorTorque = maxMotorTorque;
                     wheelFR.motorTorque = maxMotorTorque;
                     wheelRL.brakeTorque = 0;
@@ -282,8 +274,6 @@ public abstract class CarController : MonoBehaviour
                 }
                 else
                 {
-                    //textCanvas.text = "!Frein + currentSpeed > maxSpeed";
-
                     wheelFL.motorTorque = 0;
                     wheelFR.motorTorque = 0;
                     wheelRL.brakeTorque = 0;
@@ -298,7 +288,6 @@ public abstract class CarController : MonoBehaviour
     /// <summary>
     /// Méthode qui définit aléatoirement la prochaine position de la voiture
     /// </summary>
-    /// <returns></returns>
     protected void SuccessorAlea()
     {
         List<Position> successors = new List<Position>();
@@ -315,7 +304,7 @@ public abstract class CarController : MonoBehaviour
         // Choix aléatoire d'une position possible
         nextPosition = successors[alea.Next(successors.Count)];
     }
-    
+
     /// <summary>
     /// Méthode pour trouver le chemin le plus court vers la position objectif
     /// à l'aide de l'A*
@@ -334,7 +323,6 @@ public abstract class CarController : MonoBehaviour
         // Permet de savoir si la voiture détècte une autre voiture
         bool detected = false;
 
-        //textCanvas.text = "";
         if (!isSteering)
         {
             float sensorLengthObstacle = 10f;
@@ -348,7 +336,6 @@ public abstract class CarController : MonoBehaviour
             // Capteur frontal du milieu
             if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLengthObstacle))
             {
-                //textCanvas.text = "Milieu";
                 detected = true;
                 Debug.DrawLine(sensorStartPos, hit.point);
                 DetectionObstacle(hit.transform.gameObject);
@@ -368,7 +355,6 @@ public abstract class CarController : MonoBehaviour
             // Capteur oblique de droite
             if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(obliqueSensorAngle, transform.up) * transform.forward, out hit, sensorLengthObstacle))
             {
-                //textCanvas.text = "Droite";
                 detected = true;
                 Debug.DrawLine(sensorStartPos, hit.point);
                 DetectionObstacle(hit.transform.gameObject);
@@ -392,9 +378,10 @@ public abstract class CarController : MonoBehaviour
     /// Méthode qui fait stopper la voiture lorsqu'elle détecte une voiture
     /// </summary>
     /// <param name="hitCar">Voiture détéctée</param>
-    public void DetectionObstacle(GameObject hitCar)
+    protected void DetectionObstacle(GameObject hitCar)
     {
-        if(position.Number != 111)
+        // Position où apparaisse les voitures extérieures (sinon accident)
+        if (position.Number != 111)
         {
             isStopped = true;
         }
@@ -402,8 +389,5 @@ public abstract class CarController : MonoBehaviour
 
     protected abstract void CheckWaypoint();
 
-    /// <summary>
-    /// Méthode pour écrire les informations dans le canevas de la voiture
-    /// </summary>
-    public abstract void WriteInformation();
+    protected abstract void WriteInformation();
 }
