@@ -60,8 +60,11 @@ public class GameController : MonoBehaviour
     private Button playBreakButton;
     private Button playStopButton;
     private Button playRestartButton;
+    private Button playDecButton;
+    private Button playAccButton;
     private Text timeDisplay;
     private float startTime;
+    private int speedGame;
     // Cavenas de l'interface de fin
     private Canvas stopCanvas;
     private Button stopRestartButton;
@@ -71,7 +74,8 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void Start()
     {
-        Time.timeScale = 1;
+        speedGame = 1;
+        Time.timeScale = speedGame;
 
         // Création de la liste contenant les noeuds de la map
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
@@ -104,6 +108,10 @@ public class GameController : MonoBehaviour
         playStopButton.onClick.AddListener(StopOnClick);
         playRestartButton = playCanvas.GetComponentsInChildren<Button>()[3];
         playRestartButton.onClick.AddListener(RestartOnClick);
+        playDecButton = playCanvas.GetComponentsInChildren<Button>()[4];
+        playDecButton.onClick.AddListener(DecOnClick);
+        playAccButton = playCanvas.GetComponentsInChildren<Button>()[5];
+        playAccButton.onClick.AddListener(AccOnClick);
         timeDisplay = playCanvas.GetComponentInChildren<Text>();
 
         // Initialisation de l'interface de fin
@@ -304,14 +312,18 @@ public class GameController : MonoBehaviour
     /// </summary>
     private void BreakOnClick()
     {
-        if (Time.timeScale == 1)
+        if (Time.timeScale != 0)
         {
+            playDecButton.enabled = false;
+            playAccButton.enabled = false;
             Time.timeScale = 0;
             playBreakButton.GetComponentInChildren<Text>().text = "Reprendre";
         }
         else
         {
-            Time.timeScale = 1;
+            playDecButton.enabled = true;
+            playAccButton.enabled = true;
+            Time.timeScale = speedGame;
             playBreakButton.GetComponentInChildren<Text>().text = "Pause";
         }
     }
@@ -330,6 +342,28 @@ public class GameController : MonoBehaviour
     private void RestartOnClick()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    /// <summary>
+    /// Méthode appelée quand on clique sur le bouton `Ralentir` (on ne peut pas ralentir au-dessous de 1 ==> pause)
+    /// </summary>
+    private void DecOnClick()
+    {
+        speedGame -= 1;
+        if(speedGame < 1)
+        {
+            speedGame = 1;
+        }
+        Time.timeScale = speedGame;
+    }
+
+    /// <summary>
+    /// Méthode appelée quand on clique sur le bouton `Accélérer`
+    /// </summary>
+    private void AccOnClick()
+    {
+        speedGame += 1;
+        Time.timeScale = speedGame;
     }
 
     /// <summary>
