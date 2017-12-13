@@ -222,6 +222,8 @@ public abstract class CarController : MonoBehaviour
 
         if (isStopped)
         {
+            carRenderer.material.mainTexture = textureBraking;
+
             wheelFL.motorTorque = 0;
             wheelFR.motorTorque = 0;
             wheelFL.brakeTorque = maxBrakeTorque * 100f;
