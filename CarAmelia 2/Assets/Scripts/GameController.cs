@@ -76,6 +76,12 @@ public class GameController : MonoBehaviour
     {
         speedGame = 1;
         Time.timeScale = speedGame;
+        
+        // Initialisation des liste des échanges
+        ExtCarController.nbSuccessExchangeExt = new List<int> { 0, 0, 0 };
+        ExtCarController.nbSuccessExchangeInt = new List<int> { 0, 0, 0 };
+        ExtCarController.nbExchangeExt = new List<int> { 0, 0, 0 };
+        ExtCarController.nbExchangeInt = new List<int> { 0, 0, 0 };
 
         // Création de la liste contenant les noeuds de la map
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
@@ -595,9 +601,9 @@ public class GameController : MonoBehaviour
     /// Méthode pour calculer des valeurs de propriété sur les voitures 
     /// </summary>
     /// <param name="property">0 pour les sorties connues par les voitures sincères, 1 pour pour les sorties connues les non-sincères, 
-    /// 2 pour la générosité des voitures bleues, 3 pour la confiance des voitures bleues, 4 pour temps min des voitures bleues, 5 pour temps max des voitures bleues, 6 pour le temps des voitures bleues,
-    /// 7 pour la générosité des voitures orange, 8 pour la confiance des voitures orange, 9 pour temps min des voitures orange, 10 pour temps max des voitures orange, 11 pour le temps des voitures orange,
-    /// 12 pour la générosité des voitures blanches, 13 pour la confiance des voitures blanches, 14 pour temps min des voitures blanches, 15 pour temps max des voitures blanches, 16 pour le temps des voitures blanches
+    /// 2 pour la confiance des voitures bleues, 3 pour la générosité des voitures bleues, 4 pour temps min des voitures bleues, 5 pour temps max des voitures bleues, 6 pour le temps des voitures bleues,
+    /// 7 pour la confiance des voitures orange, 8 pour la générosité des voitures orange, 9 pour temps min des voitures orange, 10 pour temps max des voitures orange, 11 pour le temps des voitures orange,
+    /// 12 pour la confiance des voitures blanches, 13 pour la générosité des voitures blanches, 14 pour temps min des voitures blanches, 15 pour temps max des voitures blanches, 16 pour le temps des voitures blanches
     /// </param>
     /// <returns>La valeur de la propriété qui nous intéresse</returns>
     private float CalculationProperty(int property)
@@ -630,27 +636,27 @@ public class GameController : MonoBehaviour
             return val / nbRed * 1.0f;
         }
 
-        // Pour les voitures bleues - Générosité
+        // Pour les voitures bleues - Confiance
         else if (property == 2 && nbBlue != 0)
         {
             foreach (ExtCarController extCar in listExtCars)
             {
                 if (extCar.Exit == nodes[113])
                 {
-                    val += extCar.Generosity;
+                    val += extCar.Trust;
                 }
             }
             return val / nbBlue * 1.0f;
         }
 
-        // Pour les voitures bleues - Confiance
+        // Pour les voitures bleues - Générosité
         else if (property == 3 && nbBlue != 0)
         {
             foreach (ExtCarController extCar in listExtCars)
             {
                 if (extCar.Exit == nodes[113])
                 {
-                    val += extCar.Trust;
+                    val += extCar.Generosity;
                 }
             }
             return val / nbBlue * 1.0f;
@@ -714,27 +720,27 @@ public class GameController : MonoBehaviour
             }
         }
 
-        // Pour les voitures orange - Générosité
+        // Pour les voitures orange - Confiance
         else if (property == 7 && nbOrange != 0)
         {
             foreach (ExtCarController extCar in listExtCars)
             {
                 if (extCar.Exit == nodes[115])
                 {
-                    val += extCar.Generosity;
+                    val += extCar.Trust;
                 }
             }
             return val / nbOrange * 1.0f;
         }
 
-        // Pour les voitures orange - Confiance
+        // Pour les voitures orange - Générosité
         else if (property == 8 && nbOrange != 0)
         {
             foreach (ExtCarController extCar in listExtCars)
             {
                 if (extCar.Exit == nodes[115])
                 {
-                    val += extCar.Trust;
+                    val += extCar.Generosity;
                 }
             }
             return val / nbOrange * 1.0f;
@@ -798,27 +804,27 @@ public class GameController : MonoBehaviour
             }
         }
 
-        // Pour les voitures blanches - Générosité
+        // Pour les voitures blanches - Confiance
         else if (property == 12 && nbWhite != 0)
         {
             foreach (ExtCarController extCar in listExtCars)
             {
                 if (extCar.Exit == nodes[117])
                 {
-                    val += extCar.Generosity;
+                    val += extCar.Trust;
                 }
             }
             return val / nbWhite * 1.0f;
         }
 
-        // Pour les voitures blanches - Confiance
+        // Pour les voitures blanches - Générosité
         else if (property == 13 && nbWhite != 0)
         {
             foreach (ExtCarController extCar in listExtCars)
             {
                 if (extCar.Exit == nodes[117])
                 {
-                    val += extCar.Trust;
+                    val += extCar.Generosity;
                 }
             }
             return val / nbWhite * 1.0f;
