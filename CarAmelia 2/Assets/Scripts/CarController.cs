@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 using System;
 using UnityEngine.UI;
 
@@ -96,19 +95,17 @@ public abstract class CarController : MonoBehaviour
             }
         }
 
-        // Initialisation de la map
-        string filePath = @"Assets\Scripts\Files\carte_2.csv";
-        StreamReader sr = new StreamReader(filePath);
-        int row = 0;
-        while (!sr.EndOfStream)
-        {
-            string[] line = sr.ReadLine().Split(';');
-            for (int i = 0; i < 118; i++)
-            {
-                nodesTable[row, i] = Convert.ToInt32(line[i]);
-            }
-            row++;
-        }
+		// Initialisation de la map
+		TextAsset file = Resources.Load<TextAsset>("excel");
+		string[] lines = file.text.Split('\n');
+		for (int i = 0; i < lines.Length; i ++)
+		{
+			string[] columns = lines[i].Split(';');
+			for (int j = 0; j < columns.Length; j++)
+			{
+				nodesTable[i, j] = Convert.ToInt32(columns[j]);
+			}
+		}
 
         // Initalisation des attributs inhérents à la voiture
         WheelCollider[] wheelColliders = GetComponentsInChildren<WheelCollider>();
@@ -127,7 +124,7 @@ public abstract class CarController : MonoBehaviour
         canvas.enabled = false;
         textCanvas = canvas.GetComponentsInChildren<Text>()[0];
         buttonCanvas = canvas.GetComponentsInChildren<Button>()[0];
-        buttonCanvas.onClick.AddListener(TaskOnClick);
+		buttonCanvas.onClick.AddListener(TaskOnClick);
     }
 
     /// <summary>

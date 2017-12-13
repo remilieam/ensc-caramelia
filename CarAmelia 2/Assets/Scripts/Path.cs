@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 using System;
 
 public class Path : MonoBehaviour
@@ -15,20 +14,18 @@ public class Path : MonoBehaviour
 
     // Fonction qui dessine dans l'éditeur de Unity (OnDrawGizmosSelected)
     public void OnDrawGizmos()
-    {
-        // Récupération du tableau Excel
-        string filePath = @"Assets\Scripts\Files\carte_2.csv";
-        StreamReader sr = new StreamReader(filePath);
-        int row = 0;
-        while (!sr.EndOfStream)
-        {
-            string[] line = sr.ReadLine().Split(';');
-            for (int i = 0; i < 118; i++)
-            {
-                nodesTable[row, i] = Convert.ToInt32(line[i]);
-            }
-            row++;
-        }
+	{
+		// Initialisation de la map
+		TextAsset file = Resources.Load<TextAsset>("excel");
+		string[] lines = file.text.Split('\n');
+		for (int i = 0; i < lines.Length; i ++)
+		{
+			string[] columns = lines[i].Split(';');
+			for (int j = 0; j < columns.Length; j++)
+			{
+				nodesTable[i, j] = Convert.ToInt32(columns[j]);
+			}
+		}
 
         // Couleur de la ligne
         Gizmos.color = lineColor;
