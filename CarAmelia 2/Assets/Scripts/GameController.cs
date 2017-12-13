@@ -71,6 +71,8 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void Start()
     {
+        Time.timeScale = 1;
+
         // Création de la liste contenant les noeuds de la map
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         for (int i = 0; i < pathTransforms.Length; i++)
@@ -224,7 +226,7 @@ public class GameController : MonoBehaviour
                 }
 
                 // Vérification que toutes les voitures intérieures peuvent avoir une position initiale et que l'utilisateur sait compter
-                if (nbGreen + nbRed <= 115 &&
+                if (nbGreen + nbRed <= 114 &&
                     nbGreenExit0 + nbGreenExit1 + nbGreenExit2 + nbGreenExit3 == nbGreen &&
                     nbRedExit0 + nbRedExit1 + nbRedExit2 + nbRedExit3 == nbRed &&
                     nbBlueTrust1 + nbBlueTrust2 + nbBlueTrust3 + nbBlueTrust4 + nbBlueTrust5 == nbBlue &&
@@ -432,7 +434,7 @@ public class GameController : MonoBehaviour
                 for (int j = 0; j < positionTakenInt.Count; j++)
                 {
                     // Si la position choisie aléatoirement est déjà occupée par une voiture intérieure ou à côté d'une voiture extérieure
-                    if (positionTakenInt[j] == positionTakenIndex || positionTakenIndex == 111 || positionTakenIndex == 110 || positionTakenIndex == 97)
+                    if (positionTakenInt[j] == positionTakenIndex || positionTakenIndex == 111 || positionTakenIndex == 110 || positionTakenIndex == 97 || positionTakenIndex == 96)
                     {
                         positionNotTakenBool = false;
                     }
@@ -509,6 +511,7 @@ public class GameController : MonoBehaviour
         // On arrête le temps
         Time.timeScale = 0;
         playCanvas.enabled = false;
+        cameraView.enabled = true;
 
         // Récupération des textes
         Text[] textStopCanvas = stopCanvas.GetComponentsInChildren<Text>();

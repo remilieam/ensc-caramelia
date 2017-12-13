@@ -1,29 +1,35 @@
 Initialize engine version: 5.6.4f1 (ac7086b8d112)
 GfxDevice: creating device client; threaded=1
 Direct3D:
-    Version:  Direct3D 11.0 [level 11.1]
-    Renderer: Intel(R) HD Graphics 5500 (ID=0x1616)
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: Intel(R) HD Graphics 530 (ID=0x1912)
     Vendor:   Intel
-    VRAM:     1130 MB
-    Driver:   20.19.15.4549
+    VRAM:     1008 MB
+    Driver:   21.20.16.4627
 Begin MonoManager ReloadAssembly
-Platform assembly: C:\Users\Émilie\Documents\GitHub\projet-unity-caramelia\caramelia2_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading C:\Users\Émilie\Documents\GitHub\projet-unity-caramelia\caramelia2_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: C:\Users\Émilie\Documents\GitHub\projet-unity-caramelia\caramelia2_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading C:\Users\Émilie\Documents\GitHub\projet-unity-caramelia\caramelia2_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: C:\Users\Émilie\Documents\GitHub\projet-unity-caramelia\caramelia2_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading C:\Users\Émilie\Documents\GitHub\projet-unity-caramelia\caramelia2_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: C:\Users\Émilie\Documents\GitHub\projet-unity-caramelia\caramelia2_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading C:\Users\Émilie\Documents\GitHub\projet-unity-caramelia\caramelia2_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.022 seconds
-Platform assembly: C:\Users\Émilie\Documents\GitHub\projet-unity-caramelia\caramelia2_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: C:\Users\Émilie\Documents\GitHub\projet-unity-caramelia\caramelia2_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\eroger001\Desktop\caramelia2_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\eroger001\Desktop\caramelia2_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\eroger001\Desktop\caramelia2_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\eroger001\Desktop\caramelia2_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\eroger001\Desktop\caramelia2_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\eroger001\Desktop\caramelia2_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\eroger001\Desktop\caramelia2_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\eroger001\Desktop\caramelia2_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.020 seconds
+Platform assembly: C:\Users\eroger001\Desktop\caramelia2_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\eroger001\Desktop\caramelia2_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 4.732852 ms
+UnloadTime: 1.674476 ms
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 25.984861 ms
+
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 3045.
+Total: 1.984992 ms (FindLiveObjects: 0.152691 ms CreateObjectMapping: 0.070892 ms MarkObjects: 1.353374 ms  DeleteObjects: 0.407071 ms)
+
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: 2720 -> priority: 1 
-  Thread -> id: 21dc -> priority: 1 
+  Thread -> id: 1124 -> priority: 1 
+  Thread -> id: 13a8 -> priority: 1 
