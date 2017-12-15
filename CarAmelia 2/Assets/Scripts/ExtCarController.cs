@@ -280,7 +280,7 @@ public class ExtCarController : CarController
             ExtCarController extCar = (ExtCarController)car;
 
             // Si la voiture est assez généreuse pour partager de l'information (elle n'est donc pas en mode aléatoire)
-            if (extCar.alea.Next(1, 5) >= extCar.Generosity && !extCar.aleaMode)
+            if (extCar.alea.Next(2, 6) <= extCar.Generosity && !extCar.aleaMode)
             {
                 // ... alors la voiture prend la position objectif de la voiture croisée
                 this.target = car.Target;
