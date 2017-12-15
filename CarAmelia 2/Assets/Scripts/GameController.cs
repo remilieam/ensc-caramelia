@@ -466,6 +466,12 @@ public class GameController : MonoBehaviour
             {
                 // Choix aléatoire d'une position initiale
                 positionTakenIndex = alea.Next(nodes.Count);
+                
+                // Si la position choisie aléatoirement est à côté d'une voiture extérieure (positions interdites)
+                while (positionTakenIndex == 100  || positionTakenIndex == 111 || positionTakenIndex == 96 || positionTakenIndex == 97)
+                {
+                    positionTakenIndex = alea.Next(nodes.Count);
+                }
 
                 // La position a-t-elle déjà été attribuée à une voiture intérieure ?
                 bool positionNotTakenBool = true;
@@ -473,8 +479,8 @@ public class GameController : MonoBehaviour
                 // Parcours des positions déjà prises par les voitures intérieures
                 for (int j = 0; j < positionTakenInt.Count; j++)
                 {
-                    // Si la position choisie aléatoirement est déjà occupée par une voiture intérieure ou à côté d'une voiture extérieure
-                    if (positionTakenInt[j] == positionTakenIndex || positionTakenIndex == 111 || positionTakenIndex == 110 || positionTakenIndex == 97 || positionTakenIndex == 96)
+                    // Si la position choisie aléatoirement est déjà occupée par une voiture intérieure
+                    if (positionTakenInt[j] == positionTakenIndex)
                     {
                         positionNotTakenBool = false;
                     }

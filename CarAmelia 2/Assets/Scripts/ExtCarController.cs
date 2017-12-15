@@ -135,6 +135,12 @@ public class ExtCarController : CarController
                 if (nodes[nextPosition.Number] == exit)
                 {
                     exitTime = Time.time;
+                    // On désactive la caméra arrière de la voiture
+                    if(this.cameraBackCar.enabled)
+                    {
+                        cameraBackCar.enabled = false;
+                        CameraView.enabled = true;
+                    }
                     gameObject.SetActive(false);
                     finish = true;
                 }
