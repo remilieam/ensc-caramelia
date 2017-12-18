@@ -45,7 +45,7 @@ public class GameController : MonoBehaviour
     private int nbWhiteTrust1, nbWhiteTrust2, nbWhiteTrust3, nbWhiteTrust4, nbWhiteTrust5;
     private int nbWhiteGenerosity1, nbWhiteGenerosity2, nbWhiteGenerosity3, nbWhiteGenerosity4, nbWhiteGenerosity5;
 
-    private float wait = 5;
+    private float wait = 6;
 
     // Liste des positions initiales des voitures intérieures
     private List<int> positionTakenInt = new List<int>();
@@ -468,7 +468,7 @@ public class GameController : MonoBehaviour
                 positionTakenIndex = alea.Next(nodes.Count);
                 
                 // Si la position choisie aléatoirement est à côté d'une voiture extérieure (positions interdites)
-                while (positionTakenIndex == 100  || positionTakenIndex == 111 || positionTakenIndex == 96 || positionTakenIndex == 97)
+                while (positionTakenIndex == 110  || positionTakenIndex == 111 || positionTakenIndex == 96 || positionTakenIndex == 97)
                 {
                     positionTakenIndex = alea.Next(nodes.Count);
                 }
